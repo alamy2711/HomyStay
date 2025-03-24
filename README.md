@@ -1,4 +1,4 @@
-# Apartment Booking Web App
+# HomyStay - Apartment Booking Web App
 
 This is a full-stack web application for apartment booking.
 
@@ -94,7 +94,13 @@ npm install -D prettier prettier-plugin-tailwindcss
 
 ### Start the Backend Server
 
-Navigate to the project root, then start the Laravel server:
+Navigate to the project root:
+
+```
+cd ..
+```
+
+Start the Laravel server:
 
 ```
 php artisan serve

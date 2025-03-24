@@ -1,4 +1,4 @@
-# Apartment Booking Web App
+# HomyStay - Apartment Booking Web App
 
 This is a full-stack web application for apartment booking.
 

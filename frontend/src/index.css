@@ -113,3 +113,9 @@ h6 {
         transform: translateY(0);
     }
 }
+
+
+.sort-radio-label:has(> input:checked) {
+    background-color: var(--color-primary-200);
+}
+

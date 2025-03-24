@@ -1,0 +1,108 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&family=League+Spartan:wght@400;500;700&family=Lilita+One&display=swap");
+@import "tailwindcss";
+
+@import "flowbite/src/themes/default";
+@plugin "flowbite/plugin";
+@source "../node_modules/flowbite";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --color-primary-50: #fdf4f2;
+    --color-primary-100: #fbe9e4;
+    --color-primary-200: #f8d6ce;
+    --color-primary-300: #f5c0b3;
+    --color-primary-400: #f1ad9c;
+    --color-primary-500: #ee9781;
+    --color-primary-600: #eb856b;
+    --color-primary-700: #e76f51;
+    --color-primary-800: #b83919;
+    --color-primary-900: #5a1c0c;
+    --color-primary-950: #2d0e06;
+}
+
+:root {
+    --primary: #e76f51; /* Orange (buttons, highlights) */
+    --primary-dark: #ca4827; /* Orange (buttons, highlights) */
+    --secondary: #1d3557; /* Dark Blue (text, logo) */
+    --bg-sky: #a8dadc; /* Light Blue (header background) */
+    --bg-gray: #e6e6e6; /* Light Gray (lower section background) */
+    --text-dark: #1a1a1a; /* Dark text */
+    --text-light: #ebebeb; /* White text */
+}
+
+a,
+button {
+    transition: all 0.4s ease;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+body {
+    font-family: "Quicksand", sans-serif;
+    background-color: var(--bg-gray);
+    /* font-size: 1.1em; */
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "League Spartan", sans-serif;
+    font-weight: bold;
+}
+
+/* Devider */
+.custom-shape-divider-bottom-1741746772 {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    transform: rotate(180deg);
+}
+
+.custom-shape-divider-bottom-1741746772 svg {
+    position: relative;
+    display: block;
+    width: calc(100% + 1.3px);
+    height: 79px;
+}
+
+.custom-shape-divider-bottom-1741746772 .shape-fill {
+    fill: var(--bg-gray);
+}
+
+/* Slide-down animation */
+.slide-down {
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+/* .grid-cols-7 {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+} */
+
+:root {
+    --color-primary-50: #fdf4f2;
+    --color-primary-100: #fbe9e4;
+    --color-primary-200: #f8d6ce;
+    --color-primary-300: #f5c0b3;
+    --color-primary-400: #f1ad9c;
+    --color-primary-500: #ee9781;
+    --color-primary-600: #eb856b;
+    --color-primary-700: #e76f51;
+    --color-primary-800: #b83919;
+    --color-primary-900: #5a1c0c;
+    --color-primary-950: #2d0e06;
+}

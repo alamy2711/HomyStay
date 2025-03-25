@@ -68,26 +68,6 @@ Install JavaScript dependencies:
 npm install
 ```
 
-### Install TailwindCSS, Flowbite, and Prettier Plugin
-
-Install TailwindCSS with CLI:
-
-```
-npm install tailwindcss @tailwindcss/cli
-```
-
-Install Flowbite for Tailwind components:
-
-```
-npm install flowbite
-```
-
-Install Tailwind class sorting plugin (requires Prettier):
-
-```
-npm install -D prettier prettier-plugin-tailwindcss
-```
-
 ---
 
 ## Running the Project

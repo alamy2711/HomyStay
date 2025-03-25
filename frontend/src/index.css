@@ -34,6 +34,18 @@ html {
     scroll-behavior: smooth;
 }
 
+::selection {
+    background: var(--primary);
+    color: white;
+    text-shadow: none;
+}
+
+::-moz-selection {
+    background: var(--primary);
+    color: white;
+    text-shadow: none;
+}
+
 body {
     font-family: "Quicksand", sans-serif;
     background-color: var(--bg-gray);
@@ -56,6 +68,8 @@ h6 {
     font-family: "League Spartan", sans-serif;
     font-weight: bold;
 }
+
+/* ======================================================= */
 
 /* Hero Section Devider */
 .custom-shape-divider-bottom-1741746772 {
@@ -100,6 +114,8 @@ h6 {
     fill: var(--bg-gray);
 }
 
+/* ======================================================== */
+
 /* Slide-down animation */
 .slide-down {
     animation: slideDown 0.3s ease-out;
@@ -114,6 +130,7 @@ h6 {
     }
 }
 
+/* ======================================================== */
 
 .sort-radio-label:has(> input:checked) {
     background-color: var(--color-primary-200);

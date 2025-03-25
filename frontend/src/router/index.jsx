@@ -4,6 +4,7 @@ import Contact from "../pages/Contact";
 import Explore from "../pages/Explore";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
+import PrivacyPolicy from "../pages/PrivacyPolicy";
 import Signup from "../pages/Signup";
 
 export const router = createBrowserRouter([
@@ -30,6 +31,10 @@ export const router = createBrowserRouter([
     {
         path: "/signup",
         element: <Signup />,
+    },
+    {
+        path: "/privacy-policy",
+        element: <PrivacyPolicy />,
     },
     {
         path: "*",

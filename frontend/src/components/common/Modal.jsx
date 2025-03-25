@@ -1,34 +1,18 @@
 import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
-export default function Modal({ children, id, toggleModal, isOpen }) {
-    // Handle {aria-hidden="true"} Error
+export default function Modal({ children, id }) {
+
+
+    // Handle scrollbar gutter on modal open
+    const location = useLocation();
     useEffect(() => {
-        const modalElement = document.getElementById("default-modal");
-
-        // Set up MutationObserver to observe changes to the modal element
-        const observer = new MutationObserver(() => {
-            if (modalElement) {
-                // Always remove aria-hidden if it is present
-                modalElement.removeAttribute("aria-hidden");
-            }
-        });
-
-        if (modalElement) {
-            // Observe changes to the 'aria-hidden' attribute or any other attribute in the modal
-            observer.observe(modalElement, {
-                attributes: true,
-                childList: false,
-                subtree: false,
-            });
+        if (location.pathname === "/explore") {
+            document.documentElement.style.scrollbarGutter = "stable";
+        } else {
+            document.documentElement.style.scrollbarGutter = ""; // Reset when leaving
         }
-
-        // Clean up observer on component unmount
-        return () => {
-            if (modalElement) {
-                observer.disconnect();
-            }
-        };
-    }, [isOpen]); // Runs on modal open/close state changes
+    }, [location.pathname]);
 
     return (
         <div

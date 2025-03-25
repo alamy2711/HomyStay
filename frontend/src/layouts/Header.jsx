@@ -41,11 +41,12 @@ export default function Header() {
     }, [isHeroPresent]);
 
     return (
-        // <header id="header" className="sticky top-0 z-50 bg-(--bg-sky)">
         <header
             id="header"
             className={`${
-                scrolled || !isHeroPresent
+                location.pathname === "/explore"
+                    ? "bg-white shadow-md" // White background, no sticky
+                    : scrolled || !isHeroPresent
                     ? "slide-down sticky top-0 z-50 bg-white shadow-md"
                     : "bg-(--bg-sky)"
             }`}

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
     return (
@@ -21,7 +22,10 @@ export default function Footer() {
                             </h2>
                             <ul className="">
                                 <li className="mb-4">
-                                    <a href="#" className="hover:underline">
+                                    <a
+                                        href="/explore"
+                                        className="hover:underline"
+                                    >
                                         Explore
                                     </a>
                                 </li>
@@ -55,9 +59,12 @@ export default function Footer() {
                             </h2>
                             <ul className="">
                                 <li className="mb-4">
-                                    <a href="#" className="hover:underline">
+                                    <Link
+                                        to={"/privacy-policy"}
+                                        className="hover:underline"
+                                    >
                                         Privacy Policy
-                                    </a>
+                                    </Link>
                                 </li>
                                 <li>
                                     <a href="#" className="hover:underline">
@@ -72,10 +79,7 @@ export default function Footer() {
                 <div className="sm:flex sm:items-center sm:justify-between">
                     <span className="sm:text-center">
                         © 2025{" "}
-                        <a
-                            href="#"
-                            className="hover:underline"
-                        >
+                        <a href="#" className="hover:underline">
                             HomyStay™
                         </a>
                         . All Rights Reserved.

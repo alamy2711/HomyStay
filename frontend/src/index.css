@@ -32,6 +32,8 @@
 
 html {
     scroll-behavior: smooth;
+    /* overflow-y: scroll; */
+    /* scrollbar-gutter: stable; */
 }
 
 ::selection {
@@ -135,4 +137,3 @@ h6 {
 .sort-radio-label:has(> input:checked) {
     background-color: var(--color-primary-200);
 }
-

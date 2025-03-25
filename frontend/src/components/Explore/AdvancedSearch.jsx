@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import StickyBox from "react-sticky-box";
 import Accordion from "../common/Accordion";
 import AccordionItem from "../common/AccordionItem";
 import Modal from "../common/Modal";
@@ -169,18 +170,8 @@ function SortMenu() {
 // }
 
 export default function AdvancedSearch() {
-    const [skidding, setSkidding] = useState(-40);
-    const [isOpen, setIsOpen] = useState(false);
-    const [selected, setSelected] = useState(null); // Track which checkbox is selected
-
-    const toggleCheckbox = (value) => {
-        setSelected((prev) => (prev === value ? null : value)); // Toggle selection
-    };
-    const toggleModal = () => {
-        setIsOpen((prev) => !prev);
-    };
-
     // Dropdown Responsive
+    const [skidding, setSkidding] = useState(-40);
     useEffect(() => {
         const updateSkidding = () => {
             const width = window.innerWidth;
@@ -194,14 +185,28 @@ export default function AdvancedSearch() {
                 setSkidding(-40); // lg
             else setSkidding(-20); // xl
         };
-
         updateSkidding(); // Initial check
         window.addEventListener("resize", updateSkidding);
-
         return () => window.removeEventListener("resize", updateSkidding);
     }, []);
 
-    return (
+    // Sticky Search Bar in Large Screen
+    const [isLargeScreen, setIsLargeScreen] = useState(
+        window.innerWidth >= 1024,
+    );
+    useEffect(() => {
+        const handleResize = () => {
+            setIsLargeScreen(window.innerWidth >= 1024);
+        };
+
+        window.addEventListener("resize", handleResize);
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, []);
+
+    // Advanced Search Bar Content
+    const AdvancedSearchBar = (
         <section className="mb-10 px-4 lg:px-6" id="search">
             <div className="mx-auto max-w-screen-xl rounded-lg bg-white px-4 py-4 shadow-sm">
                 <form
@@ -280,204 +285,12 @@ export default function AdvancedSearch() {
                         type="button"
                         onClick={(e) => {
                             e.preventDefault();
-                            toggleModal();
                         }}
                         className="bg-primary-700 hover:bg-primary-800 col-span-2 flex items-center justify-center gap-3 rounded-full px-4 py-2.5 text-sm font-medium text-white md:col-span-1 lg:px-5 lg:py-3"
                     >
                         <i className="fa-solid fa-filter"></i>
                         Filter
                     </button>
-                    {/* <FilterModal toggleModal={toggleModal} isOpen={isOpen} /> */}
-                    <Modal
-                        id={"filter-modal"}
-                        isOpen={isOpen}
-                        toggleModal={toggleModal}
-                    >
-                        {/* <!-- Modal header --> */}
-                        <div className="flex items-center justify-between rounded-t border-b border-gray-200 p-4 md:p-5">
-                            <h3 className="text-xl font-semibold text-gray-900">
-                                Filter
-                            </h3>
-                            <button
-                                type="button"
-                                className="ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900"
-                                data-modal-hide="filter-modal"
-                                onClick={toggleModal}
-                            >
-                                {/* Close Icon */}
-                                <svg
-                                    className="h-3 w-3"
-                                    // aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 14 14"
-                                >
-                                    <path
-                                        stroke="currentColor"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-                                    />
-                                </svg>
-                                <span className="sr-only">Close modal</span>
-                            </button>
-                        </div>
-                        {/* <!-- Modal body --> */}
-                        <div className="max-h-[60vh] space-y-4 overflow-y-auto p-4 md:p-5">
-                            <Accordion id={"filter-accordion-collapse"}>
-                                {/* Category Filter */}
-                                <AccordionItem
-                                    headingID={"category-accordion-heading"}
-                                    bodyID={"category-accordion-body"}
-                                    title={"Category"}
-                                >
-                                    <ul className="flex w-full flex-wrap justify-around gap-3 md:grid-cols-4 md:justify-between">
-                                        <li>
-                                            <input
-                                                type="checkbox"
-                                                id="category-apartment"
-                                                name="category"
-                                                className="peer hidden"
-                                                checked={
-                                                    selected ===
-                                                    "category-apartment"
-                                                }
-                                                onChange={() =>
-                                                    toggleCheckbox(
-                                                        "category-apartment",
-                                                    )
-                                                }
-                                            />
-                                            <label
-                                                htmlFor="category-apartment"
-                                                className="peer-checked:bg-primary-100 hover:bg-primary-100 peer-checked:text-primary-600 peer-checked:border-primary-600 hover:text-primary-600 hover:border-primary-600 flex w-full cursor-pointer items-center justify-between gap-3 rounded-full border border-gray-300 bg-white px-4 py-2.5 font-bold text-gray-500"
-                                            >
-                                                <i className="fa-solid fa-building text-xl"></i>
-                                                Apartment
-                                            </label>
-                                        </li>
-                                        <li>
-                                            <input
-                                                type="checkbox"
-                                                id="category-house"
-                                                name="category"
-                                                className="peer hidden"
-                                                checked={selected === "category-house"}
-                                                onChange={() =>
-                                                    toggleCheckbox("category-house")
-                                                }
-                                            />
-                                            <label
-                                                htmlFor="category-house"
-                                                className="peer-checked:bg-primary-100 hover:bg-primary-100 peer-checked:text-primary-600 peer-checked:border-primary-600 hover:text-primary-600 hover:border-primary-600 flex w-full cursor-pointer items-center justify-between gap-3 rounded-full border border-gray-300 bg-white px-4 py-2.5 font-bold text-gray-500"
-                                            >
-                                                <i className="fa-solid fa-house text-xl"></i>
-                                                House
-                                            </label>
-                                        </li>
-                                        <li>
-                                            <input
-                                                type="checkbox"
-                                                id="category-mansion"
-                                                name="category"
-                                                className="peer hidden"
-                                                checked={
-                                                    selected ===
-                                                    "category-mansion"
-                                                }
-                                                onChange={() =>
-                                                    toggleCheckbox(
-                                                        "category-mansion",
-                                                    )
-                                                }
-                                            />
-                                            <label
-                                                htmlFor="category-mansion"
-                                                className="peer-checked:bg-primary-100 hover:bg-primary-100 peer-checked:text-primary-600 peer-checked:border-primary-600 hover:text-primary-600 hover:border-primary-600 flex w-full cursor-pointer items-center justify-between gap-3 rounded-full border border-gray-300 bg-white px-4 py-2.5 font-bold text-gray-500"
-                                            >
-                                                <i className="fa-solid fa-dungeon text-xl"></i>
-                                                Mansion
-                                            </label>
-                                        </li>
-                                        <li>
-                                            <input
-                                                type="checkbox"
-                                                id="category-hotel"
-                                                name="category"
-                                                className="peer hidden"
-                                                checked={
-                                                    selected ===
-                                                    "category-hotel"
-                                                }
-                                                onChange={() =>
-                                                    toggleCheckbox(
-                                                        "category-hotel",
-                                                    )
-                                                }
-                                            />
-                                            <label
-                                                htmlFor="category-hotel"
-                                                className="peer-checked:bg-primary-100 hover:bg-primary-100 peer-checked:text-primary-600 peer-checked:border-primary-600 hover:text-primary-600 hover:border-primary-600 flex w-full cursor-pointer items-center justify-between gap-3 rounded-full border border-gray-300 bg-white px-4 py-2.5 font-bold text-gray-500"
-                                            >
-                                                <i className="fa-solid fa-hotel text-xl"></i>
-                                                Hotel
-                                            </label>
-                                        </li>
-                                    </ul>
-                                </AccordionItem>
-                                {/* Price Filter */}
-                                <AccordionItem
-                                    headingID={"price-accordion-heading"}
-                                    bodyID={"price-accordion-body"}
-                                    title={"Price per Night"}
-                                >
-                                    Price Content
-                                </AccordionItem>
-                                {/* Rooms Filter */}
-                                <AccordionItem
-                                    headingID={"rooms-accordion-heading"}
-                                    bodyID={"rooms-accordion-body"}
-                                    title={"Bedrooms and bathrooms"}
-                                >
-                                    Bedrooms and bathrooms Content
-                                </AccordionItem>
-                                {/* Guests Filter */}
-                                <AccordionItem
-                                    headingID={"guests-accordion-heading"}
-                                    bodyID={"guests-accordion-body"}
-                                    title={"Guests"}
-                                >
-                                    Guests Content
-                                </AccordionItem>
-                                {/* Amenities Filter */}
-                                <AccordionItem
-                                    headingID={"amenities-accordion-heading"}
-                                    bodyID={"amenities-accordion-body"}
-                                    title={"Amenities"}
-                                >
-                                    Amenities Content
-                                </AccordionItem>
-                            </Accordion>
-                        </div>
-                        {/* <!-- Modal footer --> */}
-                        <div className="flex items-center rounded-b border-t border-gray-200 p-4 md:p-5">
-                            <button
-                                data-modal-hide="filter-modal"
-                                type="button"
-                                className="bg-primary-700 hover:bg-primary-800 rounded-full px-5 py-2.5 text-center text-sm font-medium text-white"
-                            >
-                                Apply
-                            </button>
-                            <button
-                                type="button"
-                                className="hover:text-primary-700 border-primary-200 hover:bg-primary-200 ms-3 rounded-full border bg-white px-5 py-2.5 text-sm font-medium text-gray-900"
-                            >
-                                Clear
-                            </button>
-                        </div>
-                    </Modal>
-
                     {/* <!-- Sort Button --> */}
                     <button
                         onClick={(e) => e.preventDefault()}
@@ -491,9 +304,177 @@ export default function AdvancedSearch() {
                         <i className="fa-solid fa-sort"></i>
                         Sort
                     </button>
+                    {/* <!-- Sort Menu --> */}
                     <SortMenu />
                 </form>
             </div>
         </section>
+    );
+
+    return (
+        <>
+            {/* Sticky Search Bar Condition */}
+            {isLargeScreen ? (
+                <StickyBox offsetTop={0} className="z-35">
+                    {AdvancedSearchBar}
+                </StickyBox>
+            ) : (
+                AdvancedSearchBar
+            )}
+            {/* Filter Modal */}
+            <Modal id={"filter-modal"}>
+                {/* <!-- Modal header --> */}
+                <div className="flex items-center justify-between rounded-t border-b border-gray-200 p-4 md:p-5">
+                    <h3 className="text-xl font-semibold text-gray-900">
+                        Filter
+                    </h3>
+                    <button
+                        type="button"
+                        className="ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900"
+                        data-modal-hide="filter-modal"
+                    >
+                        {/* Close Icon */}
+                        <svg
+                            className="h-3 w-3"
+                            // aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 14 14"
+                        >
+                            <path
+                                stroke="currentColor"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                            />
+                        </svg>
+                        <span className="sr-only">Close modal</span>
+                    </button>
+                </div>
+                {/* <!-- Modal body --> */}
+                <div className="max-h-[60vh] space-y-4 overflow-y-auto p-4 md:p-5">
+                    <Accordion id={"filter-accordion-collapse"}>
+                        {/* <!-- Category Filter --> */}
+                        <AccordionItem
+                            headingID={"category-accordion-heading"}
+                            bodyID={"category-accordion-body"}
+                            title={"Category"}
+                        >
+                            <ul className="flex w-full flex-wrap justify-around gap-3 md:grid-cols-4 md:justify-between">
+                                <li>
+                                    <input
+                                        type="checkbox"
+                                        id="category-apartment"
+                                        name="category"
+                                        className="peer hidden"
+                                    />
+                                    <label
+                                        htmlFor="category-apartment"
+                                        className="peer-checked:bg-primary-100 hover:bg-primary-100 peer-checked:text-primary-600 peer-checked:border-primary-600 hover:text-primary-600 hover:border-primary-600 flex w-full cursor-pointer items-center justify-between gap-3 rounded-full border border-gray-300 bg-white px-4 py-2.5 font-bold text-gray-500"
+                                    >
+                                        <i className="fa-solid fa-building text-xl"></i>
+                                        Apartment
+                                    </label>
+                                </li>
+                                <li>
+                                    <input
+                                        type="checkbox"
+                                        id="category-house"
+                                        name="category"
+                                        className="peer hidden"
+                                    />
+                                    <label
+                                        htmlFor="category-house"
+                                        className="peer-checked:bg-primary-100 hover:bg-primary-100 peer-checked:text-primary-600 peer-checked:border-primary-600 hover:text-primary-600 hover:border-primary-600 flex w-full cursor-pointer items-center justify-between gap-3 rounded-full border border-gray-300 bg-white px-4 py-2.5 font-bold text-gray-500"
+                                    >
+                                        <i className="fa-solid fa-house text-xl"></i>
+                                        House
+                                    </label>
+                                </li>
+                                <li>
+                                    <input
+                                        type="checkbox"
+                                        id="category-mansion"
+                                        name="category"
+                                        className="peer hidden"
+                                    />
+                                    <label
+                                        htmlFor="category-mansion"
+                                        className="peer-checked:bg-primary-100 hover:bg-primary-100 peer-checked:text-primary-600 peer-checked:border-primary-600 hover:text-primary-600 hover:border-primary-600 flex w-full cursor-pointer items-center justify-between gap-3 rounded-full border border-gray-300 bg-white px-4 py-2.5 font-bold text-gray-500"
+                                    >
+                                        <i className="fa-solid fa-dungeon text-xl"></i>
+                                        Mansion
+                                    </label>
+                                </li>
+                                <li>
+                                    <input
+                                        type="checkbox"
+                                        id="category-hotel"
+                                        name="category"
+                                        className="peer hidden"
+                                    />
+                                    <label
+                                        htmlFor="category-hotel"
+                                        className="peer-checked:bg-primary-100 hover:bg-primary-100 peer-checked:text-primary-600 peer-checked:border-primary-600 hover:text-primary-600 hover:border-primary-600 flex w-full cursor-pointer items-center justify-between gap-3 rounded-full border border-gray-300 bg-white px-4 py-2.5 font-bold text-gray-500"
+                                    >
+                                        <i className="fa-solid fa-hotel text-xl"></i>
+                                        Hotel
+                                    </label>
+                                </li>
+                            </ul>
+                        </AccordionItem>
+                        {/* <!-- Price Filter --> */}
+                        <AccordionItem
+                            headingID={"price-accordion-heading"}
+                            bodyID={"price-accordion-body"}
+                            title={"Price per Night"}
+                        >
+                            Price Content
+                        </AccordionItem>
+                        {/* <!-- Rooms Filter --> */}
+                        <AccordionItem
+                            headingID={"rooms-accordion-heading"}
+                            bodyID={"rooms-accordion-body"}
+                            title={"Bedrooms and bathrooms"}
+                        >
+                            Bedrooms and bathrooms Content
+                        </AccordionItem>
+                        {/* <!-- Guests Filter --> */}
+                        <AccordionItem
+                            headingID={"guests-accordion-heading"}
+                            bodyID={"guests-accordion-body"}
+                            title={"Guests"}
+                        >
+                            Guests Content
+                        </AccordionItem>
+                        {/* <!-- Amenities Filter --> */}
+                        <AccordionItem
+                            headingID={"amenities-accordion-heading"}
+                            bodyID={"amenities-accordion-body"}
+                            title={"Amenities"}
+                        >
+                            Amenities Content
+                        </AccordionItem>
+                    </Accordion>
+                </div>
+                {/* <!-- Modal footer --> */}
+                <div className="flex items-center rounded-b border-t border-gray-200 p-4 md:p-5">
+                    <button
+                        data-modal-hide="filter-modal"
+                        type="button"
+                        className="bg-primary-700 hover:bg-primary-800 rounded-full px-5 py-2.5 text-center text-sm font-medium text-white"
+                    >
+                        Apply
+                    </button>
+                    <button
+                        type="button"
+                        className="hover:text-primary-700 border-primary-200 hover:bg-primary-200 ms-3 rounded-full border bg-white px-5 py-2.5 text-sm font-medium text-gray-900"
+                    >
+                        Clear
+                    </button>
+                </div>
+            </Modal>
+        </>
     );
 }

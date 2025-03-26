@@ -11,7 +11,7 @@ export default function Footer() {
                             <img
                                 src="images/HomyStay.png"
                                 className="mr-3 h-8"
-                                alt="FlowBite Logo"
+                                alt="HomyStay Logo"
                             />
                         </a>
                     </div>

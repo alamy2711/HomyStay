@@ -10,7 +10,7 @@ function ImageSlider() {
             data-carousel="static"
         >
             {/* <!-- Carousel wrapper --> */}
-            <div className="relative  overflow-hidden rounded-lg h-70">
+            <div className="relative h-70 overflow-hidden rounded-lg">
                 {/* <!-- Item 1 --> */}
                 <div
                     className="hidden duration-700 ease-in-out"
@@ -28,7 +28,7 @@ function ImageSlider() {
                     data-carousel-item
                 >
                     <img
-                        src="images/Apartments/0001.jpg"
+                        src="images/Apartments/0002.jpg"
                         className="absolute top-1/2 left-1/2 block h-full w-full -translate-x-1/2 -translate-y-1/2 object-cover object-center"
                         alt="..."
                     />
@@ -39,7 +39,7 @@ function ImageSlider() {
                     data-carousel-item
                 >
                     <img
-                        src="images/Apartments/0001.jpg"
+                        src="images/Apartments/0003.jpg"
                         className="absolute top-1/2 left-1/2 block h-full w-full -translate-x-1/2 -translate-y-1/2 object-cover object-center"
                         alt="..."
                     />
@@ -68,7 +68,6 @@ function ImageSlider() {
                     aria-label="Slide 3"
                     data-carousel-slide-to="2"
                 ></button>
-
             </div>
             {/* <!-- Slider controls --> */}
             <button
@@ -139,20 +138,17 @@ function ImageSlider() {
 
 export default function ApartmentCard() {
     return (
-        <div className="grid w-full max-w-sm grid-cols-2 gap-2 rounded-lg border border-gray-200 bg-white p-3 shadow-sm shadow-gray-400">
+        <div className="grid w-full max-w-sm grid-cols-2 gap-2 rounded-lg border border-gray-200 bg-white p-3 shadow-sm shadow-gray-400 duration-300 ease-out hover:scale-102">
             {/* <!-- Image --> */}
             <div className="col-span-2 h-70 overflow-hidden rounded-lg">
                 <ImageSlider />
-                {/* <img
-                    src="images/Apartments/0001.jpg"
-                    alt="Card Image"
-                    className="h-full w-full object-cover object-center"
-                /> */}
             </div>
             {/* <!-- Title --> */}
             <div className="text-primary-700 col-span-2 flex flex-row items-center gap-2">
-                <i className="fa-solid fa-location-dot text-xl"></i>
-                <h3 className="text-xl">Spain, Madrid</h3>
+                    <i className="fa-solid fa-location-dot text-xl"></i>
+                <a href="/apartment-details">
+                    <h3 className="text-xl">Spain, Madrid</h3>
+                </a>
             </div>
             {/* <!-- Date --> */}
             <p className="text-gray-500">15 Mar - 24 Mar</p>

@@ -6,6 +6,7 @@ import Home from "../pages/Home";
 import Login from "../pages/Login";
 import PrivacyPolicy from "../pages/PrivacyPolicy";
 import Signup from "../pages/Signup";
+import ApartmentDetails from "../components/Apartment/ApartmentDetails";
 
 export const router = createBrowserRouter([
     {
@@ -35,6 +36,10 @@ export const router = createBrowserRouter([
     {
         path: "/privacy-policy",
         element: <PrivacyPolicy />,
+    },
+    {
+        path: "/apartment-details",
+        element: <ApartmentDetails />,
     },
     {
         path: "*",

@@ -8,12 +8,10 @@ import Header from "../layouts/Header";
 export default function Home() {
     return (
         <>
-            <Header />
             <HeroSection />
             <SearchSection />
             <CardsSection />
             <WhyChooseUs />
-            <Footer/>
         </>
     );
 }

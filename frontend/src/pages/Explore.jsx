@@ -7,7 +7,6 @@ import Header from "../layouts/Header";
 export default function Home() {
     return (
         <>
-            <Header />
             <PageHeading
                 title={"Explore Apartments"}
                 description={
@@ -16,7 +15,6 @@ export default function Home() {
             />
             <AdvancedSearch />
             <CardsSection />
-            <Footer />
         </>
     );
 }

@@ -7,42 +7,49 @@ import Login from "../pages/Login";
 import PrivacyPolicy from "../pages/PrivacyPolicy";
 import Signup from "../pages/Signup";
 import ApartmentDetails from "../components/Apartment/ApartmentDetails";
+import GuestLayout from "../layouts/GuestLayout";
 
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: <Home />,
-    },
-    {
-        path: "/explore",
-        element: <Explore />,
-    },
-    {
-        path: "/about",
-        element: <About />,
-    },
-    {
-        path: "/contact",
-        element: <Contact />,
-    },
-    {
-        path: "/login",
-        element: <Login />,
-    },
-    {
-        path: "/signup",
-        element: <Signup />,
-    },
-    {
-        path: "/privacy-policy",
-        element: <PrivacyPolicy />,
-    },
-    {
-        path: "/apartment-details",
-        element: <ApartmentDetails />,
-    },
-    {
-        path: "*",
-        element: <h1>404 - NOT FOUND</h1>,
+        element: <GuestLayout />,
+        children: [
+            {
+                path: "/",
+                element: <Home />,
+            },
+            {
+                path: "/explore",
+                element: <Explore />,
+            },
+            {
+                path: "/about",
+                element: <About />,
+            },
+            {
+                path: "/contact",
+                element: <Contact />,
+            },
+            {
+                path: "/login",
+                element: <Login />,
+            },
+            {
+                path: "/signup",
+                element: <Signup />,
+            },
+            {
+                path: "/privacy-policy",
+                element: <PrivacyPolicy />,
+            },
+            {
+                path: "/apartment-details",
+                element: <ApartmentDetails />,
+            },
+            {
+                path: "*",
+                element: <h1>404 - NOT FOUND</h1>,
+            },
+        ],
     },
 ]);

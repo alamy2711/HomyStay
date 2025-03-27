@@ -1,12 +1,9 @@
 import React from "react";
 import PageHeading from "../components/common/PageHeading";
-import Footer from "../layouts/Footer";
-import Header from "../layouts/Header";
 
 export default function PrivacyPolicy() {
     return (
         <>
-            <Header />
             <PageHeading title="Privacy Policy">
                 TESTING...
                 <div
@@ -55,8 +52,6 @@ export default function PrivacyPolicy() {
                     </p>
                 </div>
             </PageHeading>
-
-            <Footer />
         </>
     );
 }

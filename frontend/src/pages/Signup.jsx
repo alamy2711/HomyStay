@@ -9,18 +9,21 @@ import FloatingLabel from "../components/common/FloatingLabel";
 import Section from "../components/common/Section";
 
 const schema = z.object({
+    role: z.enum(["client", "host"], {
+        errorMap: () => ({ message: "Please make a selection to continue" }),
+    }),
     firstName: z
         .string()
         .nonempty("First name is required")
         .min(2, "First name must be at least 2 characters")
         .max(50, "First name cannot exceed 50 characters")
-        .regex(/^[A-Za-z]+$/, "Only letters allowed"),
+        .regex(/^(?!\s*$)[A-Za-z\s]+$/, "Only letters allowed"),
     lastName: z
         .string()
         .nonempty("Last name is required")
         .min(2, "Last name must be at least 2 characters long")
         .max(50, "Last name cannot exceed 50 characters")
-        .regex(/^[A-Za-z]+$/, "Only letters allowed"),
+        .regex(/^(?!\s*$)[A-Za-z\s]+$/, "Only letters allowed"),
     phone: z
         .string()
         .nonempty("Phone number is required")
@@ -101,8 +104,45 @@ export default function Login() {
                     className="mx-auto flex w-full max-w-[450px] flex-col gap-8 rounded-lg px-5 py-5 shadow-sm shadow-gray-300"
                 >
                     <h3 className="text-primary-700 self-center text-2xl lg:text-3xl">
-                        Sign up
+                        Sign up As
                     </h3>
+                    {/* Client OR Host */}
+                    <div className="grid grid-cols-2 px-10 gap-y-2">
+                        <input
+                            type="radio"
+                            id="client"
+                            name="role"
+                            value="client"
+                            className="peer/client hidden"
+                            {...register("role")}
+                        />
+                        <label
+                            htmlFor="client"
+                            className="peer-checked/client:border-primary-700 peer-checked/client:text-primary-700 hover:bg-primary-100 hover:text-primary-700 peer-checked/client:bg-primary-100 text-md w-full cursor-pointer rounded-l-full border border-gray-200 bg-white py-1 text-center font-semibold"
+                        >
+                            Client
+                        </label>
+                        <input
+                            type="radio"
+                            id="host"
+                            name="role"
+                            value="host"
+                            className="peer/host hidden"
+                            {...register("role")}
+                        />
+                        <label
+                            htmlFor="host"
+                            className="peer-checked/host:border-primary-700 peer-checked/host:text-primary-700 hover:bg-primary-100 hover:text-primary-700 peer-checked/host:bg-primary-100 text-md w-full cursor-pointer rounded-r-full border border-gray-200 bg-white py-1 text-center font-semibold"
+                        >
+                            Host
+                        </label>
+                        {errors.role && (
+                            <p className="ml-2 text-sm text-red-500 col-span-2 text-center">
+                                {errors.role.message}
+                            </p>
+                        )}
+                    </div>
+
                     {/* First - Last Name */}
                     <div className="grid grid-cols-2 gap-5">
                         {/* First Name */}

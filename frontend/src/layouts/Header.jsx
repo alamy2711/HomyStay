@@ -1,6 +1,51 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router";
 import Button from "../components/common/Button";
+import { useAuth } from "../contexts/AuthContext";
+
+function UserDropdown() {
+    const {user} = useAuth();
+
+    return (
+        <div
+            id="userDropdown"
+            class="z-10 hidden w-44 divide-y divide-gray-100 rounded-lg bg-white shadow-sm"
+        >
+            <div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
+                <div>{user.name}</div>
+                <div class="truncate font-medium">name@flowbite.com</div>
+            </div>
+            <ul
+                class="py-2 text-sm text-gray-700 dark:text-gray-200"
+                aria-labelledby="avatarButton"
+            >
+                <li>
+                    <a href="#" class="block px-4 py-2 hover:bg-gray-100">
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="block px-4 py-2 hover:bg-gray-100">
+                        Settings
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="block px-4 py-2 hover:bg-gray-100">
+                        Earnings
+                    </a>
+                </li>
+            </ul>
+            <div class="py-1">
+                <a
+                    href="#"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200"
+                >
+                    Sign out
+                </a>
+            </div>
+        </div>
+    );
+}
 
 export default function Header() {
     const [scrolled, setScrolled] = useState(false);
@@ -41,6 +86,9 @@ export default function Header() {
         };
     }, [isHeroPresent]);
 
+    // Auth Context
+    const {token} = useAuth();
+
     return (
         <header
             id="header"
@@ -48,12 +96,13 @@ export default function Header() {
                 location.pathname === "/explore"
                     ? "bg-white shadow-md" // White background, no sticky
                     : scrolled || !isHeroPresent
-                        ? "slide-down sticky top-0 z-50 bg-white shadow-md"
-                        : "bg-(--bg-sky)"
+                      ? "slide-down sticky top-0 z-50 bg-white shadow-md"
+                      : "bg-(--bg-sky)"
             }`}
         >
             <nav className="border-gray-200 px-4 py-2.5 lg:px-6">
-                <div className="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between">
+                <div className="mx-auto flex min-h-[40px] max-w-screen-xl flex-wrap items-center justify-between">
+                    {/* Logo */}
                     <a href="/" className="flex items-center">
                         <img
                             src="images/HomyStay.png"
@@ -62,24 +111,24 @@ export default function Header() {
                         />
                     </a>
                     <div className="flex items-center lg:order-2">
-                        {/* <a
-                            href="/login"
-                            className="hover:text-primary-700 mr-2 rounded-lg px-4 py-2 text-sm font-medium text-gray-800 lg:px-5 lg:py-2.5"
-                        >
-                            Log in
-                        </a> */}
-                        <Link to="/login">
-                            <Button className="text-(--secondary) hover:text-primary-700">Log in</Button>
-                        </Link>
-                        {/* <a
-                            href="/signup"
-                            className="bg-primary-700 hover:bg-primary-800 rounded-full px-4 py-2 text-sm font-medium text-white lg:px-5 lg:py-2.5"
-                        >
-                            Sign up
-                        </a> */}
-                        <Link to="/signup">
-                            <Button className="bg-primary-700 hover:bg-primary-800 text-white">Sign up</Button>
-                        </Link>
+                    {console.log(token)}
+                        {token ? (
+                            <i className="fa-solid fa-user rounded-full border-2 px-2.5 py-2 text-2xl text-(--secondary)"></i>
+                        ) : (
+                            <>
+                                <Link to="/login">
+                                    <Button className="hover:text-primary-700 text-(--secondary)">
+                                        Log in
+                                    </Button>
+                                </Link>
+
+                                <Link to="/signup">
+                                    <Button className="bg-primary-700 hover:bg-primary-800 text-white">
+                                        Sign up
+                                    </Button>
+                                </Link>
+                            </>
+                        )}
                         <button
                             data-collapse-toggle="mobile-menu-2"
                             type="button"

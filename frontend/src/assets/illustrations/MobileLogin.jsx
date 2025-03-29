@@ -5,7 +5,7 @@ const MobileLogin = ({className}) => (
         id="freepik_stories-mobile-login"
         // xmlns="http://www.w3.org/2000/svg"
         // xmlnsXlink="http://www.w3.org/1999/xlink"
-        viewBox="0 0 500 500"
+        viewBox="20 20 450 450"
         // xmlns:svgjs="http://svgjs.com/svgjs"
     >
         <style>

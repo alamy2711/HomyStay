@@ -138,23 +138,25 @@ function ImageSlider() {
 
 export default function ApartmentCard() {
     return (
-        <div className="grid w-full max-w-sm grid-cols-2 gap-2 rounded-lg border border-gray-200 bg-white p-3 shadow-sm shadow-gray-400 duration-300 ease-out hover:scale-102">
+        <div className="relative grid w-full max-w-sm grid-cols-2 gap-2 rounded-lg border border-gray-200 bg-white p-3 shadow-sm shadow-gray-400 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-md">
+            {/* Invisible Link Layer */}
+            <a href="/apartment-details" className="absolute inset-0 z-10"></a>
             {/* <!-- Image --> */}
             <div className="col-span-2 h-70 overflow-hidden rounded-lg">
                 <ImageSlider />
             </div>
             {/* <!-- Title --> */}
             <div className="text-primary-700 col-span-2 flex flex-row items-center gap-2">
-                    <i className="fa-solid fa-location-dot text-xl"></i>
-                <a href="/apartment-details">
+                <i className="fa-solid fa-location-dot text-xl"></i>
+                {/* <a href="/apartment-details"> */}
                     <h3 className="text-xl">Spain, Madrid</h3>
-                </a>
+                {/* </a> */}
             </div>
             {/* <!-- Date --> */}
             <p className="text-gray-500">15 Mar - 24 Mar</p>
             {/* <!-- Rate --> */}
             <div className="flex flex-row items-center justify-end gap-1">
-                <i className="fa-solid fa-star text-yellow-500"></i> 4.5
+                <i className="fa-solid fa-star text-yellow-400"></i> 4.5
             </div>
             {/* <!-- Amenities --> */}
             <div className="flex flex-row items-center gap-5 font-bold text-gray-500">

@@ -4,7 +4,7 @@ const MobileSignup = ({className}) => (
         className={`animated ${className}`}
         id="freepik_stories-mobile-login"
         // xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 500 500"
+        viewBox="50 50 400 400"
         // xmlnsXlink="http://www.w3.org/1999/xlink"
         // xmlns:svgjs="http://svgjs.com/svgjs"
         // {...props}

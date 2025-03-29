@@ -1,5 +1,7 @@
 import ApartmentKey from "../../assets/illustrations/ApartmentKey";
 import ApartmentRent from "../../assets/illustrations/ApartmentRent";
+import HouseSearch from "../../assets/illustrations/HouseSearch";
+import ThreeHousesSearch from "../../assets/illustrations/ThreeHousesSearch";
 
 export default function HeroSection() {
     return (
@@ -29,8 +31,10 @@ export default function HeroSection() {
                     src="images/hsimg.png"
                     className="hidden h-70 self-end lg:inline-block"
                 /> */}
-                <ApartmentRent className="h-70" />
-                {/* <ApartmentKey className="h-70" /> */}
+                {/* <ApartmentRent className="h-70" /> */}
+                {/* <ApartmentKey className="hidden h-70 self-end lg:inline-block" /> */}
+                {/* <HouseSearch className="hidden h-70 self-end lg:inline-block" /> */}
+                <ThreeHousesSearch className="hidden h-70 self-end lg:inline-block" />
 
                 {/* <!-- Host Side --> */}
                 <div className="flex flex-col items-center gap-3 md:items-end">

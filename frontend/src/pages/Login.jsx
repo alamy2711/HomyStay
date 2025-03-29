@@ -57,8 +57,8 @@ export default function Login() {
             {/* Body */}
             <div className="grid-cols-2 items-start lg:grid">
                 {/* Image */}
-                <div className="flex justify-center lg:order-last">
-                    <MobileLogin className="h-[500px]" />
+                <div className="flex h-full items-center justify-center lg:order-last">
+                    <MobileLogin className="h-[450px]" />
                 </div>
                 {/* Form */}
                 <form

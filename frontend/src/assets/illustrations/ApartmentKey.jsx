@@ -1,22 +1,27 @@
 import * as React from "react";
-const ApartmentKey = ({ className }) => (
+const ApartmentKey = ({className}) => (
     <svg
-        className={`animated ${className}`}
+        className={`animated ${className} `}
         id="freepik_stories-apartment-rent"
         // xmlns="http://www.w3.org/2000/svg"
         // xmlnsXlink="http://www.w3.org/1999/xlink"
-        viewBox="0 0 500 500"
+        viewBox="15 15 470 470"
         // xmlns:svgjs="http://svgjs.com/svgjs"
         // {...props}
     >
+        <style>
+            {
+                "\n        svg#freepik_stories-apartment-rent:not(.animated) .animable {opacity: 0;}svg#freepik_stories-apartment-rent.animated #freepik--background-simple--inject-2 {animation: 1s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) zoomIn;animation-delay: 0s;}svg#freepik_stories-apartment-rent.animated #freepik--Buildings--inject-2 {animation: 1s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) slideUp;animation-delay: 0s;}svg#freepik_stories-apartment-rent.animated #el8cfe9edglkt {animation: 0.7s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) slideLeft;animation-delay: 0s;}svg#freepik_stories-apartment-rent.animated #el5e57kl0t4t2 {animation: 0.7s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) slideLeft;animation-delay: 0.11666666666666665s;opacity: 0}svg#freepik_stories-apartment-rent.animated #el7xvxbgbk6sr {animation: 0.7s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) slideLeft;animation-delay: 0.2333333333333333s;opacity: 0}svg#freepik_stories-apartment-rent.animated #ele956kncpr6 {animation: 0.7s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) slideLeft;animation-delay: 0.35s;opacity: 0}svg#freepik_stories-apartment-rent.animated #el9oz4xf3hnk8 {animation: 0.7s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) slideLeft;animation-delay: 0.4666666666666666s;opacity: 0}svg#freepik_stories-apartment-rent.animated #elglr8mjqg005 {animation: 0.7s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) slideLeft;animation-delay: 0.5833333333333333s;opacity: 0}svg#freepik_stories-apartment-rent.animated #freepik--Stars--inject-2 {animation: 0.7s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) slideLeft,6s Infinite  linear shake;animation-delay: 0s,0.7s;}svg#freepik_stories-apartment-rent.animated #freepik--hand-2--inject-2 {animation: 1s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) slideRight,3s Infinite  linear wind;animation-delay: 0s,1s;}svg#freepik_stories-apartment-rent.animated #freepik--hand-1--inject-2 {animation: 1s 1 forwards cubic-bezier(.36,-0.01,.5,1.38) slideLeft,3s Infinite  linear wind;animation-delay: 0s,1s;}            @keyframes zoomIn {                0% {                    opacity: 0;                    transform: scale(0.5);                }                100% {                    opacity: 1;                    transform: scale(1);                }            }                    @keyframes slideUp {                0% {                    opacity: 0;                    transform: translateY(30px);                }                100% {                    opacity: 1;                    transform: inherit;                }            }                    @keyframes slideLeft {                0% {                    opacity: 0;                    transform: translateX(-30px);                }                100% {                    opacity: 1;                    transform: translateX(0);                }            }                    @keyframes shake {                10%, 90% {                    transform: translate3d(-1px, 0, 0);                  }                  20%, 80% {                    transform: translate3d(2px, 0, 0);                  }                  30%, 50%, 70% {                    transform: translate3d(-4px, 0, 0);                  }                  40%, 60% {                    transform: translate3d(4px, 0, 0);                  }            }                    @keyframes slideRight {                0% {                    opacity: 0;                    transform: translateX(30px);                }                100% {                    opacity: 1;                    transform: translateX(0);                }            }                    @keyframes wind {                0% {                    transform: rotate( 0deg );                }                25% {                    transform: rotate( 1deg );                }                75% {                    transform: rotate( -1deg );                }            }        .animator-hidden { display: none; }\n    "
+            }
+        </style>
         <g
-            id="freepik--background-simple--inject-1"
+            id="freepik--background-simple--inject-2"
             className="animable"
             style={{
                 transformOrigin: "248.588px 250.609px",
             }}
         >
-            <g id="el0f8yzrrod8yq">
+            <g id="elt28yqi15dwa">
                 <path
                     d="M67.93,167.09s-27.88,72,11.3,144.5S199.11,422.39,263.7,455.14s131.66,16.8,163.53-36.84-11.84-91.93-11.9-168.42,11.45-96.74-30-161.36-143.06-78.93-219.9-31S67.93,167.09,67.93,167.09Z"
                     style={{
@@ -33,10 +38,10 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(235, 133, 107)",
                     transformOrigin: "250px 240.542px",
                 }}
-                id="el19i0mhgyzvc"
+                id="el7784qwfba7a"
                 className="animable"
             />
-            <g id="eliayb48ysep">
+            <g id="elre66rjc4d2g">
                 <path
                     d="M80.86,157c28.83-53.07,101.32-115,200.79-89.2S448.31,148.17,437.3,243.13,368.42,417,243.78,419.3,17.66,273.34,80.86,157Z"
                     style={{
@@ -49,7 +54,7 @@ const ApartmentKey = ({ className }) => (
             </g>
         </g>
         <g
-            id="freepik--Clouds--inject-1"
+            id="freepik--Clouds--inject-2"
             className="animable animator-hidden"
             style={{
                 transformOrigin: "255.53px 126.812px",
@@ -64,7 +69,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "123.225px 146.505px",
                 }}
-                id="el9ri3ri8bmpc"
+                id="elino9ao4f23q"
                 className="animable"
             />
             <path
@@ -76,7 +81,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "387.835px 161.83px",
                 }}
-                id="elpnkhp1or6gp"
+                id="eldz5nphmxv5"
                 className="animable"
             />
             <path
@@ -88,7 +93,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "315.73px 131.597px",
                 }}
-                id="elch8bdypi2ch"
+                id="elvksi340ke89"
                 className="animable"
             />
             <path
@@ -100,12 +105,12 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "209.145px 102.652px",
                 }}
-                id="elbfu2524uveg"
+                id="elp4wxz8b9myd"
                 className="animable"
             />
         </g>
         <g
-            id="freepik--Buildings--inject-1"
+            id="freepik--Buildings--inject-2"
             className="animable"
             style={{
                 transformOrigin: "253.025px 272.53px",
@@ -120,7 +125,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "96.365px 298.935px",
                 }}
-                id="elpuabkp9uqbd"
+                id="el4d2j1ygr3ib"
                 className="animable"
             />
             <polyline
@@ -132,7 +137,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "112.38px 345.44px",
                 }}
-                id="eldogichjeh3j"
+                id="elphqk3p7tfz"
                 className="animable"
             />
             <polyline
@@ -144,7 +149,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "132.37px 279.875px",
                 }}
-                id="el1q334fy48wp"
+                id="elirnv2lxun0o"
                 className="animable"
             />
             <polyline
@@ -156,7 +161,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "146.725px 335.24px",
                 }}
-                id="elrpc2rj82gzn"
+                id="elhvshpk6megn"
                 className="animable"
             />
             <polyline
@@ -168,7 +173,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "360.775px 308.345px",
                 }}
-                id="el5vsdjvtwuxw"
+                id="elcl9fvh30wmw"
                 className="animable"
             />
             <polyline
@@ -180,7 +185,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "380.57px 334.97px",
                 }}
-                id="el4vnu4qj8m3k"
+                id="elrx6rhiw3it"
                 className="animable"
             />
             <polyline
@@ -192,7 +197,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "406.715px 342.305px",
                 }}
-                id="elkskuc6mh2si"
+                id="elj9gh9ka0vr"
                 className="animable"
             />
             <polyline
@@ -204,7 +209,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "412.32px 293.645px",
                 }}
-                id="eli3eblsvjbbo"
+                id="elo99ygwusy99"
                 className="animable"
             />
             <polyline
@@ -216,7 +221,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "324.915px 323.735px",
                 }}
-                id="el2miorghl4fn"
+                id="eliplmjpla1xh"
                 className="animable"
             />
             <polyline
@@ -228,7 +233,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "260.93px 303.47px",
                 }}
-                id="eluv2iqn0ww"
+                id="el7shn0up2hdi"
                 className="animable"
             />
             <polyline
@@ -240,7 +245,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "174.77px 343.935px",
                 }}
-                id="el2cdewe2604h"
+                id="elk4xxbek4jh8"
                 className="animable"
             />
             <polyline
@@ -252,7 +257,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "206.07px 306.6px",
                 }}
-                id="elqx2tmcch4e"
+                id="eleuzzsdvwyeq"
                 className="animable"
             />
             <line
@@ -267,7 +272,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "286.22px 316.58px",
                 }}
-                id="elrud0nvt8o5s"
+                id="elr0flv3ik5wn"
                 className="animable"
             />
             <polyline
@@ -279,7 +284,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "335.445px 316.81px",
                 }}
-                id="elh7x45l4d3t5"
+                id="el4kgcw8alm1m"
                 className="animable"
             />
             <polygon
@@ -288,7 +293,7 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(235, 133, 107)",
                     transformOrigin: "254.93px 158.995px",
                 }}
-                id="eloo34crqxzn"
+                id="elmjmifc2454r"
                 className="animable"
             />
             <g
@@ -296,10 +301,10 @@ const ApartmentKey = ({ className }) => (
                     clipPath: "url(&quot",
                     transformOrigin: "254.93px 150.08px",
                 }}
-                id="elpozkcx9j0vh"
+                id="el8h7iogtiusg"
                 className="animable"
             >
-                <g id="elcbxh5zf6zyn">
+                <g id="elvymgsrylr6">
                     <polygon
                         points="333.73 143.5 333.73 156.66 330.62 156.66 330.62 148.3 311.66 148.3 311.66 156.66 308.55 156.66 308.55 148.3 201.31 148.3 201.31 156.66 198.2 156.66 198.2 148.3 179.24 148.3 179.24 156.66 176.13 156.66 176.13 143.5 333.73 143.5"
                         style={{
@@ -319,7 +324,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "254.93px 158.995px",
                 }}
-                id="elz7fb1we9an"
+                id="elmimp7ygqnbl"
                 className="animable"
             />
             <polygon
@@ -328,7 +333,7 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(235, 133, 107)",
                     transformOrigin: "254.785px 143.495px",
                 }}
-                id="el47i2zqlnyn2"
+                id="el6046dvupanx"
                 className="animable"
             />
             <g
@@ -336,10 +341,10 @@ const ApartmentKey = ({ className }) => (
                     clipPath: "url(&quot",
                     transformOrigin: "254.785px 143.495px",
                 }}
-                id="elgl7x35nmau"
+                id="elfkfwzq47xcl"
                 className="animable"
             >
-                <g id="elwwy265knnm">
+                <g id="elf52y75wyeiv">
                     <polygon
                         points="329.1 136.73 285.37 136.73 264.19 136.73 180.47 136.73 158.4 150.26 243.16 150.26 276.4 150.26 351.17 150.26 329.1 136.73"
                         style={{
@@ -349,7 +354,7 @@ const ApartmentKey = ({ className }) => (
                         className="animable"
                     />
                 </g>
-                <g id="el0jg85j9ycpu">
+                <g id="elddepk4ff74q">
                     <polygon
                         points="290.53 136.73 224.41 136.73 224.41 150.26 307.62 150.26 290.53 136.73"
                         style={{
@@ -369,7 +374,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "254.785px 143.495px",
                 }}
-                id="elyyttofvpbx"
+                id="elfa1qafgf1t"
                 className="animable"
             />
             <line
@@ -384,7 +389,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "268.315px 139.33px",
                 }}
-                id="elso06qz4e1zn"
+                id="ellf1s76e0pae"
                 className="animable"
             />
             <line
@@ -399,7 +404,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "256.66px 142.21px",
                 }}
-                id="eld8wci6x652b"
+                id="elfnelv8no1zj"
                 className="animable"
             />
             <line
@@ -414,7 +419,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "243.55px 145.54px",
                 }}
-                id="el4zi6kd78pwt"
+                id="elv45le971ubc"
                 className="animable"
             />
             <line
@@ -429,7 +434,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "302.205px 142.21px",
                 }}
-                id="el2yn5kc35aak"
+                id="elih1ijs2yn4"
                 className="animable"
             />
             <line
@@ -444,7 +449,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "317.825px 142.21px",
                 }}
-                id="elap386x10f7q"
+                id="elnaubyfri3dm"
                 className="animable"
             />
             <line
@@ -459,7 +464,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "331.295px 139.33px",
                 }}
-                id="eli81dpvz4zra"
+                id="elbtztz90yo2i"
                 className="animable"
             />
             <line
@@ -474,7 +479,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "307.055px 145.54px",
                 }}
-                id="eljnbokk88u7r"
+                id="elykhr444pr8"
                 className="animable"
             />
             <line
@@ -489,7 +494,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "324.7px 145.54px",
                 }}
-                id="eld8hj5rvw1v"
+                id="eln49jcl4nt2"
                 className="animable"
             />
             <line
@@ -504,7 +509,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "338.595px 145.54px",
                 }}
-                id="elohsjfrpgjaj"
+                id="elnigvwez5s2f"
                 className="animable"
             />
             <line
@@ -519,7 +524,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "182.075px 142.21px",
                 }}
-                id="elijdit8x8w4"
+                id="eltg9es0vjkyj"
                 className="animable"
             />
             <line
@@ -534,7 +539,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "204.69px 142.21px",
                 }}
-                id="elc220kdffj7j"
+                id="elqp8mtweuiwm"
                 className="animable"
             />
             <line
@@ -549,7 +554,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "192.685px 139.33px",
                 }}
-                id="elg4mrgectlpn"
+                id="elcvg7hc0hlra"
                 className="animable"
             />
             <line
@@ -564,7 +569,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "178.64px 145.54px",
                 }}
-                id="elte7vtjzot7"
+                id="elgc1gi2w5zc"
                 className="animable"
             />
             <path
@@ -575,10 +580,10 @@ const ApartmentKey = ({ className }) => (
                     strokeMiterlimit: 10,
                     transformOrigin: "254.78px 296.463px",
                 }}
-                id="el2m362i396a1"
+                id="elp4lvr0b3ob"
                 className="animable"
             />
-            <g id="elqjglx9yfhf">
+            <g id="elcwuisy6x2wa">
                 <path
                     d="M342.09,173.59V396.32c-26.59,14-59.16,22.25-98.31,23a162.59,162.59,0,0,1-76.31-17.85V173.59Z"
                     style={{
@@ -589,7 +594,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elhki6prbjmx">
+            <g id="el11gu5j0womag">
                 <rect
                     x={283.2}
                     y={174.49}
@@ -602,7 +607,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elc0ageoggjj">
+            <g id="elk60r7lhmjun">
                 <polygon
                     points="205.29 401.33 201.31 411.33 201.31 177.55 205.29 187.55 205.29 401.33"
                     style={{
@@ -612,7 +617,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elwhm80veyzjk">
+            <g id="el1y2dbl1bfl3">
                 <polyline
                     points="310.35 386.79 317.93 394.37 342.09 394.37 342.09 386.79 310.35 386.79"
                     style={{
@@ -622,7 +627,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="eltw2alcwgqw">
+            <g id="el0cdcdslz4lu">
                 <polyline
                     points="310.35 342.62 317.93 350.2 342.09 350.2 342.09 342.62 310.35 342.62"
                     style={{
@@ -632,7 +637,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elhz90d3g88j">
+            <g id="elzqpx0usl5b">
                 <polyline
                     points="310.35 298.44 317.93 306.02 342.09 306.02 342.09 298.44 310.35 298.44"
                     style={{
@@ -642,7 +647,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="eliyvdlwo2r5o">
+            <g id="eleze6rk4knu">
                 <polyline
                     points="310.35 254.27 317.93 261.85 342.09 261.85 342.09 254.27 310.35 254.27"
                     style={{
@@ -652,7 +657,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elzi6e5hr1jf">
+            <g id="elqennu8dr94q">
                 <polyline
                     points="310.35 210.1 317.93 217.68 342.09 217.68 342.09 210.1 310.35 210.1"
                     style={{
@@ -662,7 +667,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elf5m6yfuhaf5">
+            <g id="elpbt3p19dez">
                 <polyline
                     points="167.35 386.79 174.93 394.37 201.09 394.37 201.09 386.79 167.35 386.79"
                     style={{
@@ -672,7 +677,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elmx3ux9tdq6h">
+            <g id="elz366lu0eexm">
                 <polyline
                     points="167.35 342.62 174.93 350.2 201.09 350.2 201.09 342.62 167.35 342.62"
                     style={{
@@ -682,7 +687,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="el6zs6fk19dwo">
+            <g id="eljsgad29eqeh">
                 <polyline
                     points="167.35 298.44 174.93 306.02 201.09 306.02 201.09 298.44 167.35 298.44"
                     style={{
@@ -692,7 +697,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elpfer40f63ne">
+            <g id="elrzckeswv23">
                 <polyline
                     points="167.35 254.27 174.93 261.85 201.09 261.85 201.09 254.27 167.35 254.27"
                     style={{
@@ -702,7 +707,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="eljfw52ca8xk9">
+            <g id="elosppwg88ub">
                 <polyline
                     points="167.35 210.1 174.93 217.68 201.09 217.68 201.09 210.1 167.35 210.1"
                     style={{
@@ -724,7 +729,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "254.78px 163.75px",
                 }}
-                id="ellwwcone7jpj"
+                id="eldowgb1larj5"
                 className="animable"
             />
             <line
@@ -739,7 +744,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "254.78px 166.28px",
                 }}
-                id="elc7x63ndworw"
+                id="elmvmtmayo6to"
                 className="animable"
             />
             <line
@@ -754,7 +759,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "254.78px 168.81px",
                 }}
-                id="elk8ddc014lj"
+                id="eloai6ditndrg"
                 className="animable"
             />
             <line
@@ -769,7 +774,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "254.78px 171.34px",
                 }}
-                id="elu11wm5tadz7"
+                id="el62x7u1nda0n"
                 className="animable"
             />
             <rect
@@ -784,7 +789,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "254.78px 167.545px",
                 }}
-                id="elz2d9yuakqp8"
+                id="elzdmke5xw30j"
                 className="animable"
             />
             <rect
@@ -796,7 +801,7 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(235, 133, 107)",
                     transformOrigin: "254.78px 149.935px",
                 }}
-                id="eltc64fily0ee"
+                id="eltfoak3kmanq"
                 className="animable"
             />
             <g
@@ -804,10 +809,10 @@ const ApartmentKey = ({ className }) => (
                     clipPath: "url(&quot",
                     transformOrigin: "254.78px 149.935px",
                 }}
-                id="el8psdadwcpie"
+                id="eldms18r67i6k"
                 className="animable"
             >
-                <g id="elwos1xoobzlb">
+                <g id="elyjb31556csp">
                     <rect
                         x={156.23}
                         y={148.3}
@@ -820,7 +825,7 @@ const ApartmentKey = ({ className }) => (
                         className="animable"
                     />
                 </g>
-                <g id="eljf162j3m7">
+                <g id="elwfmznsmk7r">
                     <rect
                         x={224.41}
                         y={148.3}
@@ -846,7 +851,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "254.78px 149.935px",
                 }}
-                id="el2yk1g7h73e"
+                id="elrlorvc8u6om"
                 className="animable"
             />
             <polyline
@@ -858,7 +863,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "254.78px 287.52px",
                 }}
-                id="elgc1y5qa4vwv"
+                id="eldz06iag2m4"
                 className="animable"
             />
             <polyline
@@ -867,7 +872,7 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(235, 133, 107)",
                     transformOrigin: "254.78px 278.815px",
                 }}
-                id="elhqxpkq6a8ho"
+                id="elmbn6r5s7b9n"
                 className="animable"
             />
             <g
@@ -875,10 +880,10 @@ const ApartmentKey = ({ className }) => (
                     clipPath: "url(&quot",
                     transformOrigin: "254.78px 143.03px",
                 }}
-                id="elddaxegdbja"
+                id="elwznz2a589xq"
                 className="animable"
             >
-                <g id="elvt0dg2qn6j">
+                <g id="elufvazxu1rj">
                     <rect
                         x={223.64}
                         y={139.33}
@@ -901,7 +906,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "254.78px 278.815px",
                 }}
-                id="elpascc2h5frd"
+                id="elejbe7os7f1d"
                 className="animable"
             />
             <rect
@@ -916,7 +921,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "236.915px 188.27px",
                 }}
-                id="elykuhctf1nte"
+                id="eluh8xk5b5d"
                 className="animable"
             />
             <rect
@@ -928,7 +933,7 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(255, 255, 255)",
                     transformOrigin: "241.235px 188.27px",
                 }}
-                id="elxgkn3d51ol"
+                id="ell311q6iquy"
                 className="animable"
             />
             <path
@@ -937,7 +942,7 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(38, 50, 56)",
                     transformOrigin: "241.235px 188.27px",
                 }}
-                id="elomh1bqnuxgk"
+                id="el8bixx2c159"
                 className="animable"
             />
             <rect
@@ -952,7 +957,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "183.76px 194.315px",
                 }}
-                id="ela23q3n44cqr"
+                id="elrjnotipftz"
                 className="animable"
             />
             <line
@@ -967,7 +972,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "179.24px 194.315px",
                 }}
-                id="el4149bbdhw2g"
+                id="elgnjsag07uih"
                 className="animable"
             />
             <path
@@ -976,7 +981,7 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(38, 50, 56)",
                     transformOrigin: "192.625px 194.315px",
                 }}
-                id="elz5o3sh9tugc"
+                id="elunw6ohs0o1i"
                 className="animable"
             />
             <rect
@@ -991,7 +996,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "180.3px 208.585px",
                 }}
-                id="ely8sff4lk10c"
+                id="el5judfbxhqig"
                 className="animable"
             />
             <line
@@ -1006,7 +1011,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "180.3px 197.1px",
                 }}
-                id="elatb6bj5js58"
+                id="el92yhgzr0vn9"
                 className="animable"
             />
             <line
@@ -1021,7 +1026,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "180.3px 199.63px",
                 }}
-                id="elo6ygx2d2euo"
+                id="eliv6dqytjux"
                 className="animable"
             />
             <line
@@ -1036,7 +1041,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "180.3px 202.16px",
                 }}
-                id="elaxq1nh49ugj"
+                id="ely9blmg98up9"
                 className="animable"
             />
             <line
@@ -1051,7 +1056,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "180.3px 204.69px",
                 }}
-                id="el7gcg0j54c43"
+                id="elmp2e3fqg2e8"
                 className="animable"
             />
             <rect
@@ -1066,7 +1071,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "180.3px 200.895px",
                 }}
-                id="elqonc5sddocq"
+                id="el6jqb2kqiwm7"
                 className="animable"
             />
             <rect
@@ -1081,10 +1086,10 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "212.42px 188.27px",
                 }}
-                id="elr313hi656y9"
+                id="el3mvlfao28cd"
                 className="animable"
             />
-            <g id="elhtvg1pkawp7">
+            <g id="elbwrq81y8zz">
                 <rect
                     x={264.01}
                     y={181.69}
@@ -1110,7 +1115,7 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(255, 255, 255)",
                     transformOrigin: "268.325px 188.27px",
                 }}
-                id="elr8phmmua28k"
+                id="el1k6kktxp4qo"
                 className="animable"
             />
             <path
@@ -1119,10 +1124,10 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(38, 50, 56)",
                     transformOrigin: "268.32px 188.27px",
                 }}
-                id="eluahdo5jmvi8"
+                id="el5zuczukaapp"
                 className="animable"
             />
-            <g id="elnuswophcwjg">
+            <g id="elzt0s69ik2pj">
                 <rect
                     x={312.47}
                     y={181.69}
@@ -1151,7 +1156,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "330.32px 194.315px",
                 }}
-                id="eltcq66mo5d6"
+                id="el1hnhlknvx45"
                 className="animable"
             />
             <path
@@ -1160,10 +1165,10 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(38, 50, 56)",
                     transformOrigin: "316.94px 194.315px",
                 }}
-                id="eln7kscxitllm"
+                id="el8t5ncstltaq"
                 className="animable"
             />
-            <g id="elsaobrvu5yl">
+            <g id="elw8hb2k05ol">
                 <rect
                     x={310.35}
                     y={206.94}
@@ -1192,7 +1197,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "329.26px 197.1px",
                 }}
-                id="elpqylqiuqfra"
+                id="el6nyoyb9ji6"
                 className="animable"
             />
             <line
@@ -1207,7 +1212,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "329.26px 199.63px",
                 }}
-                id="elby0dsipvlep"
+                id="el6lceifhg2k3"
                 className="animable"
             />
             <line
@@ -1222,7 +1227,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "329.26px 202.16px",
                 }}
-                id="el5nf8piry07m"
+                id="el6p4v3yord2a"
                 className="animable"
             />
             <line
@@ -1237,10 +1242,10 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "329.26px 204.69px",
                 }}
-                id="elmy7b2an80c"
+                id="elbnnkab279lg"
                 className="animable"
             />
-            <g id="elawhfgh21jh8">
+            <g id="elpz6sy3b9zd">
                 <rect
                     x={310.35}
                     y={194.85}
@@ -1257,7 +1262,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elvl64n7z8jy">
+            <g id="els2vcnkb2t0f">
                 <rect
                     x={294.31}
                     y={181.69}
@@ -1286,7 +1291,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "236.915px 232.41px",
                 }}
-                id="el5uzqimqipwd"
+                id="el8avfq38s9t"
                 className="animable"
             />
             <rect
@@ -1298,7 +1303,7 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(255, 255, 255)",
                     transformOrigin: "241.235px 232.41px",
                 }}
-                id="elzey6gwi38zi"
+                id="elbnsmk99jq2g"
                 className="animable"
             />
             <path
@@ -1307,7 +1312,7 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(38, 50, 56)",
                     transformOrigin: "241.235px 232.415px",
                 }}
-                id="elmwgufpa58a"
+                id="elnrg7l4kxbf8"
                 className="animable"
             />
             <rect
@@ -1322,7 +1327,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "183.76px 238.455px",
                 }}
-                id="elfsqi64m3p5p"
+                id="elhqhjebtfutk"
                 className="animable"
             />
             <line
@@ -1337,7 +1342,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "179.24px 238.455px",
                 }}
-                id="elnkk2nh96dl"
+                id="eloq6li12nswh"
                 className="animable"
             />
             <path
@@ -1346,7 +1351,7 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(38, 50, 56)",
                     transformOrigin: "192.625px 238.455px",
                 }}
-                id="el7opn95qzse5"
+                id="el5ln6xw1n489"
                 className="animable"
             />
             <rect
@@ -1361,7 +1366,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "180.3px 252.725px",
                 }}
-                id="elbyinnjobn2"
+                id="elnyqgpluflmd"
                 className="animable"
             />
             <line
@@ -1376,7 +1381,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "180.3px 241.24px",
                 }}
-                id="elahpvjyn2p5b"
+                id="el16bfd02hn6oi"
                 className="animable"
             />
             <line
@@ -1391,7 +1396,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "180.3px 243.77px",
                 }}
-                id="elqflqbbm9hpi"
+                id="elymgmc6jrqbq"
                 className="animable"
             />
             <line
@@ -1406,7 +1411,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "180.3px 246.3px",
                 }}
-                id="el6q95305rvzv"
+                id="elcmtg9xjscxl"
                 className="animable"
             />
             <line
@@ -1421,7 +1426,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "180.3px 248.83px",
                 }}
-                id="elw1keam1ept"
+                id="el6jga2gh9qbv"
                 className="animable"
             />
             <rect
@@ -1436,7 +1441,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "180.3px 245.035px",
                 }}
-                id="elbacaolax9x4"
+                id="elcq7p7x8hwvo"
                 className="animable"
             />
             <rect
@@ -1451,10 +1456,10 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "212.42px 232.41px",
                 }}
-                id="elfge5vbcgq99"
+                id="el7p5t6q5pmvx"
                 className="animable"
             />
-            <g id="el36jn2ganagq">
+            <g id="elwp4gxtmqzq">
                 <rect
                     x={264.01}
                     y={225.83}
@@ -1480,7 +1485,7 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(255, 255, 255)",
                     transformOrigin: "268.325px 232.41px",
                 }}
-                id="elcsurvbbiwb"
+                id="elri3q32tri7f"
                 className="animable"
             />
             <path
@@ -1489,10 +1494,10 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(38, 50, 56)",
                     transformOrigin: "268.32px 232.415px",
                 }}
-                id="elrevcnd90t8"
+                id="eln1a6oykaau"
                 className="animable"
             />
-            <g id="elssmm4vg61t">
+            <g id="ele6y12enyyvp">
                 <rect
                     x={312.47}
                     y={225.83}
@@ -1521,7 +1526,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "330.32px 238.455px",
                 }}
-                id="elp1rdobzj79"
+                id="el6e7oair157d"
                 className="animable"
             />
             <path
@@ -1530,10 +1535,10 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(38, 50, 56)",
                     transformOrigin: "316.94px 238.455px",
                 }}
-                id="elz8fxf6notx"
+                id="el84bj6i1q8k9"
                 className="animable"
             />
-            <g id="els6w676mife">
+            <g id="elocit6l9vcs">
                 <rect
                     x={310.35}
                     y={251.08}
@@ -1562,7 +1567,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "329.26px 241.24px",
                 }}
-                id="elgp9mqr3k7c"
+                id="el79r3xxez5l"
                 className="animable"
             />
             <line
@@ -1577,7 +1582,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "329.26px 243.77px",
                 }}
-                id="eljr7wndvbsof"
+                id="elxky88u5ws5"
                 className="animable"
             />
             <line
@@ -1592,7 +1597,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "329.26px 246.3px",
                 }}
-                id="elznd14rgedp9"
+                id="elhxgzmr1xt37"
                 className="animable"
             />
             <line
@@ -1607,10 +1612,10 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "329.26px 248.83px",
                 }}
-                id="el69h2uskwen8"
+                id="elrgsu0t9atrj"
                 className="animable"
             />
-            <g id="el4ttn2m69vb">
+            <g id="elv5e5ncb5hv">
                 <rect
                     x={310.35}
                     y={238.99}
@@ -1627,7 +1632,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elp0ltl9xqgz8">
+            <g id="elvnekasjfsqn">
                 <rect
                     x={294.31}
                     y={225.83}
@@ -1656,7 +1661,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "236.915px 276.55px",
                 }}
-                id="elt0qz7octrul"
+                id="elf14jg38fg6r"
                 className="animable"
             />
             <rect
@@ -1668,7 +1673,7 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(255, 255, 255)",
                     transformOrigin: "241.235px 276.55px",
                 }}
-                id="eluz97j1tj3l"
+                id="elldotoxrl5i"
                 className="animable"
             />
             <path
@@ -1677,7 +1682,7 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(38, 50, 56)",
                     transformOrigin: "241.235px 276.58px",
                 }}
-                id="el6tu96fxidne"
+                id="elrdeu8qmax99"
                 className="animable"
             />
             <rect
@@ -1692,7 +1697,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "183.76px 282.595px",
                 }}
-                id="elf44io3zw7m"
+                id="elzeg784een1l"
                 className="animable"
             />
             <line
@@ -1707,7 +1712,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "179.24px 282.595px",
                 }}
-                id="elp7dzjcj07bc"
+                id="el54y05tq39m7"
                 className="animable"
             />
             <path
@@ -1716,7 +1721,7 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(38, 50, 56)",
                     transformOrigin: "192.625px 282.625px",
                 }}
-                id="elqgawvxicabo"
+                id="el262ma7zk0w2"
                 className="animable"
             />
             <rect
@@ -1731,7 +1736,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "180.3px 296.865px",
                 }}
-                id="eltim0mg51atg"
+                id="els21plldfp6c"
                 className="animable"
             />
             <line
@@ -1746,7 +1751,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "180.3px 285.38px",
                 }}
-                id="eld4ovzfq9iai"
+                id="eln107gqm2pq"
                 className="animable"
             />
             <line
@@ -1761,7 +1766,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "180.3px 287.91px",
                 }}
-                id="elw4she96g09q"
+                id="elweepvhi0a"
                 className="animable"
             />
             <line
@@ -1776,7 +1781,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "180.3px 290.44px",
                 }}
-                id="el7fg0fwlz23f"
+                id="el76sodsgyaip"
                 className="animable"
             />
             <line
@@ -1791,7 +1796,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "180.3px 292.97px",
                 }}
-                id="elfnzz5vlrgxu"
+                id="ele2zl0na4j8"
                 className="animable"
             />
             <rect
@@ -1806,7 +1811,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "180.3px 289.175px",
                 }}
-                id="elh70fnjon8z8"
+                id="elotr0efz0h3h"
                 className="animable"
             />
             <rect
@@ -1821,10 +1826,10 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "212.42px 276.55px",
                 }}
-                id="elpp8yl9ilxh8"
+                id="elmpfzz20zpe"
                 className="animable"
             />
-            <g id="elsotxbhnsu6g">
+            <g id="elm623urdgk9">
                 <rect
                     x={264.01}
                     y={269.97}
@@ -1850,7 +1855,7 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(255, 255, 255)",
                     transformOrigin: "268.325px 276.55px",
                 }}
-                id="elq802fapc4c"
+                id="elkiozazin6x"
                 className="animable"
             />
             <path
@@ -1859,10 +1864,10 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(38, 50, 56)",
                     transformOrigin: "268.32px 276.58px",
                 }}
-                id="el9sidwygdj9i"
+                id="el5wl1645f78f"
                 className="animable"
             />
-            <g id="elk35cqgy2xu">
+            <g id="elc8ei4wbiuwe">
                 <rect
                     x={312.47}
                     y={269.97}
@@ -1891,7 +1896,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "330.32px 282.595px",
                 }}
-                id="eltn6zd8nm06n"
+                id="elqqdmoqd9ns"
                 className="animable"
             />
             <path
@@ -1900,10 +1905,10 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(38, 50, 56)",
                     transformOrigin: "316.94px 282.625px",
                 }}
-                id="el0o248izc8svq"
+                id="ela5f2o2fhfmq"
                 className="animable"
             />
-            <g id="elnsvw17teqmf">
+            <g id="ele4gl591gz6j">
                 <rect
                     x={310.35}
                     y={295.22}
@@ -1932,7 +1937,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "329.26px 285.38px",
                 }}
-                id="elapz8dekldtf"
+                id="elzduakuarjgk"
                 className="animable"
             />
             <line
@@ -1947,7 +1952,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "329.26px 287.91px",
                 }}
-                id="el5wdst1baoau"
+                id="elvh0i0bdetm"
                 className="animable"
             />
             <line
@@ -1962,7 +1967,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "329.26px 290.44px",
                 }}
-                id="el6jctop3g77v"
+                id="ellmzxfjib1e"
                 className="animable"
             />
             <line
@@ -1977,10 +1982,10 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "329.26px 292.97px",
                 }}
-                id="elo8tvz3mwze9"
+                id="el4hnb5kou5m"
                 className="animable"
             />
-            <g id="el1nsg3rqrq7j">
+            <g id="el6xl1614i738">
                 <rect
                     x={310.35}
                     y={283.13}
@@ -1997,7 +2002,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elmhuyn0rxgzd">
+            <g id="eloznu6p3rpd">
                 <rect
                     x={294.31}
                     y={269.97}
@@ -2026,7 +2031,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "236.915px 320.69px",
                 }}
-                id="el2wc50h2nyh7"
+                id="elstd6ena62ja"
                 className="animable"
             />
             <rect
@@ -2038,7 +2043,7 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(255, 255, 255)",
                     transformOrigin: "241.235px 320.69px",
                 }}
-                id="el7sc8izwe3gs"
+                id="elwunr8ryj26b"
                 className="animable"
             />
             <path
@@ -2047,7 +2052,7 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(38, 50, 56)",
                     transformOrigin: "241.235px 320.69px",
                 }}
-                id="elg3diybyudfd"
+                id="elt50hr7y3v68"
                 className="animable"
             />
             <rect
@@ -2062,7 +2067,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "183.76px 326.735px",
                 }}
-                id="elb365w09snkv"
+                id="elck80iyiqnbf"
                 className="animable"
             />
             <line
@@ -2077,7 +2082,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "179.24px 326.735px",
                 }}
-                id="el2rlcex7wicb"
+                id="elj2g3evk7lgm"
                 className="animable"
             />
             <path
@@ -2086,7 +2091,7 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(38, 50, 56)",
                     transformOrigin: "192.625px 326.735px",
                 }}
-                id="eldukumx1u0vo"
+                id="elpazehucs56q"
                 className="animable"
             />
             <rect
@@ -2101,7 +2106,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "180.3px 341.005px",
                 }}
-                id="elqp4vofdwb6"
+                id="elq8ybdjxi6s"
                 className="animable"
             />
             <line
@@ -2116,7 +2121,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "180.3px 329.52px",
                 }}
-                id="elsl585am722"
+                id="elmsedj96dqp"
                 className="animable"
             />
             <line
@@ -2131,7 +2136,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "180.3px 332.05px",
                 }}
-                id="elmbery675ycs"
+                id="el6h9zfid9f15"
                 className="animable"
             />
             <line
@@ -2146,7 +2151,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "180.3px 334.58px",
                 }}
-                id="eltkyb7njq7co"
+                id="el5gmscva57"
                 className="animable"
             />
             <line
@@ -2161,7 +2166,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "180.3px 337.11px",
                 }}
-                id="elqgnwrbpige"
+                id="elpps06mzfce8"
                 className="animable"
             />
             <rect
@@ -2176,7 +2181,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "180.3px 333.315px",
                 }}
-                id="el66y1c5mhqlm"
+                id="elzjdbrylv58o"
                 className="animable"
             />
             <rect
@@ -2191,10 +2196,10 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "212.42px 320.69px",
                 }}
-                id="el9vt7v89c6o8"
+                id="elqsdtghhnrf"
                 className="animable"
             />
-            <g id="elzsrncf7jl0s">
+            <g id="el5u3xlu0m25">
                 <rect
                     x={264.01}
                     y={314.11}
@@ -2220,7 +2225,7 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(255, 255, 255)",
                     transformOrigin: "268.325px 320.69px",
                 }}
-                id="eljpv1v8d6rj"
+                id="elybhz8qhntnp"
                 className="animable"
             />
             <path
@@ -2229,10 +2234,10 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(38, 50, 56)",
                     transformOrigin: "268.32px 320.69px",
                 }}
-                id="el9yfysd8rjnu"
+                id="elh3xlnll7ucf"
                 className="animable"
             />
-            <g id="elj34dg17xvol">
+            <g id="elzpnu6cy9gl">
                 <rect
                     x={312.47}
                     y={314.11}
@@ -2261,7 +2266,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "330.32px 326.735px",
                 }}
-                id="elirivhi64xp"
+                id="elku919xp5d3b"
                 className="animable"
             />
             <path
@@ -2270,10 +2275,10 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(38, 50, 56)",
                     transformOrigin: "316.94px 326.735px",
                 }}
-                id="eljal079eqn97"
+                id="el9d9vmy4twj"
                 className="animable"
             />
-            <g id="ely2ie0vdnb48">
+            <g id="eljw4y9qdi9tt">
                 <rect
                     x={310.35}
                     y={339.36}
@@ -2302,7 +2307,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "329.26px 329.52px",
                 }}
-                id="elc8uwg715wc"
+                id="el6vei7xszz33"
                 className="animable"
             />
             <line
@@ -2317,7 +2322,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "329.26px 332.05px",
                 }}
-                id="el3axnzn7cxdx"
+                id="elnyf62ul03un"
                 className="animable"
             />
             <line
@@ -2332,7 +2337,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "329.26px 334.58px",
                 }}
-                id="el6iacjtpuo9x"
+                id="ela0kk13192a6"
                 className="animable"
             />
             <line
@@ -2347,10 +2352,10 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "329.26px 337.11px",
                 }}
-                id="elbxovz7asdv"
+                id="elzoljqwlqzgj"
                 className="animable"
             />
-            <g id="elii4kw3qqj6k">
+            <g id="el95in28f8p6k">
                 <rect
                     x={310.35}
                     y={327.27}
@@ -2367,7 +2372,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="el6yzwo4w7oz5">
+            <g id="el4uabvty6xx4">
                 <rect
                     x={294.31}
                     y={314.11}
@@ -2396,7 +2401,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "236.915px 364.83px",
                 }}
-                id="el4mausvxhya"
+                id="eltaes02bkwqo"
                 className="animable"
             />
             <rect
@@ -2408,7 +2413,7 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(255, 255, 255)",
                     transformOrigin: "241.235px 364.83px",
                 }}
-                id="el0f5fd0pphz99"
+                id="elh33x8burnt"
                 className="animable"
             />
             <path
@@ -2417,7 +2422,7 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(38, 50, 56)",
                     transformOrigin: "241.235px 364.83px",
                 }}
-                id="ele8ga4dk1unb"
+                id="el2fnio3p8c7w"
                 className="animable"
             />
             <rect
@@ -2432,7 +2437,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "183.76px 370.875px",
                 }}
-                id="elvi0dirn18np"
+                id="elzvwtjj9w7co"
                 className="animable"
             />
             <line
@@ -2447,7 +2452,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "179.24px 370.875px",
                 }}
-                id="elnfe5ftjg5nk"
+                id="el5mofm6nb84h"
                 className="animable"
             />
             <path
@@ -2456,7 +2461,7 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(38, 50, 56)",
                     transformOrigin: "192.625px 370.875px",
                 }}
-                id="elirvwwxqpwac"
+                id="eljak7j7h1ofe"
                 className="animable"
             />
             <rect
@@ -2471,7 +2476,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "180.3px 385.145px",
                 }}
-                id="el99b0a2hhrpf"
+                id="el1oopfumrx1o"
                 className="animable"
             />
             <line
@@ -2486,7 +2491,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "180.3px 373.66px",
                 }}
-                id="elw0pse0ni81"
+                id="elkwbvpwmgvdi"
                 className="animable"
             />
             <line
@@ -2501,7 +2506,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "180.3px 376.19px",
                 }}
-                id="ell1ae6zm5ty"
+                id="el4zxrd8melys"
                 className="animable"
             />
             <line
@@ -2516,7 +2521,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "180.3px 378.72px",
                 }}
-                id="elg5y1nev9l8r"
+                id="elsmgyd6cv8y"
                 className="animable"
             />
             <line
@@ -2531,7 +2536,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "180.3px 381.25px",
                 }}
-                id="el360d8o96bz1"
+                id="elueduxivg7i"
                 className="animable"
             />
             <rect
@@ -2546,7 +2551,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "180.3px 377.455px",
                 }}
-                id="ellepaye7ovv9"
+                id="elpyjq6t2k4k"
                 className="animable"
             />
             <rect
@@ -2561,10 +2566,10 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "212.42px 364.83px",
                 }}
-                id="el7bgo225jfgd"
+                id="el9sysyxtjw7g"
                 className="animable"
             />
-            <g id="eltdg7ehksaod">
+            <g id="eljyyy8a6gse">
                 <rect
                     x={264.01}
                     y={358.25}
@@ -2590,7 +2595,7 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(255, 255, 255)",
                     transformOrigin: "268.325px 364.83px",
                 }}
-                id="el2psdxm7uey1"
+                id="elwvqy58ygb8"
                 className="animable"
             />
             <path
@@ -2599,10 +2604,10 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(38, 50, 56)",
                     transformOrigin: "268.32px 364.83px",
                 }}
-                id="eli2j35ga6fin"
+                id="ele7l0lk16uea"
                 className="animable"
             />
-            <g id="el1ac41uy3v63">
+            <g id="elry6l0v40wor">
                 <rect
                     x={312.47}
                     y={358.25}
@@ -2631,7 +2636,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "330.32px 370.875px",
                 }}
-                id="elc4hp08i1lke"
+                id="eltktdrdz53t"
                 className="animable"
             />
             <path
@@ -2640,10 +2645,10 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(38, 50, 56)",
                     transformOrigin: "316.94px 370.875px",
                 }}
-                id="el7g3ldfz0wmp"
+                id="elzrc84h5dq1"
                 className="animable"
             />
-            <g id="elfiwgde9onnb">
+            <g id="elpfiwro6sfob">
                 <rect
                     x={310.35}
                     y={383.5}
@@ -2672,7 +2677,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "329.26px 373.66px",
                 }}
-                id="elb2zlfg0n7l6"
+                id="elfci91nt6lt9"
                 className="animable"
             />
             <line
@@ -2687,7 +2692,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "329.26px 376.19px",
                 }}
-                id="eligeyx8jbdum"
+                id="el1wy1jn9jm96"
                 className="animable"
             />
             <line
@@ -2702,7 +2707,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "329.26px 378.72px",
                 }}
-                id="eljr2ouksomr"
+                id="elyhesit0itp"
                 className="animable"
             />
             <line
@@ -2717,10 +2722,10 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "329.26px 381.25px",
                 }}
-                id="ellq6o24ysny"
+                id="el530qhy1txcj"
                 className="animable"
             />
-            <g id="elpvpfmzlh3t">
+            <g id="el2q7nwuluby5">
                 <rect
                     x={310.35}
                     y={371.41}
@@ -2737,7 +2742,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elec1xdw3x72v">
+            <g id="el1sonzya5tow">
                 <rect
                     x={294.31}
                     y={358.25}
@@ -2763,7 +2768,7 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(255, 255, 255)",
                     transformOrigin: "254.78px 150.08px",
                 }}
-                id="elnmab6lcxxcs"
+                id="els3gau6iurx"
                 className="animable"
             />
             <g
@@ -2771,10 +2776,10 @@ const ApartmentKey = ({ className }) => (
                     clipPath: "url(&quot",
                     transformOrigin: "254.785px 145.385px",
                 }}
-                id="elmr6sic1kq5"
+                id="elf3041qmoy6n"
                 className="animable"
             >
-                <g id="elw8jzslaepq">
+                <g id="el2faocob2m6n">
                     <rect
                         x={223.64}
                         y={143.5}
@@ -2800,7 +2805,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "254.78px 150.08px",
                 }}
-                id="el68uiciibvmx"
+                id="elrscvefnrkr"
                 className="animable"
             />
             <line
@@ -2815,7 +2820,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "230.66px 150.08px",
                 }}
-                id="elh4mjvmcni3"
+                id="el9e3g4dqwdee"
                 className="animable"
             />
             <line
@@ -2830,7 +2835,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "238.7px 150.08px",
                 }}
-                id="elx2tasmtuyc"
+                id="el83h408rzyqd"
                 className="animable"
             />
             <line
@@ -2845,7 +2850,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "246.74px 150.08px",
                 }}
-                id="eljm1pgwha4ug"
+                id="elj3ez0gf41rp"
                 className="animable"
             />
             <line
@@ -2860,7 +2865,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "254.78px 150.08px",
                 }}
-                id="elgfhqtg8fenh"
+                id="elvvtovp94uk"
                 className="animable"
             />
             <line
@@ -2875,7 +2880,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "262.82px 150.08px",
                 }}
-                id="el1grjbips45a"
+                id="elcrkmmceyvrc"
                 className="animable"
             />
             <line
@@ -2890,7 +2895,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "270.86px 150.08px",
                 }}
-                id="elfp0e3t5ymnt"
+                id="el0d6y13inxqon"
                 className="animable"
             />
             <line
@@ -2905,7 +2910,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "278.91px 150.08px",
                 }}
-                id="el50xzjnnu17i"
+                id="ele7v41ygjvee"
                 className="animable"
             />
             <polygon
@@ -2914,7 +2919,7 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(235, 133, 107)",
                     transformOrigin: "254.785px 130.93px",
                 }}
-                id="eldh41inbemu"
+                id="elrvhwd78aoa"
                 className="animable"
             />
             <g
@@ -2922,10 +2927,10 @@ const ApartmentKey = ({ className }) => (
                     clipPath: "url(&quot",
                     transformOrigin: "254.785px 130.93px",
                 }}
-                id="el3ytk1gw28ce"
+                id="el92q8keew0b"
                 className="animable"
             >
-                <g id="elg0cybjp4m5k">
+                <g id="elaczq6bc7h8e">
                     <polygon
                         points="293.79 137.7 215.78 137.7 226.81 124.16 282.75 124.16 293.79 137.7"
                         style={{
@@ -2945,7 +2950,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "254.785px 130.93px",
                 }}
-                id="elta86cb8l8ye"
+                id="eltk1b3ptxu2"
                 className="animable"
             />
             <rect
@@ -2957,7 +2962,7 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(235, 133, 107)",
                     transformOrigin: "254.785px 137.695px",
                 }}
-                id="elovvxr93xbt"
+                id="el37o4dzo0n21"
                 className="animable"
             />
             <g
@@ -2965,10 +2970,10 @@ const ApartmentKey = ({ className }) => (
                     clipPath: "url(&quot",
                     transformOrigin: "254.785px 137.695px",
                 }}
-                id="eljjs0be8h20n"
+                id="el8uiul95gws8"
                 className="animable"
             >
-                <g id="elcov73aa1wbb">
+                <g id="elqrweh6vqvpj">
                     <rect
                         x={214.72}
                         y={136.06}
@@ -2994,10 +2999,10 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "254.785px 137.695px",
                 }}
-                id="elgl4iyputdbn"
+                id="elvr91srm8e0b"
                 className="animable"
             />
-            <g id="elf2i3g16u71d">
+            <g id="el7902sr9zuue">
                 <rect
                     x={231.23}
                     y={160.52}
@@ -3011,7 +3016,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="el6flsl1ae182">
+            <g id="elamaq4w77m89">
                 <rect
                     x={235.9}
                     y={163.2}
@@ -3025,7 +3030,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elf9vzr9mz08">
+            <g id="elgzpsd3hyz3">
                 <rect
                     x={252.28}
                     y={176.38}
@@ -3039,7 +3044,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="eluu9cs1z22xi">
+            <g id="elhxtegvb0b8l">
                 <rect
                     x={249.37}
                     y={179.47}
@@ -3053,7 +3058,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elyyvs08p5dxg">
+            <g id="eld7uffdvq1zl">
                 <rect
                     x={228.32}
                     y={200.37}
@@ -3067,7 +3072,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elmbhjttnd9y">
+            <g id="el147xtjvp7c4">
                 <rect
                     x={231.51}
                     y={203.29}
@@ -3081,7 +3086,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="el43nm4newbez">
+            <g id="el5ie2ah9w0s4">
                 <rect
                     x={265.47}
                     y={206.07}
@@ -3095,7 +3100,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="el2wuldokmu9i">
+            <g id="elb872b87mqlv">
                 <rect
                     x={262.39}
                     y={209.19}
@@ -3109,7 +3114,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="eltn9q13aihr">
+            <g id="elw2lmtmr5lke">
                 <rect
                     x={230.16}
                     y={221.42}
@@ -3123,7 +3128,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elna7fiamswrr">
+            <g id="elaivr75but1">
                 <rect
                     x={234.85}
                     y={200.37}
@@ -3137,7 +3142,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="eln68v7fz5hr">
+            <g id="el4zm49amazfc">
                 <rect
                     x={253.34}
                     y={268.27}
@@ -3150,7 +3155,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="el3d1yyt3z1pe">
+            <g id="elmmsgk5iq7we">
                 <rect
                     x={227.67}
                     y={265.59}
@@ -3163,7 +3168,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elyu58vgqihj">
+            <g id="elwsmofz3bu4o">
                 <rect
                     x={235.29}
                     y={250.41}
@@ -3176,7 +3181,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="el91uam7g3pc">
+            <g id="ely43oiweed3p">
                 <rect
                     x={238.2}
                     y={247.32}
@@ -3189,7 +3194,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="eloh3cxtfltao">
+            <g id="elmnwhnyrv05h">
                 <rect
                     x={256.25}
                     y={228.42}
@@ -3202,7 +3207,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elxjlxear6cq">
+            <g id="el66pdmm194s4">
                 <rect
                     x={253.06}
                     y={225.5}
@@ -3215,7 +3220,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="eldds2nm671kc">
+            <g id="elr9tglz7x8wr">
                 <rect
                     x={266.98}
                     y={169.57}
@@ -3228,7 +3233,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="eldilpn8irjd7">
+            <g id="elhcog83h6yge">
                 <rect
                     x={270.06}
                     y={166.45}
@@ -3241,7 +3246,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="ell3injhq83na">
+            <g id="el79d7jyun6pq">
                 <rect
                     x={268.32}
                     y={218.91}
@@ -3254,7 +3259,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elro2mfeb3xmq">
+            <g id="el3luzvv4fz03">
                 <rect
                     x={249.72}
                     y={228.42}
@@ -3267,7 +3272,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elncv73yeu32p">
+            <g id="eliobkhk69bns">
                 <rect
                     x={273.7}
                     y={251.83}
@@ -3280,7 +3285,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="eljix39aljh6t">
+            <g id="elsuns3onc2im">
                 <rect
                     x={269.03}
                     y={249.15}
@@ -3293,7 +3298,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elh2lzgl7zbbk">
+            <g id="elbzd6rgr8oum">
                 <rect
                     x={253.65}
                     y={374.97}
@@ -3306,7 +3311,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="el6kcf1m39jzo">
+            <g id="elfkxsxlj6upt">
                 <rect
                     x={267.56}
                     y={393.87}
@@ -3319,7 +3324,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elfmuxlaz9p4s">
+            <g id="elg5qgzv06j9f">
                 <rect
                     x={278.61}
                     y={354.97}
@@ -3332,7 +3337,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="eltfwm09ycve">
+            <g id="ela0a73v7erc9">
                 <rect
                     x={275.42}
                     y={352.06}
@@ -3345,7 +3350,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="el0x2mad49k06">
+            <g id="el5fhnroxl4og">
                 <rect
                     x={230.47}
                     y={353.28}
@@ -3358,7 +3363,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="eld3yvecitrt7">
+            <g id="elb48fgxamz1">
                 <rect
                     x={233.55}
                     y={350.16}
@@ -3371,7 +3376,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elfy88ee9krz">
+            <g id="eldioczvqp38">
                 <rect
                     x={276.77}
                     y={333.92}
@@ -3384,7 +3389,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="ele0vv9mpvhwm">
+            <g id="el1bu7k2ylpgp">
                 <rect
                     x={272.08}
                     y={354.97}
@@ -3397,7 +3402,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="el6103ucr9yvw">
+            <g id="el615c2bp9q7l">
                 <path
                     d="M250.2,355.12c5.67-.06,11.51-.06,17,0"
                     style={{
@@ -3407,7 +3412,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="eli5qu5kmnzbh">
+            <g id="eln6p0sx37h9">
                 <rect
                     x={240.59}
                     y={284.08}
@@ -3421,7 +3426,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elsnnph9rw8us">
+            <g id="elr3qf4as8vx">
                 <rect
                     x={245.26}
                     y={286.76}
@@ -3435,7 +3440,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="eltz6qsxhgkt8">
+            <g id="el0e2ouq9icbrq">
                 <rect
                     x={258.64}
                     y={301.94}
@@ -3449,7 +3454,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="eldk7wcclg2a">
+            <g id="else3btwitd8">
                 <rect
                     x={255.73}
                     y={336.03}
@@ -3463,7 +3468,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elinea1drp0p">
+            <g id="elesd23gtjfuj">
                 <rect
                     x={237.68}
                     y={319.93}
@@ -3477,7 +3482,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elsnkai3jzwcs">
+            <g id="el4hnlg1l57ht">
                 <rect
                     x={240.87}
                     y={322.84}
@@ -3491,7 +3496,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="el6athmj1k3so">
+            <g id="el049yxzh38kyq">
                 <rect
                     x={235.96}
                     y={383.78}
@@ -3505,7 +3510,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="el1mna3z21zl9">
+            <g id="elmmmpx3fqqsa">
                 <rect
                     x={232.88}
                     y={386.9}
@@ -3519,7 +3524,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elk3lnuaydkt">
+            <g id="elovxlmh59eah">
                 <rect
                     x={225.61}
                     y={329.44}
@@ -3533,7 +3538,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elvhgco88cnl">
+            <g id="el4wa94bqpfhd">
                 <rect
                     x={244.21}
                     y={319.93}
@@ -3547,7 +3552,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="eloum0nllzkhs">
+            <g id="elyfa0kgtfk3e">
                 <rect
                     x={224.38}
                     y={375.81}
@@ -3561,7 +3566,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elgarox3w4vx9">
+            <g id="el9rqi2303jgr">
                 <rect
                     x={229.04}
                     y={373.13}
@@ -3575,7 +3580,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="el0hmbazziwus">
+            <g id="el3nu38q33x8r">
                 <rect
                     x={273.33}
                     y={378.73}
@@ -3589,7 +3594,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="el3nxyqyesli7">
+            <g id="eloh779hrlw2e">
                 <rect
                     x={270.42}
                     y={375.64}
@@ -3603,7 +3608,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elwgttibx3msl">
+            <g id="el90kwu8bt18c">
                 <rect
                     x={268.68}
                     y={343.57}
@@ -3617,7 +3622,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elnp8591doo3d">
+            <g id="elpy7e7zy46qm">
                 <rect
                     x={271.87}
                     y={340.65}
@@ -3631,7 +3636,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elh1f03b0uz5">
+            <g id="elv6134roki1m">
                 <rect
                     x={251.15}
                     y={358.48}
@@ -3645,7 +3650,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="el6j6bd1s239h">
+            <g id="elx3yj153lqi">
                 <rect
                     x={248.07}
                     y={355.37}
@@ -3659,7 +3664,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="el7ylbt2ook19">
+            <g id="elcua60lw0k36">
                 <rect
                     x={254.95}
                     y={387.95}
@@ -3673,7 +3678,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elz6asdd1jb9">
+            <g id="elxt7qvz6m6el">
                 <rect
                     x={275.21}
                     y={343.57}
@@ -3687,7 +3692,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elf1ddvbkl8lv">
+            <g id="el6of2xi1c0oe">
                 <rect
                     x={253.34}
                     y={286.13}
@@ -3700,7 +3705,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elfyz4u1pq1x9">
+            <g id="el3xl6x1tju2n">
                 <rect
                     x={227.67}
                     y={288.81}
@@ -3713,7 +3718,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="el9pee01k6b3">
+            <g id="elsc677n9wey">
                 <rect
                     x={232.97}
                     y={301.02}
@@ -3726,7 +3731,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elvy1s10tqhoh">
+            <g id="el8rfp2dye9wk">
                 <rect
                     x={235.88}
                     y={304.12}
@@ -3739,7 +3744,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="ely9lz9qegsro">
+            <g id="elaio7gp7o5k">
                 <rect
                     x={241.93}
                     y={336.14}
@@ -3752,7 +3757,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elbpkxag3u1gv">
+            <g id="eljxqwjo4vcvj">
                 <rect
                     x={238.74}
                     y={339.05}
@@ -3765,7 +3770,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="el4se7wae30oj">
+            <g id="elsfvn8rfrkrq">
                 <rect
                     x={225.37}
                     y={311.06}
@@ -3778,7 +3783,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="el61tc21hzx0w">
+            <g id="el7xu7ioewnm6">
                 <rect
                     x={235.4}
                     y={336.14}
@@ -3791,7 +3796,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="el8cvgu2x8r2w">
+            <g id="elkveltwu9k4">
                 <rect
                     x={273.7}
                     y={302.57}
@@ -3804,7 +3809,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elhgyugqkpdnk">
+            <g id="el3fn52mujn2t">
                 <rect
                     x={269.03}
                     y={305.25}
@@ -3817,7 +3822,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="el9lliz0q7zv8">
+            <g id="ell1cg1xncfu">
                 <rect
                     x={229.46}
                     y={169.57}
@@ -3830,7 +3835,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="el34svbl6dp6b">
+            <g id="elm3qqdezp0n9">
                 <rect
                     x={272.62}
                     y={161.04}
@@ -3843,7 +3848,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elkqqkvo9n9u">
+            <g id="elgygp0po2uvq">
                 <rect
                     x={276.24}
                     y={197.97}
@@ -3856,7 +3861,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="el2n4vzaxkexq">
+            <g id="elt8hdodh0gqa">
                 <rect
                     x={273.04}
                     y={200.88}
@@ -3869,7 +3874,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elg7xbqa0rfnj">
+            <g id="el52w291yg8v3">
                 <rect
                     x={248.8}
                     y={165.28}
@@ -3882,7 +3887,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elcfmxliz14pv">
+            <g id="elxb060vyvkj">
                 <rect
                     x={251.88}
                     y={168.4}
@@ -3895,7 +3900,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elqinzjiqz00i">
+            <g id="eldek639ad03k">
                 <rect
                     x={276.77}
                     y={220.47}
@@ -3908,7 +3913,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elyszexqjz8y">
+            <g id="eltpherq5aa5r">
                 <rect
                     x={269.71}
                     y={197.97}
@@ -3921,7 +3926,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elgds2jpd1du">
+            <g id="elk2sij06bsi">
                 <rect
                     x={233.5}
                     y={214.15}
@@ -3935,7 +3940,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elcur16o8b2eq">
+            <g id="elgsidv3qjgq6">
                 <rect
                     x={238.17}
                     y={211.47}
@@ -3949,7 +3954,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elpd8vu8wvgwk">
+            <g id="elczxmpzyzt3">
                 <rect
                     x={247.28}
                     y={259.53}
@@ -3963,7 +3968,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elsg5891oso1">
+            <g id="elsb7o6tof72q">
                 <rect
                     x={255.73}
                     y={218.37}
@@ -3977,7 +3982,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="el1fryz31nr0n">
+            <g id="elsq2z0n1j0t">
                 <rect
                     x={251.42}
                     y={257.06}
@@ -3991,7 +3996,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="el01y2zuezhzi7">
+            <g id="elk2y2ns9d4bc">
                 <rect
                     x={254.74}
                     y={254.29}
@@ -4005,7 +4010,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="ele9ispszedh">
+            <g id="el0bxfhj7rtqh">
                 <rect
                     x={252.8}
                     y={194.7}
@@ -4019,7 +4024,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elpffxhpyq4a">
+            <g id="elvbwacctrcjf">
                 <rect
                     x={249.72}
                     y={191.59}
@@ -4033,7 +4038,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="eltgj27fu2d3g">
+            <g id="eld4cl9jfjozn">
                 <rect
                     x={251.14}
                     y={239.99}
@@ -4047,7 +4052,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="elfup681zsfoq">
+            <g id="el4j1315zrcee">
                 <rect
                     x={257.95}
                     y={257.34}
@@ -4073,7 +4078,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "201.31px 290.71px",
                 }}
-                id="el7b2i90qpt4j"
+                id="eluj2cgoanfw"
                 className="animable"
             />
             <line
@@ -4088,7 +4093,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "308.55px 290.71px",
                 }}
-                id="elrqbhkr44kf"
+                id="el6su8uhyd2aa"
                 className="animable"
             />
             <path
@@ -4100,7 +4105,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "278.015px 127.05px",
                 }}
-                id="eleyrogf5v98d"
+                id="elcdo4scna4r9"
                 className="animable"
             />
             <path
@@ -4112,7 +4117,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "252.76px 127px",
                 }}
-                id="el0ehjifkrp6hv"
+                id="elcjqzdgbc00m"
                 className="animable"
             />
             <path
@@ -4124,7 +4129,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "229.575px 127.05px",
                 }}
-                id="el3zpvda3dsuf"
+                id="elycimfzqb7c"
                 className="animable"
             />
             <line
@@ -4139,7 +4144,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "242.675px 129.93px",
                 }}
-                id="elwhtir5g9jof"
+                id="elg6ttpl0gqjt"
                 className="animable"
             />
             <path
@@ -4151,7 +4156,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "272.84px 129.945px",
                 }}
-                id="el99n6ucfp1al"
+                id="elum4ivrpbzts"
                 className="animable"
             />
             <line
@@ -4166,7 +4171,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "285.93px 133.25px",
                 }}
-                id="elc9z8fwgnezk"
+                id="el5sk65t59nzv"
                 className="animable"
             />
             <line
@@ -4181,7 +4186,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "258.34px 133.25px",
                 }}
-                id="el5dm7niv36da"
+                id="el6txh16auzii"
                 className="animable"
             />
             <line
@@ -4196,7 +4201,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "236.86px 133.25px",
                 }}
-                id="ellitpys76q2"
+                id="elrpuykmaxv1k"
                 className="animable"
             />
             <line
@@ -4211,7 +4216,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "220.85px 133.25px",
                 }}
-                id="el02shmoj9vw2e"
+                id="eld11pr352dpt"
                 className="animable"
             />
             <line
@@ -4226,12 +4231,12 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "253.055px 129.93px",
                 }}
-                id="elwe6yyhw10zf"
+                id="elxz9cydy77l"
                 className="animable"
             />
         </g>
         <g
-            id="freepik--Stars--inject-1"
+            id="freepik--Stars--inject-2"
             className="animable"
             style={{
                 transformOrigin: "113.195px 209.36px",
@@ -4246,7 +4251,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "113.195px 209.36px",
                 }}
-                id="elbeffh8f77te"
+                id="el8cfe9edglkt"
                 className="animable"
             />
             <polygon
@@ -4258,7 +4263,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "75.495px 198.47px",
                 }}
-                id="el3qed6v4vqhl"
+                id="el5e57kl0t4t2"
                 className="animable"
             />
             <polygon
@@ -4270,7 +4275,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "89.74px 198.47px",
                 }}
-                id="el3lf7g03iepu"
+                id="el7xvxbgbk6sr"
                 className="animable"
             />
             <polygon
@@ -4282,7 +4287,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "103.98px 198.47px",
                 }}
-                id="el6r12heelugd"
+                id="ele956kncpr6"
                 className="animable"
             />
             <polygon
@@ -4294,7 +4299,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "118.22px 198.47px",
                 }}
-                id="eld2jd390eckq"
+                id="el9oz4xf3hnk8"
                 className="animable"
             />
             <polygon
@@ -4306,12 +4311,12 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "132.46px 198.47px",
                 }}
-                id="elxmfgf6wmy4j"
+                id="elglr8mjqg005"
                 className="animable"
             />
         </g>
         <g
-            id="freepik--hand-2--inject-1"
+            id="freepik--hand-2--inject-2"
             className="animable"
             style={{
                 transformOrigin: "341.883px 299.717px",
@@ -4323,10 +4328,10 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(255, 255, 255)",
                     transformOrigin: "345.225px 272.1px",
                 }}
-                id="elnc5yplumsu"
+                id="eln3kinaqd2va"
                 className="animable"
             />
-            <g id="eloaiwhxiaydo">
+            <g id="el585cm5q8rmh">
                 <path
                     d="M283.13,293a48.26,48.26,0,0,1-1.82,7.25,30.69,30.69,0,0,0-1.24-5.91c-2,3.76-6.42,8-6.42,8,0,4.42-2.66,11.73-2.66,11.73l-1,14.16c4.54,8.19.54,11.5-1.18,11.28s-3.67-3.22-3.67-3.22l-2.57.35s-3.1,6.41-5.54,6.64-3.8-3.32-3.8-3.32-1.29,2.43-4.38,1a4.56,4.56,0,0,1-1.78-2.13c1.11.5,2.45,0,3.66-3.26a15.61,15.61,0,0,0-1.29-13.5s4.6-9.84,4.41-12.22-2.74-4.67-1.8-6.29,3.21,1.28,5-.56,8.39-12.18,8.12-13.35,1.67-1.1,2.68-2,.78-5.27,2.14-4.73,2.81,1.34,2.81,1.34a11.06,11.06,0,0,0,0-3c-.26-.5,4.82,4.7,6.3,4.91S283.7,287.71,283.13,293Z"
                     style={{
@@ -4346,7 +4351,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "345.235px 272.085px",
                 }}
-                id="elyssunjn4md"
+                id="elst18bmnav4"
                 className="animable"
             />
             <path
@@ -4358,7 +4363,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "264.365px 313.616px",
                 }}
-                id="elkicq8aeip2s"
+                id="el9x4xrvxb2be"
                 className="animable"
             />
             <path
@@ -4370,7 +4375,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "281.121px 292.505px",
                 }}
-                id="el7cbj88zf8bl"
+                id="elkihgaaa072"
                 className="animable"
             />
             <path
@@ -4382,7 +4387,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "279.1px 291.98px",
                 }}
-                id="elr4uoyzxx19"
+                id="ela3uod68fisv"
                 className="animable"
             />
             <path
@@ -4394,7 +4399,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "271.35px 293.006px",
                 }}
-                id="elaqc02418nou"
+                id="elfzuigp3ms2"
                 className="animable"
             />
             <path
@@ -4406,7 +4411,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "267.83px 304.58px",
                 }}
-                id="el2l24ju919w"
+                id="elvkg95fbdk2"
                 className="animable"
             />
             <path
@@ -4418,7 +4423,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "260.535px 307.083px",
                 }}
-                id="elyvpvg6mue9f"
+                id="el0iuuof13rqpr"
                 className="animable"
             />
             <path
@@ -4430,7 +4435,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "271.24px 303.515px",
                 }}
-                id="ellqan6wv2c4"
+                id="elgvwfb2gz29j"
                 className="animable"
             />
             <path
@@ -4442,7 +4447,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "269.995px 285.325px",
                 }}
-                id="elo2wabpm7dog"
+                id="elg0hla098upl"
                 className="animable"
             />
             <path
@@ -4454,7 +4459,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "274.24px 282.885px",
                 }}
-                id="el9qnq9cr1gf6"
+                id="elbrftf9idzno"
                 className="animable"
             />
             <path
@@ -4466,7 +4471,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "254.57px 305.168px",
                 }}
-                id="elqwf210446q8"
+                id="ellzvlnpsc2s"
                 className="animable"
             />
             <path
@@ -4478,10 +4483,10 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "252.4px 322.66px",
                 }}
-                id="elx6tbiestgjk"
+                id="ell2hye0vrz9"
                 className="animable"
             />
-            <g id="el2qaex7djflg">
+            <g id="elkh0ou9la139">
                 <ellipse
                     cx={257.26}
                     cy={342.6}
@@ -4507,7 +4512,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "247.659px 363.181px",
                 }}
-                id="el2gqcw051yf8"
+                id="elsm8wi59k0dm"
                 className="animable"
             />
             <path
@@ -4519,7 +4524,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "247.701px 363.491px",
                 }}
-                id="elpelsg372w5"
+                id="elffy0vu40im9"
                 className="animable"
             />
             <path
@@ -4528,7 +4533,7 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(235, 133, 107)",
                     transformOrigin: "245.455px 369.537px",
                 }}
-                id="elnrbt9nnlyse"
+                id="elvkyhdn0d2am"
                 className="animable"
             />
             <path
@@ -4537,7 +4542,7 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(235, 133, 107)",
                     transformOrigin: "246.89px 365.535px",
                 }}
-                id="el31rrgomajbq"
+                id="elby49aavspyj"
                 className="animable"
             />
             <path
@@ -4546,7 +4551,7 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(235, 133, 107)",
                     transformOrigin: "248.375px 361.65px",
                 }}
-                id="el8a5awzph75j"
+                id="ele589x31op6l"
                 className="animable"
             />
             <path
@@ -4555,7 +4560,7 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(235, 133, 107)",
                     transformOrigin: "249.625px 357.23px",
                 }}
-                id="el0b8bup5v168"
+                id="el2obxmz28wro"
                 className="animable"
             />
             <path
@@ -4567,7 +4572,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "260.156px 373.487px",
                 }}
-                id="elpr0ir7f3x67"
+                id="elw3yv86trywk"
                 className="animable"
             />
             <polyline
@@ -4579,7 +4584,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "266.605px 382.805px",
                 }}
-                id="el955d47x4m98"
+                id="elbl3leytx3wk"
                 className="animable"
             />
             <path
@@ -4591,7 +4596,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "261.695px 347.195px",
                 }}
-                id="eliyeldnsn9r"
+                id="elxrhxkzimc3"
                 className="animable"
             />
             <path
@@ -4600,10 +4605,10 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(255, 255, 255)",
                     transformOrigin: "350.455px 275.211px",
                 }}
-                id="el7vbiq31gge3"
+                id="el256kcs4awzw"
                 className="animable"
             />
-            <g id="eleg1tc9q0nef">
+            <g id="el18y4p1am43d">
                 <path
                     d="M444.16,253.55c-16.33,4.24-85.85,22.29-91.51,24.44-6.42,2.43-12.83,6.19-15,6.63s-13.72,13.5-17.26,16.82-12.17,7.08-22.13,9.74-19.25,9.74-21.68,11.95-14.83,19-17.71,17.7c-2.26-1.05-5.5-1.68-5.57-6.45,1.43,2.27,3.71,4.91,4.63,3.91,0,0-2.69-.2,0-6.73s4-9.69,7.3-7.32,7.15,3.17,8.48-1.58,1.81-2.57,7.8-6.53,12.32-10.6,14.1-10.44,15.63-1.15,19.78-3.36,16-15.54,16.31-19.37,15.09-9.36,18.78-11.53,18.12-4.95,23.66-6.13-8.31,3.88-12.46,6.78,35-9.95,45.29-11.93C417,258.22,443.14,253.73,444.16,253.55Z"
                     style={{
@@ -4623,12 +4628,12 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "350.441px 296.791px",
                 }}
-                id="el70vdi6knzbv"
+                id="eletzb0rigk1"
                 className="animable"
             />
         </g>
         <g
-            id="freepik--hand-1--inject-1"
+            id="freepik--hand-1--inject-2"
             className="animable"
             style={{
                 transformOrigin: "176.299px 409.08px",
@@ -4640,10 +4645,10 @@ const ApartmentKey = ({ className }) => (
                     fill: "rgb(255, 255, 255)",
                     transformOrigin: "176.304px 409.08px",
                 }}
-                id="el7338cmweqop"
+                id="elp5wiqzs2kze"
                 className="animable"
             />
-            <g id="elnj2vxh51iz">
+            <g id="el7u0ktctsdxp">
                 <path
                     d="M291.63,418.46c-5.4,5.42-21.74,13.15-27.59,17.3-4.14,2.94-21.39,5.61-26.41,7.08-3.56,1.05-8.31,5.13-13.06,3.78s-44.31-20.35-53.8-25.09-58.55,2.7-87.82,1.74c-1.91-.06-3.74-.12-5.49-.16,12.66-.83,26-1.8,30.11-2.47,8.44-1.39,50.54-3.56,56.39-4.06s52,23.51,57.28,25.88,9,2.64,12.43,0,17.08-5,17.08-5l-7.86.71s10.45-3.78,17.23-5.46,13.52-7.81,18-9.23,12.26-10.31,16.17-12.14,0-7.26,0-7.26,4.73-.18,6.59,2.75c0,0,6.92.23,8.34-5.67a33.81,33.81,0,0,1,.79,4.16C310.42,408.08,303.69,406.34,291.63,418.46Z"
                     style={{
@@ -4654,7 +4659,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="el42w50urddx5">
+            <g id="el1utw702lxvu">
                 <path
                     d="M306.08,398.53c-11.43,3-13.86,4.91-13.86,4.91-2.08-.62-15.59,7.9-16.74,8.59s-1.83,4-1.83,4-3.88-4-10.46.59-7.3,7.44-7.3,7.44l-2.64-3.38s-11.17,1-14.58.45A16.53,16.53,0,0,1,230.9,418c-2.61-1.74-16.49-7.58-17.92-8s-3.24-3.08-3.24-3.08c-2.53-10.16-15.14-21.76-22-20.84a25.16,25.16,0,0,0-11.43,4.62s-12.84-1.32-19.43-1.58-46.68-7.65-46.68-7.65l29.58,1c24.6,3.51,37.7,3.75,37.7,3.75s12.66-11,24.53-1.55,15,17.4,15,17.4l16.62,9.5s6.73-1.19,10.88,0,10-2.77,13-4.35a51.78,51.78,0,0,1,16.88-5.15s10.23-3.95,17.75-2c0,0,5.54-2.37,10.29-2.37A8.56,8.56,0,0,1,306.08,398.53Z"
                     style={{
@@ -4665,7 +4670,7 @@ const ApartmentKey = ({ className }) => (
                     className="animable"
                 />
             </g>
-            <g id="el0axaww37o7bv">
+            <g id="el5pikmew4r0p">
                 <path
                     d="M187.81,414.31s.07,2.8-1.39,2.54,2.65,3.85,5.28,3.19,9.1,5.28,11.61,7.92,24.33,6.06,29,5.93,8.19-4.94,4.9-9.79c0,0-.6,4.78-3.52,4.25,0,0,2.8-1.05-1.38-5s-10.39-5.67-11.71-4.88-9.34-2.5-9.81-3,.71,11.41-6.28,11c0,0-7.83-5.78-9.39-8.17S187.81,414.31,187.81,414.31Z"
                     style={{
@@ -4685,7 +4690,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "176.293px 409.08px",
                 }}
-                id="ele36ggd4sdxr"
+                id="eln6up11bwqge"
                 className="animable"
             />
             <path
@@ -4697,7 +4702,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "269.77px 421.082px",
                 }}
-                id="eltafffi2o8um"
+                id="elp4qvqqxvhv9"
                 className="animable"
             />
             <path
@@ -4709,7 +4714,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "282.88px 405.745px",
                 }}
-                id="el4wqclkq3wmy"
+                id="el7afju0bvdvr"
                 className="animable"
             />
             <path
@@ -4721,7 +4726,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "261.51px 414.275px",
                 }}
-                id="elmeltmbjkt3"
+                id="el268ev8662jr"
                 className="animable"
             />
             <path
@@ -4733,7 +4738,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "246.534px 413.66px",
                 }}
-                id="eluitm248pwfq"
+                id="el1dzkidx10lp"
                 className="animable"
             />
             <path
@@ -4745,7 +4750,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "211.776px 414.468px",
                 }}
-                id="el8yljg2hq18o"
+                id="elwb83ao2h2t"
                 className="animable"
             />
             <path
@@ -4757,7 +4762,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "210.79px 403.575px",
                 }}
-                id="elj51v3cjhvzm"
+                id="el7clur3hsnr8"
                 className="animable"
             />
             <path
@@ -4769,7 +4774,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "232.285px 413.825px",
                 }}
-                id="el516wrp3izow"
+                id="elxbhm6blbhpp"
                 className="animable"
             />
             <path
@@ -4781,7 +4786,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "188.805px 416.844px",
                 }}
-                id="el9gmc9ycb02u"
+                id="elej4908gag7a"
                 className="animable"
             />
             <path
@@ -4793,7 +4798,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "212.725px 406.825px",
                 }}
-                id="eltxcvy1iop6"
+                id="elhrslzxpad55"
                 className="animable"
             />
             <path
@@ -4805,7 +4810,7 @@ const ApartmentKey = ({ className }) => (
                     strokeLinejoin: "round",
                     transformOrigin: "207.886px 420.635px",
                 }}
-                id="elfpb149cz91c"
+                id="elyakwlsd102o"
                 className="animable"
             />
         </g>
@@ -4858,7 +4863,7 @@ const ApartmentKey = ({ className }) => (
             </filter>
         </defs>
         <defs>
-            <clipPath id="freepik--clip-path--inject-1">
+            <clipPath id="freepik--clip-path--inject-2">
                 <polygon
                     points="333.73 143.5 333.73 174.49 330.62 174.49 330.62 148.3 311.66 148.3 311.66 174.49 308.55 174.49 308.55 148.3 201.31 148.3 201.31 174.49 198.2 174.49 198.2 148.3 179.24 148.3 179.24 174.49 176.13 174.49 176.13 143.5 333.73 143.5"
                     style={{
@@ -4869,7 +4874,7 @@ const ApartmentKey = ({ className }) => (
                     }}
                 />
             </clipPath>
-            <clipPath id="freepik--clip-path-2--inject-1">
+            <clipPath id="freepik--clip-path-2--inject-2">
                 <polygon
                     points="329.1 136.73 285.37 136.73 264.19 136.73 180.47 136.73 158.4 150.26 243.16 150.26 276.4 150.26 351.17 150.26 329.1 136.73"
                     style={{
@@ -4880,7 +4885,7 @@ const ApartmentKey = ({ className }) => (
                     }}
                 />
             </clipPath>
-            <clipPath id="freepik--clip-path-3--inject-1">
+            <clipPath id="freepik--clip-path-3--inject-2">
                 <rect
                     x={156.23}
                     y={148.3}
@@ -4894,7 +4899,7 @@ const ApartmentKey = ({ className }) => (
                     }}
                 />
             </clipPath>
-            <clipPath id="freepik--clip-path-4--inject-1">
+            <clipPath id="freepik--clip-path-4--inject-2">
                 <polyline
                     points="223.64 420.9 223.64 136.73 285.92 136.73 285.92 418.9"
                     style={{
@@ -4905,7 +4910,7 @@ const ApartmentKey = ({ className }) => (
                     }}
                 />
             </clipPath>
-            <clipPath id="freepik--clip-path-5--inject-1">
+            <clipPath id="freepik--clip-path-5--inject-2">
                 <rect
                     x={223.64}
                     y={143.5}
@@ -4919,7 +4924,7 @@ const ApartmentKey = ({ className }) => (
                     }}
                 />
             </clipPath>
-            <clipPath id="freepik--clip-path-6--inject-1">
+            <clipPath id="freepik--clip-path-6--inject-2">
                 <polygon
                     points="293.79 137.7 215.78 137.7 226.81 124.16 282.75 124.16 293.79 137.7"
                     style={{
@@ -4930,7 +4935,7 @@ const ApartmentKey = ({ className }) => (
                     }}
                 />
             </clipPath>
-            <clipPath id="freepik--clip-path-7--inject-1">
+            <clipPath id="freepik--clip-path-7--inject-2">
                 <rect
                     x={214.72}
                     y={136.06}

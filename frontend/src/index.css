@@ -25,13 +25,15 @@
     --primary-dark: #ca4827; /* Orange (buttons, highlights) */
     --secondary: #1d3557; /* Dark Blue (text, logo) */
     --bg-sky: #a8dadc; /* Light Blue (header background) */
-    --bg-gray: #e6e6e6; /* Light Gray (lower section background) */
+    /* --bg-gray: #e6e6e6; Light Gray (lower section background) */
+    --bg-gray: #f1f1f1;
     --text-dark: #1a1a1a; /* Dark text */
     --text-light: #ebebeb; /* White text */
 }
 
 html {
     scroll-behavior: smooth;
+    /* font-size: 0.85rem; */
     /* overflow-y: scroll; */
     /* scrollbar-gutter: stable; */
 }

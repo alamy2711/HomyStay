@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router";
+import { Link, useLocation } from "react-router";
+import Button from "../components/common/Button";
 
 export default function Header() {
     const [scrolled, setScrolled] = useState(false);
@@ -47,8 +48,8 @@ export default function Header() {
                 location.pathname === "/explore"
                     ? "bg-white shadow-md" // White background, no sticky
                     : scrolled || !isHeroPresent
-                    ? "slide-down sticky top-0 z-50 bg-white shadow-md"
-                    : "bg-(--bg-sky)"
+                        ? "slide-down sticky top-0 z-50 bg-white shadow-md"
+                        : "bg-(--bg-sky)"
             }`}
         >
             <nav className="border-gray-200 px-4 py-2.5 lg:px-6">
@@ -61,18 +62,24 @@ export default function Header() {
                         />
                     </a>
                     <div className="flex items-center lg:order-2">
-                        <a
+                        {/* <a
                             href="/login"
                             className="hover:text-primary-700 mr-2 rounded-lg px-4 py-2 text-sm font-medium text-gray-800 lg:px-5 lg:py-2.5"
                         >
                             Log in
-                        </a>
-                        <a
+                        </a> */}
+                        <Link to="/login">
+                            <Button className="text-(--secondary) hover:text-primary-700">Log in</Button>
+                        </Link>
+                        {/* <a
                             href="/signup"
                             className="bg-primary-700 hover:bg-primary-800 rounded-full px-4 py-2 text-sm font-medium text-white lg:px-5 lg:py-2.5"
                         >
                             Sign up
-                        </a>
+                        </a> */}
+                        <Link to="/signup">
+                            <Button className="bg-primary-700 hover:bg-primary-800 text-white">Sign up</Button>
+                        </Link>
                         <button
                             data-collapse-toggle="mobile-menu-2"
                             type="button"
@@ -111,7 +118,7 @@ export default function Header() {
                         className="hidden w-full items-center justify-between lg:order-1 lg:flex lg:w-auto"
                         id="mobile-menu-2"
                     >
-                        <ul className="mt-4 flex flex-col font-medium lg:mt-0 lg:flex-row lg:space-x-8">
+                        <ul className="mt-4 flex flex-col font-bold lg:mt-0 lg:flex-row lg:space-x-8">
                             <li>
                                 <a
                                     href="/"

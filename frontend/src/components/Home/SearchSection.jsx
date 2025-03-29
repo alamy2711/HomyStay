@@ -42,7 +42,12 @@ export default function SearchSection() {
                         />
                     </div>
                     {/* <!-- Search Button --> */}
-                    <Button text="Search" />
+                    <Button
+                        type="submit"
+                        className="bg-primary-700 hover:bg-primary-800 text-white"
+                    >
+                        Search
+                    </Button>
                 </form>
             </div>
         </section>

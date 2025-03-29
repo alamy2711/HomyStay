@@ -1,101 +1,248 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
+import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
+import { z } from "zod";
+import MobileSignup from "../assets/illustrations/MobileSignup";
+import Button from "../components/common/Button";
 import FloatingLabel from "../components/common/FloatingLabel";
-import PageHeading from "../components/common/PageHeading";
+import Section from "../components/common/Section";
 
-export default function Signup() {
-    const di = document.getElementById("di");
-    const ci = document.getElementById("check-in");
+const schema = z.object({
+    firstName: z
+        .string()
+        .nonempty("First name is required")
+        .min(2, "First name must be at least 2 characters")
+        .max(50, "First name cannot exceed 50 characters")
+        .regex(/^[A-Za-z]+$/, "Only letters allowed"),
+    lastName: z
+        .string()
+        .nonempty("Last name is required")
+        .min(2, "Last name must be at least 2 characters long")
+        .max(50, "Last name cannot exceed 50 characters")
+        .regex(/^[A-Za-z]+$/, "Only letters allowed"),
+    phone: z
+        .string()
+        .nonempty("Phone number is required")
+        .regex(/^\+?\d{10,15}$/, "Invalid phone number"), // Supports international numbers
+    birthday: z
+        .string()
+        .nonempty("Birthday is required")
+        .refine((date) => {
+            const [day, month, year] = date.split("-");
+            const formattedDate = `${year}-${month}-${day}`;
+            const parsedDate = new Date(formattedDate);
+
+            if (isNaN(parsedDate)) return false;
+
+            const today = new Date();
+            const minAge = 18; // Example: Require at least 18 years old
+            const age = today.getFullYear() - parsedDate.getFullYear();
+
+            return age >= minAge;
+        }, "You must be at least 18 years old"),
+    email: z
+        .string()
+        .nonempty("Email is required")
+        .email("Invalid email address"),
+    password: z
+        .string()
+        .nonempty("Password is required")
+        .min(8, "Password must be at least 8 characters")
+        .max(100, "Password cannot exceed 100 characters"),
+});
+
+export default function Login() {
+    const {
+        register,
+        handleSubmit,
+        setError,
+        formState: { errors, isSubmitting },
+    } = useForm({
+        defaultValues: {
+            // email: "",
+        },
+        resolver: zodResolver(schema),
+    });
+
+    const onSubmit = async (data) => {
+        try {
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            console.log(data);
+            // throw new Error();
+        } catch (error) {
+            setError("email", {
+                message: "This email is already taken",
+            });
+        }
+    };
+
     return (
-        <>
-            <PageHeading
-                title="Create an Account"
-                description="Join us today and find the best apartments for your stay!"
-            >
-                <main>
-                    {/* <FloatingLabel
-                        id={"check-in"}
-                        type={"text"}
-                        label={"Date Start"}
-                        icon={"fa-solid fa-calendar"}
-                        datepicker="true"
-                    /> */}
-
-                    <div
-                        className="mt-20 flex items-center justify-center gap-4"
-                        date-rangepicker="true"
-                        id="date-range-picker2"
-                    >
-                        <FloatingLabel
-                            id="check-in"
-                            type="text"
-                            label="Date Start"
-                            icon="fa-solid fa-calendar"
-                            // datepicker="true"
-                            name="start"
-                        />
-
-                        <span>to</span>
-
-                        <FloatingLabel
-                            id="check-out"
-                            type="text"
-                            label="Date Start"
-                            icon="fa-solid fa-calendar"
-                            // datepicker="true"
-                            name="end"
-                        />
-                    </div>
-                </main>
-                <main>
-                    <div
-                        id="date-range-picker"
-                        date-rangepicker="true"
-                        class="flex items-center"
-                    >
-                        <div class="relative">
-                            <div class="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3">
-                                <svg
-                                    class="h-4 w-4 text-gray-500 dark:text-gray-400"
-                                    aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
-                                >
-                                    <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                                </svg>
-                            </div>
-                            <input
-                                id="datepicker-range-start"
-                                name="start"
+        <Section className="flex flex-col gap-20">
+            {/* Heading */}
+            <div>
+                <h1 className="text-center text-3xl text-(--secondary)">
+                    Create an Account
+                </h1>
+                <p className="text-center font-bold">
+                    Sign up to start your journey and enjoy all the benefits we
+                    offer.
+                </p>
+            </div>
+            {/* Body */}
+            <div className="grid-cols-2 items-start lg:grid">
+                {/* Image */}
+                <div className="flex h-full items-center justify-center">
+                    <MobileSignup className="h-[500px]" />
+                </div>
+                {/* Form */}
+                <form
+                    onSubmit={handleSubmit(onSubmit)}
+                    className="mx-auto flex w-full max-w-[450px] flex-col gap-8 rounded-lg px-5 py-5 shadow-sm shadow-gray-300"
+                >
+                    <h3 className="text-primary-700 self-center text-2xl lg:text-3xl">
+                        Sign up
+                    </h3>
+                    {/* First - Last Name */}
+                    <div className="grid grid-cols-2 gap-5">
+                        {/* First Name */}
+                        <div className="flex flex-col gap-2">
+                            <label htmlFor="" className="ml-2 text-sm">
+                                First name
+                            </label>
+                            <FloatingLabel
+                                id="first-name"
                                 type="text"
-                                class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 ps-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                                placeholder="Select date start"
+                                label="First name"
+                                icon="fa-solid fa-user"
+                                iconClass="text-md"
+                                {...register("firstName")}
                             />
+                            {errors.firstName && (
+                                <p className="ml-2 text-sm text-red-500">
+                                    {errors.firstName.message}
+                                </p>
+                            )}
                         </div>
-                        <span class="mx-4 text-gray-500">to</span>
-                        <div class="relative">
-                            <div class="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3">
-                                <svg
-                                    class="h-4 w-4 text-gray-500 dark:text-gray-400"
-                                    aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
-                                >
-                                    <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                                </svg>
-                            </div>
-                            <input
-                                id="datepicker-range-end"
-                                name="end"
+                        {/* Second Name */}
+                        <div className="flex flex-col gap-2">
+                            <label htmlFor="" className="ml-2 text-sm">
+                                Last name
+                            </label>
+                            <FloatingLabel
+                                id="Last-name"
                                 type="text"
-                                class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 ps-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                                placeholder="Select date end"
+                                label="Last name"
+                                icon="fa-solid fa-user"
+                                iconClass="text-md"
+                                {...register("lastName")}
                             />
+                            {errors.lastName && (
+                                <p className="ml-2 text-sm text-red-500">
+                                    {errors.lastName.message}
+                                </p>
+                            )}
                         </div>
                     </div>
-                </main>
-            </PageHeading>
-        </>
+                    {/* Phone & Birthday */}
+                    <div className="grid grid-cols-2 gap-5">
+                        {/* Phone */}
+                        <div className="flex flex-col gap-2">
+                            <label htmlFor="" className="ml-2 text-sm">
+                                Phone number
+                            </label>
+                            <FloatingLabel
+                                id="phone"
+                                type="tel"
+                                label="Phone"
+                                icon="fa-solid fa-phone"
+                                iconClass="text-md"
+                                {...register("phone")}
+                            />
+                            {errors.phone && (
+                                <p className="ml-2 text-sm text-red-500">
+                                    {errors.phone.message}
+                                </p>
+                            )}
+                        </div>
+                        {/* Birthday */}
+                        <div className="flex flex-col gap-2">
+                            <label htmlFor="" className="ml-2 text-sm">
+                                Birthday
+                            </label>
+                            <FloatingLabel
+                                id="birthday"
+                                type="text"
+                                label="Birthday"
+                                icon="fa-solid fa-calendar"
+                                iconClass="text-[16px]"
+                                datepicker="true"
+                                datepicker-format="dd-mm-yyyy"
+                                datepicker-autohide="true"
+                                {...register("birthday")}
+                            />
+                            {errors.birthday && (
+                                <p className="ml-2 text-sm text-red-500">
+                                    {errors.birthday.message}
+                                </p>
+                            )}
+                        </div>
+                    </div>
+                    {/* Email */}
+                    <div className="flex flex-col gap-2">
+                        <label htmlFor="" className="ml-2 text-sm">
+                            Email Address
+                        </label>
+                        <FloatingLabel
+                            id="email"
+                            type="email"
+                            label="Email"
+                            icon="fa-solid fa-envelope"
+                            iconClass="text-md"
+                            {...register("email")}
+                        />
+                        {errors.email && (
+                            <p className="ml-2 text-sm text-red-500">
+                                {errors.email.message}
+                            </p>
+                        )}
+                    </div>
+                    {/* Password */}
+                    <div className="flex flex-col gap-2">
+                        <label htmlFor="" className="ml-2 text-sm">
+                            Password
+                        </label>
+                        <FloatingLabel
+                            id="password"
+                            type="password"
+                            label="Password"
+                            icon="fa-solid fa-lock"
+                            iconClass="text-md"
+                            {...register("password")}
+                        />
+                        {errors.password && (
+                            <p className="ml-2 text-sm text-red-500">
+                                {errors.password.message}
+                            </p>
+                        )}
+                    </div>
+                    {/* Sign up Button */}
+                    <Button
+                        type="submit"
+                        className="bg-primary-700 hover:bg-primary-800 disabled:bg-primary-500 text-white"
+                        disabled={isSubmitting}
+                    >
+                        {isSubmitting ? "Loading..." : "Sign up"}
+                    </Button>
+                    {/* Already have an account? */}
+                    <Link
+                        to={"/login"}
+                        className="text-primary-700 self-center text-sm font-medium underline"
+                    >
+                        Already have an account?
+                    </Link>
+                </form>
+            </div>
+        </Section>
     );
 }

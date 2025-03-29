@@ -1,3 +1,6 @@
+import ApartmentKey from "../../assets/illustrations/ApartmentKey";
+import ApartmentRent from "../../assets/illustrations/ApartmentRent";
+
 export default function HeroSection() {
     return (
         <section
@@ -22,12 +25,14 @@ export default function HeroSection() {
                 </div>
 
                 {/* <!-- Image Side --> */}
-                <img
+                {/* <img
                     src="images/hsimg.png"
                     className="hidden h-70 self-end lg:inline-block"
-                />
+                /> */}
+                <ApartmentRent className="h-70" />
+                {/* <ApartmentKey className="h-70" /> */}
 
-                {/* <!-- ClHostient Side --> */}
+                {/* <!-- Host Side --> */}
                 <div className="flex flex-col items-center gap-3 md:items-end">
                     <h1 className="text-4xl text-nowrap text-(--secondary)">
                         Earn Money by Hosting

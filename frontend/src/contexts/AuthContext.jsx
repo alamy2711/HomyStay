@@ -7,7 +7,8 @@ const userData = {
     id: 1,
     name: "John Doe",
     email: "john.doe@example.com",
-    role: "admin",
+    profilePicture: "/images/users/pfp-0004.jpg",
+    role: "client",
 };
 
 export const AuthProvider = ({ children }) => {
@@ -18,13 +19,15 @@ export const AuthProvider = ({ children }) => {
         role: null,
     });
     const [token, setToken] = useState();
+    const [loading, setLoading] = useState(true);
     // const [token, setToken] = useState(localStorage.getItem("token"));
 
     // Dummy User Data / Token for demonstration purposes
     useEffect(() => {
-        // setUser(userData);
-        // setToken("dummy_token_1234567890");
-    });
+        setUser(userData);
+        setToken();
+        setLoading(false);
+    }, []);
 
     // Save token and user info in local storage (so it persists on page refresh)
     // useEffect(() => {
@@ -36,7 +39,7 @@ export const AuthProvider = ({ children }) => {
     // }, [token]);
 
     return (
-        <AuthContext.Provider value={{ user, setUser, token, setToken }}>
+        <AuthContext.Provider value={{ user, setUser, token, setToken, loading }}>
             {children}
         </AuthContext.Provider>
     );

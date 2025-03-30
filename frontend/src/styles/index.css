@@ -34,8 +34,6 @@
 html {
     scroll-behavior: smooth;
     /* font-size: 0.85rem; */
-    /* overflow-y: scroll; */
-    /* scrollbar-gutter: stable; */
 }
 
 a::selection,
@@ -55,13 +53,11 @@ a::selection,
 body {
     font-family: "Quicksand", sans-serif;
     background-color: var(--bg-gray);
-    /* font-size: 1.1em; */
 }
 
 a,
 button {
     transition: all 0.4s ease;
-    /* font-weight: bold; */
     cursor: pointer;
 }
 
@@ -73,71 +69,4 @@ h5,
 h6 {
     font-family: "League Spartan", sans-serif;
     font-weight: bold;
-}
-
-/* ======================================================= */
-
-/* Hero Section Devider */
-.custom-shape-divider-bottom-1741746772 {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    overflow: hidden;
-    line-height: 0;
-    transform: rotate(180deg);
-}
-
-.custom-shape-divider-bottom-1741746772 svg {
-    position: relative;
-    display: block;
-    width: calc(100% + 1.3px);
-    height: 79px;
-}
-
-.custom-shape-divider-bottom-1741746772 .shape-fill {
-    fill: var(--bg-gray);
-}
-
-/* Footer Section Devider */
-.custom-shape-divider-top-1742766818 {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    overflow: hidden;
-    line-height: 0;
-}
-
-.custom-shape-divider-top-1742766818 svg {
-    position: relative;
-    display: block;
-    width: calc(100% + 1.3px);
-    height: 65px;
-}
-
-.custom-shape-divider-top-1742766818 .shape-fill {
-    fill: var(--bg-gray);
-}
-
-/* ======================================================== */
-
-/* Slide-down animation */
-.slide-down {
-    animation: slideDown 0.3s ease-out;
-}
-
-@keyframes slideDown {
-    from {
-        transform: translateY(-100%);
-    }
-    to {
-        transform: translateY(0);
-    }
-}
-
-/* ======================================================== */
-
-.sort-radio-label:has(> input:checked) {
-    background-color: var(--color-primary-200);
 }

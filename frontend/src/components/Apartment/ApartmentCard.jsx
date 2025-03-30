@@ -17,7 +17,7 @@ function ImageSlider() {
                     data-carousel-item
                 >
                     <img
-                        src="images/Apartments/0001.jpg"
+                        src="images/apartments/0001.jpg"
                         className="absolute top-1/2 left-1/2 block h-full w-full -translate-x-1/2 -translate-y-1/2 object-cover object-center"
                         alt="..."
                     />
@@ -28,7 +28,7 @@ function ImageSlider() {
                     data-carousel-item
                 >
                     <img
-                        src="images/Apartments/0002.jpg"
+                        src="images/apartments/0002.jpg"
                         className="absolute top-1/2 left-1/2 block h-full w-full -translate-x-1/2 -translate-y-1/2 object-cover object-center"
                         alt="..."
                     />
@@ -39,7 +39,7 @@ function ImageSlider() {
                     data-carousel-item
                 >
                     <img
-                        src="images/Apartments/0003.jpg"
+                        src="images/apartments/0003.jpg"
                         className="absolute top-1/2 left-1/2 block h-full w-full -translate-x-1/2 -translate-y-1/2 object-cover object-center"
                         alt="..."
                     />

@@ -4,41 +4,41 @@ import Button from "../components/common/Button";
 import { useAuth } from "../contexts/AuthContext";
 
 function UserDropdown() {
-    const {user} = useAuth();
+    const { user } = useAuth();
 
     return (
         <div
             id="userDropdown"
-            class="z-10 hidden w-44 divide-y divide-gray-100 rounded-lg bg-white shadow-sm"
+            className="z-10 hidden w-44 divide-y divide-gray-100 rounded-lg bg-white shadow-sm"
         >
-            <div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
+            <div className="px-4 py-3 text-sm text-gray-900 ">
                 <div>{user.name}</div>
-                <div class="truncate font-medium">name@flowbite.com</div>
+                <div className="truncate font-medium">{user.email}</div>
             </div>
             <ul
-                class="py-2 text-sm text-gray-700 dark:text-gray-200"
+                className="py-2 text-sm text-gray-700"
                 aria-labelledby="avatarButton"
             >
                 <li>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100">
+                    <a href="#" className="block px-4 py-2 hover:bg-gray-100">
                         Dashboard
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100">
+                    <a href="#" className="block px-4 py-2 hover:bg-gray-100">
                         Settings
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100">
+                    <a href="#" className="block px-4 py-2 hover:bg-gray-100">
                         Earnings
                     </a>
                 </li>
             </ul>
-            <div class="py-1">
+            <div className="py-1">
                 <a
                     href="#"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 "
                 >
                     Sign out
                 </a>
@@ -52,6 +52,9 @@ export default function Header() {
     const [isHeroPresent, setIsHeroPresent] = useState(true);
     const location = useLocation(); // Get the current route's location
 
+    // Auth Context
+    const { user, token, loading } = useAuth();
+
     // Function to check if the link is active
     const isActive = (path) =>
         location.pathname === path
@@ -60,12 +63,12 @@ export default function Header() {
 
     useEffect(() => {
         // Check if hero section exists on the current page
-        if (location.pathname === "/") {
+        if (location.pathname === "/" && !token) {
             setIsHeroPresent(true);
         } else {
             setIsHeroPresent(false);
         }
-    }, [location]);
+    }, [location, token]);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -86,18 +89,32 @@ export default function Header() {
         };
     }, [isHeroPresent]);
 
-    // Auth Context
-    const {token} = useAuth();
+    if (loading) {
+        return null;
+    }
 
     return (
+        // <header
+        //     id="header"
+        //     className={`${
+        //         location.pathname === "/explore"
+        //             ? "bg-white shadow-md" // White background, no sticky
+        //             : (token || scrolled || !isHeroPresent) &&
+        //                 document.readyState === "complete"
+        //               ? "slide-down sticky top-0 z-50 bg-white shadow-md"
+        //               : "bg-(--bg-sky)"
+        //     }`}
+        // >
         <header
             id="header"
             className={`${
                 location.pathname === "/explore"
                     ? "bg-white shadow-md" // White background, no sticky
-                    : scrolled || !isHeroPresent
+                    : scrolled && isHeroPresent // Apply slide-down animation only when scrolling
                       ? "slide-down sticky top-0 z-50 bg-white shadow-md"
-                      : "bg-(--bg-sky)"
+                      : token || !isHeroPresent
+                        ? "sticky top-0 z-50 bg-white shadow-md"
+                        : "bg-(--bg-sky)"
             }`}
         >
             <nav className="border-gray-200 px-4 py-2.5 lg:px-6">
@@ -110,18 +127,39 @@ export default function Header() {
                             alt="HomyStay Logo"
                         />
                     </a>
+                    {/* Buttons */}
                     <div className="flex items-center lg:order-2">
-                    {console.log(token)}
+                        {/* If token exists => Show Avatar */}
                         {token ? (
-                            <i className="fa-solid fa-user rounded-full border-2 px-2.5 py-2 text-2xl text-(--secondary)"></i>
+                            // <div className="flex items-center gap-3 rounded-full bg-gray-200 px-2 py-1.5">
+                            <div className="flex items-center gap-3">
+                                {/* Notification Bell */}
+                                <div className="hover:text-primary-700 bg-primary-100 text-primary-500 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full text-xl ring-0 duration-400 hover:ring-[1.5px] lg:h-10 lg:w-10">
+                                    <i className="fa-solid fa-bell"></i>
+                                </div>
+                                {/* User Avatar */}
+                                <div
+                                    data-dropdown-toggle="userDropdown"
+                                    data-dropdown-placement="bottom-start"
+                                    className="hover:ring-primary-700 ring-primary-500 h-8 w-8 cursor-pointer overflow-hidden rounded-full ring-0 duration-400 hover:ring-[1.5px] lg:h-10 lg:w-10"
+                                >
+                                    <img
+                                        className="h-full w-full object-cover"
+                                        src={user.profilePicture}
+                                        alt="User Profile Avatar"
+                                    />
+                                </div>
+
+                                <UserDropdown />
+                            </div>
                         ) : (
+                            // If token does not exist => Show Login/Signup buttons
                             <>
                                 <Link to="/login">
                                     <Button className="hover:text-primary-700 text-(--secondary)">
                                         Log in
                                     </Button>
                                 </Link>
-
                                 <Link to="/signup">
                                     <Button className="bg-primary-700 hover:bg-primary-800 text-white">
                                         Sign up
@@ -174,11 +212,6 @@ export default function Header() {
                                     className={`lg:hover:text-primary-700 hover:bg-primary-700 block border-b border-gray-100 py-2 pr-4 pl-3 hover:text-white lg:border-0 lg:p-0 lg:hover:bg-transparent ${isActive("/")}`}
                                     aria-current="page"
                                 >
-                                    {/* <a
-                                    href="/"
-                                    className="bg-primary-700 lg:text-primary-700 block rounded py-2 pr-4 pl-3 text-white lg:bg-transparent lg:p-0"
-                                    aria-current="page"
-                                    > */}
                                     Home
                                 </a>
                             </li>

@@ -8,6 +8,7 @@ import PrivacyPolicy from "../pages/PrivacyPolicy";
 import Signup from "../pages/Signup";
 import ApartmentDetails from "../components/Apartment/ApartmentDetails";
 import GuestLayout from "../layouts/GuestLayout";
+import NotFound from "../pages/NotFound";
 
 export const router = createBrowserRouter([
     {
@@ -48,7 +49,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "*",
-                element: <h1>404 - NOT FOUND</h1>,
+                element: <NotFound/>,
             },
         ],
     },

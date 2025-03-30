@@ -3,10 +3,10 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { z } from "zod";
-import MobileSignup from "../assets/illustrations/MobileSignup";
-import Button from "../components/common/Button";
-import FloatingLabel from "../components/common/FloatingLabel";
-import Section from "../components/common/Section";
+import MobileSignup from "@assets/illustrations/MobileSignup";
+import Button from "@components/common/Button";
+import FloatingLabel from "@components/common/FloatingLabel";
+import Section from "@components/common/Section";
 
 const schema = z.object({
     role: z.enum(["client", "host"], {

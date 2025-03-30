@@ -1,7 +1,10 @@
 import React, { useState } from "react";
+import { useAuth } from "../../contexts/AuthContext";
 
 function ImageSlider() {
     const [isHovered, setIsHovered] = useState(false);
+
+    const { user, token } = useAuth();
 
     return (
         <div
@@ -122,16 +125,19 @@ function ImageSlider() {
             {/* <a href="#" className="absolute top-3 right-3 z-31">
                 <i className="fa-regular fa-heart text-3xl text-white"></i>
             </a> */}
-            <a
-                href="#"
-                className="absolute top-3 right-3 z-31"
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
-            >
-                <i
-                    className={`fa-heart text-3xl transition-all duration-300 ease-in-out ${isHovered ? "fa-solid text-red-400" : "fa-regular text-white"}`}
-                ></i>
-            </a>
+            {/* Show Add-to-Favorites Buttons only to Visitors and Clients */}
+            {(!token || user.role == "client") && (
+                <a
+                    href="#"
+                    className="absolute top-3 right-3 z-31"
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                >
+                    <i
+                        className={`fa-heart text-3xl transition-all duration-300 ease-in-out ${isHovered ? "fa-solid text-red-400" : "fa-regular text-white"}`}
+                    ></i>
+                </a>
+            )}
         </div>
     );
 }
@@ -149,7 +155,7 @@ export default function ApartmentCard() {
             <div className="text-primary-700 col-span-2 flex flex-row items-center gap-2">
                 <i className="fa-solid fa-location-dot text-xl"></i>
                 {/* <a href="/apartment-details"> */}
-                    <h3 className="text-xl">Spain, Madrid</h3>
+                <h3 className="text-xl">Spain, Madrid</h3>
                 {/* </a> */}
             </div>
             {/* <!-- Date --> */}

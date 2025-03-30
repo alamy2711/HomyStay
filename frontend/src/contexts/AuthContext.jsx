@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }) => {
     // Dummy User Data / Token for demonstration purposes
     useEffect(() => {
         setUser(userData);
-        setToken();
+        setToken(1);
         setLoading(false);
     }, []);
 

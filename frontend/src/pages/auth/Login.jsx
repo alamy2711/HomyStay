@@ -3,10 +3,10 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { z } from "zod";
-import MobileLogin from "../assets/illustrations/MobileLogin";
-import Button from "../components/common/Button";
-import FloatingLabel from "../components/common/FloatingLabel";
-import Section from "../components/common/Section";
+import MobileLogin from "@assets/illustrations/MobileLogin";
+import Button from "@components/common/Button";
+import FloatingLabel from "@components/common/FloatingLabel";
+import Section from "@components/common/Section";
 
 const schema = z.object({
     email: z

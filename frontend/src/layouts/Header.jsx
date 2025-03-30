@@ -20,12 +20,12 @@ function UserDropdown() {
                 aria-labelledby="avatarButton"
             >
                 <li>
-                    <a href="#" className="block px-4 py-2 hover:bg-gray-100">
-                        Dashboard
+                    <a href="/profile" className="block px-4 py-2 hover:bg-gray-100">
+                        Profile
                     </a>
                 </li>
                 <li>
-                    <a href="#" className="block px-4 py-2 hover:bg-gray-100">
+                    <a href="/settings" className="block px-4 py-2 hover:bg-gray-100">
                         Settings
                     </a>
                 </li>

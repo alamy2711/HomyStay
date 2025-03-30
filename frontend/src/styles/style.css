@@ -41,7 +41,32 @@
     fill: var(--bg-gray);
 }
 
+/* Datepicker colors */
+.datepicker-cell.selected {
+    background-color: var(--color-primary-700) !important;
+}
+
+.datepicker-cell.range,
+.datepicker-cell.range-start,
+.datepicker-cell.range-end {
+    background-color: var(--color-primary-200) !important;
+}
+
+.datepicker-cell.selected {
+    background-color: var(--color-primary-700) !important;
+}
+
 /* Sorting Radio Buttons */
 .sort-radio-label:has(> input:checked) {
     background-color: var(--color-primary-200);
+}
+
+/* Slider */
+img.image-gallery-image {
+    /* object-fit: cover !important; */
+    /* height: 100%; */
+}
+
+.fullscreen .image-gallery-slide img {
+    max-height: 100vh !important;
 }

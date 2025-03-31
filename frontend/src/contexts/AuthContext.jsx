@@ -1,6 +1,12 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
-const AuthContext = createContext();
+const AuthContext = createContext({
+    user: {},
+    setUser: () => {},
+    token: null,
+    setToken: () => {},
+    loading: null,
+});
 
 // Dummy User Data
 const userData = {
@@ -12,12 +18,7 @@ const userData = {
 };
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState({
-        id: null,
-        name: null,
-        email: null,
-        role: null,
-    });
+    const [user, setUser] = useState();
     const [token, setToken] = useState();
     const [loading, setLoading] = useState(true);
     // const [token, setToken] = useState(localStorage.getItem("token"));
@@ -25,7 +26,7 @@ export const AuthProvider = ({ children }) => {
     // Dummy User Data / Token for demonstration purposes
     useEffect(() => {
         setUser(userData);
-        setToken(1);
+        setToken();
         setLoading(false);
     }, []);
 
@@ -39,7 +40,9 @@ export const AuthProvider = ({ children }) => {
     // }, [token]);
 
     return (
-        <AuthContext.Provider value={{ user, setUser, token, setToken, loading }}>
+        <AuthContext.Provider
+            value={{ user, setUser, token, setToken, loading }}
+        >
             {children}
         </AuthContext.Provider>
     );

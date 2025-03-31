@@ -9,8 +9,8 @@ export default function Home() {
 
     if (loading)
         return (
-            <div className="flex h-screen items-center justify-center">
-                Loading...
+            <div className="flex h-screen items-center justify-center rounded-lg bg-(--bg-gray)">
+                <div className="border-primary-700 h-12 w-12 animate-spin rounded-full border-4 border-solid border-t-transparent"></div>
             </div>
         );
     return (

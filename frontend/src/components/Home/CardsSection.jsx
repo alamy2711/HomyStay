@@ -1,7 +1,10 @@
+import ApartmentCard from "@components/Apartment/ApartmentCard";
+import { useApartments } from "@contexts/ApartmentsContext";
 import React from "react";
-import ApartmentCard from "../Apartment/ApartmentCard";
 
 export default function CardsSection() {
+    const { apartments } = useApartments();
+
     const cards = [];
 
     for (let i = 0; i < 12; i++) {
@@ -12,7 +15,7 @@ export default function CardsSection() {
         <section className="mb-10 px-4 lg:px-6">
             <div className="mx-auto grid max-w-screen-xl grid-cols-1 place-items-center gap-2 gap-y-5 rounded-lg bg-white px-4 py-10 shadow-sm md:grid-cols-2 lg:grid-cols-3">
                 {/* Heading */}
-                <div className="lg:col-span-3 mb-4 md:col-span-2 text-center font-bold">
+                <div className="mb-4 text-center font-bold md:col-span-2 lg:col-span-3">
                     <h1 className="text-3xl text-(--secondary)">
                         Find Your Perfect
                         <span className="text-primary-700"> Apartment</span>
@@ -23,7 +26,10 @@ export default function CardsSection() {
                     </p>
                 </div>
                 {/* <!-- Card --> */}
-                {cards}
+                {/* {cards} */}
+                {apartments.map((apartment) => (
+                    <ApartmentCard key={apartment.id} apartment={apartment} />
+                ))}
 
                 {/* <!-- See More Button --> */}
                 <div className="col-span-1 mt-5 flex items-center justify-center md:col-span-2 lg:col-span-3">

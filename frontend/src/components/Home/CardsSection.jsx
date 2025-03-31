@@ -1,15 +1,10 @@
 import ApartmentCard from "@components/Apartment/ApartmentCard";
+import LoadingSpinner from "@components/common/LoadingSpinner";
 import { useApartments } from "@contexts/ApartmentsContext";
 import React from "react";
 
 export default function CardsSection() {
-    const { apartments } = useApartments();
-
-    const cards = [];
-
-    for (let i = 0; i < 12; i++) {
-        cards.push(<ApartmentCard key={i} />);
-    }
+    const { apartments, loading: apartmentsLoading } = useApartments();
 
     return (
         <section className="mb-10 px-4 lg:px-6">
@@ -26,10 +21,17 @@ export default function CardsSection() {
                     </p>
                 </div>
                 {/* <!-- Card --> */}
-                {/* {cards} */}
-                {apartments.map((apartment) => (
-                    <ApartmentCard key={apartment.id} apartment={apartment} />
-                ))}
+                {apartmentsLoading ? (
+                    <LoadingSpinner />
+                ) : (
+                    apartments.map((apartment) => (
+                        <ApartmentCard
+                            key={apartment.id}
+                            apartment={apartment}
+                        />
+                    ))
+                )}
+                {}
 
                 {/* <!-- See More Button --> */}
                 <div className="col-span-1 mt-5 flex items-center justify-center md:col-span-2 lg:col-span-3">

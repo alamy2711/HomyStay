@@ -1,0 +1,7 @@
+/* Swiper Navigation */
+@media only screen and (max-width: 600px) {
+    .swiper-button-prev::after,
+    .swiper-button-next::after {
+        font-size: 1.75rem;
+    }
+}

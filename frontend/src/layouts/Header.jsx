@@ -11,7 +11,7 @@ function UserDropdown() {
             id="userDropdown"
             className="z-10 hidden w-44 divide-y divide-gray-100 rounded-lg bg-white shadow-sm"
         >
-            <div className="px-4 py-3 text-sm text-gray-900 ">
+            <div className="px-4 py-3 text-sm text-gray-900">
                 <div>{user.name}</div>
                 <div className="truncate font-medium">{user.email}</div>
             </div>
@@ -20,12 +20,18 @@ function UserDropdown() {
                 aria-labelledby="avatarButton"
             >
                 <li>
-                    <a href="/profile" className="block px-4 py-2 hover:bg-gray-100">
+                    <a
+                        href="/profile"
+                        className="block px-4 py-2 hover:bg-gray-100"
+                    >
                         Profile
                     </a>
                 </li>
                 <li>
-                    <a href="/settings" className="block px-4 py-2 hover:bg-gray-100">
+                    <a
+                        href="/settings"
+                        className="block px-4 py-2 hover:bg-gray-100"
+                    >
                         Settings
                     </a>
                 </li>
@@ -38,7 +44,7 @@ function UserDropdown() {
             <div className="py-1">
                 <a
                     href="#"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 "
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 >
                     Sign out
                 </a>
@@ -207,13 +213,19 @@ export default function Header() {
                     >
                         <ul className="mt-4 flex flex-col font-bold lg:mt-0 lg:flex-row lg:space-x-8">
                             <li>
-                                <a
+                                {/* <a
                                     href="/"
                                     className={`lg:hover:text-primary-700 hover:bg-primary-700 block border-b border-gray-100 py-2 pr-4 pl-3 hover:text-white lg:border-0 lg:p-0 lg:hover:bg-transparent ${isActive("/")}`}
                                     aria-current="page"
                                 >
                                     Home
-                                </a>
+                                </a> */}
+                                <Link
+                                    to={"/"}
+                                    className={`lg:hover:text-primary-700 hover:bg-primary-700 block border-b border-gray-100 py-2 pr-4 pl-3 hover:text-white lg:border-0 lg:p-0 lg:hover:bg-transparent ${isActive("/")}`}
+                                >
+                                    Home
+                                </Link>
                             </li>
                             <li>
                                 <a

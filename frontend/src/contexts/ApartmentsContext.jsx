@@ -5,13 +5,15 @@ const ApartmentsContext = createContext();
 
 export const ApartmentsProvider = ({ children }) => {
     const [apartments, setApartments] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         setApartments(apartmentsData);
+        setLoading(false);
     }, []);
 
     return (
-        <ApartmentsContext.Provider value={{ apartments }}>
+        <ApartmentsContext.Provider value={{ apartments, loading }}>
             {children}
         </ApartmentsContext.Provider>
     );

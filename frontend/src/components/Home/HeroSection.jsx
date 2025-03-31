@@ -1,6 +1,4 @@
-import ApartmentKey from "../../assets/illustrations/ApartmentKey";
-import ApartmentRent from "../../assets/illustrations/ApartmentRent";
-import HouseSearch from "../../assets/illustrations/HouseSearch";
+import Button from "@components/common/Button";
 import ThreeHousesSearch from "../../assets/illustrations/ThreeHousesSearch";
 
 export default function HeroSection() {
@@ -9,49 +7,43 @@ export default function HeroSection() {
             id="hero"
             className="relative mb-15 overflow-hidden bg-(--bg-sky) px-4 lg:px-6"
         >
-            <div className="mx-auto flex max-w-screen-xl flex-col gap-15 pt-25 pb-20 md:flex-row md:justify-between md:gap-0">
+            <div className="mx-auto flex max-w-screen-xl flex-col gap-15 pt-15 pb-20 md:flex-row md:justify-between md:gap-0 lg:pt-25">
                 {/* <!-- Client Side --> */}
                 <div className="flex flex-col items-center gap-3 md:items-start">
-                    <h1 className="text-4xl text-nowrap text-(--secondary)">
+                    <h1 className="text-3xl text-nowrap text-(--secondary) lg:text-4xl">
                         Find Your Perfect Stay
                     </h1>
-                    <p className="font-bold text-(--secondary)">
+                    <p className="lg:text-md text-sm font-bold text-(--secondary)">
                         Discover thousands of apartments worldwide.
                     </p>
-                    <a
+                    <Button
                         href="#search"
-                        className="bg-primary-700 hover:bg-primary-800 rounded-full px-4 py-2.5 text-sm font-medium text-white lg:px-5 lg:py-3"
+                        className="bg-primary-700 hover:bg-primary-800 text-white"
                     >
                         Find Your Stay
-                    </a>
+                    </Button>
                 </div>
 
-                {/* <!-- Image Side --> */}
-                {/* <img
-                    src="images/hsimg.png"
-                    className="hidden h-70 self-end lg:inline-block"
-                /> */}
-                {/* <ApartmentRent className="h-70" /> */}
-                {/* <ApartmentKey className="hidden h-70 self-end lg:inline-block" /> */}
-                {/* <HouseSearch className="hidden h-70 self-end lg:inline-block" /> */}
-                <ThreeHousesSearch className="hidden h-70 self-end lg:inline-block" />
+                {/* <!-- SVG Side --> */}
+                <ThreeHousesSearch className="order-first h-60 self-center md:hidden lg:order-0 lg:inline-block lg:h-70 lg:self-end" />
 
                 {/* <!-- Host Side --> */}
                 <div className="flex flex-col items-center gap-3 md:items-end">
-                    <h1 className="text-4xl text-nowrap text-(--secondary)">
+                    <h1 className="text-3xl text-nowrap text-(--secondary) lg:text-4xl">
                         Earn Money by Hosting
                     </h1>
-                    <p className="font-bold text-(--secondary)">
+                    <p className="lg:text-md text-sm font-bold text-(--secondary)">
                         List your apartment and start earning today.
                     </p>
-                    <a
+                    <Button
                         href="/signup"
-                        className="bg-primary-700 hover:bg-primary-800 rounded-full px-4 py-2.5 text-sm font-medium text-white lg:px-5 lg:py-3"
+                        className="bg-primary-700 hover:bg-primary-800 text-white"
                     >
                         Become a Host
-                    </a>
+                    </Button>
                 </div>
 
+                {/* Section Devider */}
                 <div className="custom-shape-divider-bottom-1741746772 !w-[200%] lg:!w-[100%]">
                     <svg
                         data-name="Layer 1"

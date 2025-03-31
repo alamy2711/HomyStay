@@ -1,6 +1,15 @@
-import React from "react";
-import "react-image-gallery/styles/css/image-gallery.css";
-import Button from "../common/Button";
+import Button from "@components/common/Button";
+import LoadingSpinner from "@components/common/LoadingSpinner";
+import { useApartments } from "@contexts/ApartmentsContext";
+import React, { useState } from "react";
+// import "react-image-gallery/styles/css/image-gallery.css";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/scrollbar";
+import { FreeMode, Navigation, Pagination, Thumbs } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import ImageSwiper from "@components/common/ImageSwiper";
 
 const images = [
     {
@@ -77,104 +86,177 @@ const images3 = [
     "/images/apartments/0002.jpg",
     "/images/apartments/0003.jpg",
     "/images/apartments/ap0004.jpg",
+    "/images/apartments/0001.jpg",
+    "/images/apartments/0002.jpg",
+    "/images/apartments/0003.jpg",
+    "/images/apartments/ap0004.jpg",
 ];
 
-function ImageSlider({ images }) {
-    return (
-        <div
-            id="default-carousel"
-            className="relative w-full"
-            data-carousel="static"
-        >
-            {/* <!-- Carousel wrapper --> */}
-            <div className="relative h-60 md:h-110 overflow-hidden rounded-lg">
-                {/* <!-- Images --> */}
-                {images.map((image, index) => {
-                    return (
-                        <div
-                            className="hidden duration-700 ease-in-out"
-                            data-carousel-item
-                            key={index}
-                        >
-                            <img
-                                src={image}
-                                className="absolute top-1/2 left-1/2 block h-full w-full -translate-x-1/2 -translate-y-1/2 object-cover object-center"
-                                alt="..."
-                            />
-                        </div>
-                    );
-                })}
-            </div>
-            {/* <!-- Slider indicators --> */}
-            <div className="absolute bottom-5 left-1/2 z-30 flex -translate-x-1/2 space-x-3">
-                {images.map((image, index) => {
-                    return (
-                        <button
-                            type="button"
-                            className="h-3 w-3 rounded-full"
-                            aria-current={index == 0 ? "true" : "false"}
-                            aria-label={`Slide ${index}`}
-                            data-carousel-slide-to={index}
-                            key={index}
-                        ></button>
-                    );
-                })}
-            </div>
-            {/* <!-- Slider controls --> */}
-            {/* Next Button */}
-            <button
-                type="button"
-                className="group absolute start-0 top-1/2 z-30 flex -translate-y-1/2 cursor-pointer items-center justify-center px-4 focus:outline-none"
-                data-carousel-prev
-            >
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border-2 border-white bg-white/30 group-hover:bg-white/50">
-                    <svg
-                        className="h-4 w-4 text-white"
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 6 10"
-                    >
-                        <path
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M5 1 1 5l4 4"
-                        />
-                    </svg>
-                    <span className="sr-only">Previous</span>
-                </span>
-            </button>
-            {/* Prev Button */}
-            <button
-                type="button"
-                className="group absolute end-0 top-1/2 z-30 flex -translate-y-1/2 cursor-pointer items-center justify-center px-4 focus:outline-none"
-                data-carousel-next
-            >
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border-2 border-white bg-white/30 group-hover:bg-white/50">
-                    <svg
-                        className="h-4 w-4 text-white"
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 6 10"
-                    >
-                        <path
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="m1 9 4-4-4-4"
-                        />
-                    </svg>
-                    <span className="sr-only">Next</span>
-                </span>
-            </button>
-        </div>
-    );
-}
+// function ImageSlider({ images }) {
+//     return (
+//         <div
+//             id="default-carousel"
+//             className="relative w-full"
+//             data-carousel="static"
+//         >
+//             {/* <!-- Carousel wrapper --> */}
+//             <div className="relative h-60 md:h-110 overflow-hidden rounded-lg">
+//                 {/* <!-- Images --> */}
+//                 {images.map((image, index) => {
+//                     return (
+//                         <div
+//                             className="hidden duration-700 ease-in-out"
+//                             data-carousel-item
+//                             key={index}
+//                         >
+//                             <img
+//                                 src={image}
+//                                 className="absolute top-1/2 left-1/2 block h-full w-full -translate-x-1/2 -translate-y-1/2 object-cover object-center"
+//                                 alt="..."
+//                             />
+//                         </div>
+//                     );
+//                 })}
+//             </div>
+//             {/* <!-- Slider indicators --> */}
+//             <div className="absolute bottom-5 left-1/2 z-30 flex -translate-x-1/2 space-x-3">
+//                 {images.map((image, index) => {
+//                     return (
+//                         <button
+//                             type="button"
+//                             className="h-3 w-3 rounded-full"
+//                             aria-current={index == 0 ? "true" : "false"}
+//                             aria-label={`Slide ${index}`}
+//                             data-carousel-slide-to={index}
+//                             key={index}
+//                         ></button>
+//                     );
+//                 })}
+//             </div>
+//             {/* <!-- Slider controls --> */}
+//             {/* Next Button */}
+//             <button
+//                 type="button"
+//                 className="group absolute start-0 top-1/2 z-30 flex -translate-y-1/2 cursor-pointer items-center justify-center px-4 focus:outline-none"
+//                 data-carousel-prev
+//             >
+//                 <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border-2 border-white bg-white/30 group-hover:bg-white/50">
+//                     <svg
+//                         className="h-4 w-4 text-white"
+//                         aria-hidden="true"
+//                         xmlns="http://www.w3.org/2000/svg"
+//                         fill="none"
+//                         viewBox="0 0 6 10"
+//                     >
+//                         <path
+//                             stroke="currentColor"
+//                             strokeLinecap="round"
+//                             strokeLinejoin="round"
+//                             strokeWidth="2"
+//                             d="M5 1 1 5l4 4"
+//                         />
+//                     </svg>
+//                     <span className="sr-only">Previous</span>
+//                 </span>
+//             </button>
+//             {/* Prev Button */}
+//             <button
+//                 type="button"
+//                 className="group absolute end-0 top-1/2 z-30 flex -translate-y-1/2 cursor-pointer items-center justify-center px-4 focus:outline-none"
+//                 data-carousel-next
+//             >
+//                 <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border-2 border-white bg-white/30 group-hover:bg-white/50">
+//                     <svg
+//                         className="h-4 w-4 text-white"
+//                         aria-hidden="true"
+//                         xmlns="http://www.w3.org/2000/svg"
+//                         fill="none"
+//                         viewBox="0 0 6 10"
+//                     >
+//                         <path
+//                             stroke="currentColor"
+//                             strokeLinecap="round"
+//                             strokeLinejoin="round"
+//                             strokeWidth="2"
+//                             d="m1 9 4-4-4-4"
+//                         />
+//                     </svg>
+//                     <span className="sr-only">Next</span>
+//                 </span>
+//             </button>
+//         </div>
+//     );
+// }
+
+// export function ImageSwiper({ images }) {
+//     const [thumbsSwiper, setThumbsSwiper] = useState(null);
+//     return (
+//         <div className="flex h-full flex-col select-none">
+//             {/* Main Swiper */}
+//             <Swiper
+//                 className="h-50 w-full md:h-110"
+//                 style={{
+//                     "--swiper-navigation-color": "#fff",
+//                     "--swiper-pagination-color": "#fff",
+//                 }}
+//                 modules={[Navigation, Pagination, Thumbs]}
+//                 spaceBetween={0}
+//                 slidesPerView={1}
+//                 navigation
+//                 loop={true}
+//                 pagination={{ clickable: true }}
+//                 thumbs={{ swiper: thumbsSwiper }}
+//             >
+//                 {images.map((image, index) => {
+//                     return (
+//                         <SwiperSlide key={index}>
+//                             {/* <div className="h-60 border-2 bg-amber-300"> */}
+//                             <img
+//                                 className="h-full w-full object-cover object-center"
+//                                 src={image}
+//                                 alt={`Apartment view ${index + 1}`}
+//                                 loading="lazy"
+//                                 decoding="async"
+//                             />
+//                             {/* </div> */}
+//                         </SwiperSlide>
+//                     );
+//                 })}
+//             </Swiper>
+
+//             {/* Thumb Swiper */}
+//             <Swiper
+//                 className="m-2 h-13 w-full md:h-20"
+//                 onSwiper={setThumbsSwiper}
+//                 spaceBetween={10}
+//                 slidesPerView={4.25}
+//                 freeMode={true}
+//                 watchSlidesProgress={true}
+//                 modules={[FreeMode, Navigation, Thumbs, FreeMode]}
+//             >
+//                 {images.map((image, index) => {
+//                     return (
+//                         <SwiperSlide key={index}>
+//                             <img
+//                                 className="h-full w-full object-cover object-center"
+//                                 src={image}
+//                                 alt={`Apartment view ${index + 1}`}
+//                                 loading="lazy"
+//                                 decoding="async"
+//                             />
+//                         </SwiperSlide>
+//                     );
+//                 })}
+//             </Swiper>
+//         </div>
+//     );
+// }
+
 export default function ApartmentDetails() {
+    const { apartments, loading: apartmentsLoading } = useApartments();
+    // Extracting 1 dummy apartemnt data for testing purposes
+    const apartment = apartments[0];
+
     return (
         <>
             <section className="my-20 mb-10 px-4 lg:px-6">
@@ -257,12 +339,16 @@ export default function ApartmentDetails() {
                     </div> */}
 
                     {/* Apartment Gallery */}
-                    <div className="flex items-center justify-center overflow-hidden rounded-lg bg-gray-400 lg:col-span-6 lg:h-auto">
-                        <ImageSlider images={images3} />
+                    <div className="bg-gray-400z overflow-hidden rounded-lg lg:col-span-6 h-90 md:h-120">
+                        {apartmentsLoading ? (
+                            <LoadingSpinner className="h-full" />
+                        ) : (
+                            <ImageSwiper images={apartment.images} isGallery={true} />
+                        )}
                     </div>
 
                     {/* Apartment Info */}
-                    <div className="flex flex-col text-gray-500 lg:col-span-4 md:px-2">
+                    <div className="flex flex-col text-gray-500 md:px-2 lg:col-span-4">
                         {/* Title */}
                         <h1 className="text-primary-700 mb-2 text-3xl">
                             <i className="fa-solid fa-location-dot"></i> Spain,

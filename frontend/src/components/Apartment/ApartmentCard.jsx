@@ -1,8 +1,7 @@
+import ImageSwiper from "@components/common/ImageSwiper";
 import { useAuth } from "@contexts/AuthContext";
 import React, { useMemo, useState } from "react";
 import { Link } from "react-router";
-import ImageSwiper from "@components/common/ImageSwiper";
-
 
 export function ImageSlider({ images }) {
     const { user, token } = useAuth();
@@ -119,6 +118,8 @@ export function ImageSlider({ images }) {
 }
 
 export default function ApartmentCard({ apartment }) {
+    const { user, token } = useAuth();
+    const [isHovered, setIsHovered] = useState(false);
     // useMemo to prevent formating the date in every render
     const [formattedDateStart, formattedDateEnd] = useMemo(() => {
         return [
@@ -171,10 +172,23 @@ export default function ApartmentCard({ apartment }) {
             </div>
             {/* <!-- Price --> */}
             <div className="flex flex-row items-center justify-end gap-1">
-                <h3 className="text-primary-700 text-right text-3xl">
+                <h3 className="text-primary-700 text-right text-[28px]">
                     {apartment.price} USD
                 </h3>
             </div>
+            {/* Fav */}
+            {(!token || user.role == "client") && (
+                <a
+                    href="#"
+                    className="absolute top-5 right-5 z-31"
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                >
+                    <i
+                        className={`fa-heart text-3xl transition-all duration-300 ease-in-out ${isHovered ? "fa-solid text-red-400" : "fa-regular text-white"}`}
+                    ></i>
+                </a>
+            )}
         </div>
     );
 }

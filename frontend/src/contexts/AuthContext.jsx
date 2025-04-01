@@ -14,7 +14,7 @@ const userData = {
     name: "John Doe",
     email: "john.doe@example.com",
     profilePicture: "/images/users/pfp-0004.jpg",
-    role: "client",
+    role: "host",
 };
 
 export const AuthProvider = ({ children }) => {

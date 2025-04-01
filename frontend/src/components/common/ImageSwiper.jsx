@@ -1,5 +1,18 @@
 import React, { useState } from "react";
-import { FreeMode, Navigation, Pagination, Thumbs } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/effect-fade";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import {
+    EffectFade,
+    EffectCube,
+    EffectCoverflow,
+    FreeMode,
+    Navigation,
+    Pagination,
+    Thumbs,
+
+} from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 export default function ImageSwiper({ images, isGallery }) {
@@ -13,13 +26,21 @@ export default function ImageSwiper({ images, isGallery }) {
                     "--swiper-navigation-color": "#fff",
                     "--swiper-pagination-color": "#fff",
                 }}
-                modules={[Navigation, Pagination, Thumbs]}
+                modules={[
+                    Navigation,
+                    Pagination,
+                    Thumbs,
+                    EffectFade,
+                    EffectCube,
+                    EffectCoverflow,
+                ]}
                 spaceBetween={0}
                 slidesPerView={1}
                 navigation
                 loop={true}
                 pagination={{ clickable: true }}
                 thumbs={{ swiper: thumbsSwiper }}
+                effect={"coverflow"}
             >
                 {images.map((image, index) => {
                     return (

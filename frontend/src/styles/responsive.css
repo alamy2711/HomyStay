@@ -5,3 +5,9 @@
         font-size: 1.75rem;
     }
 }
+
+
+    .swiper-button-prev::after,
+    .swiper-button-next::after {
+        font-size: 1.75rem;
+    }

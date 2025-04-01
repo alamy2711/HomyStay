@@ -172,11 +172,11 @@ export default function ApartmentCard({ apartment }) {
             </div>
             {/* <!-- Price --> */}
             <div className="flex flex-row items-center justify-end gap-1">
-                <h3 className="text-primary-700 text-right text-[28px]">
+                <h3 className="text-primary-700 text-right text-[1.65rem]">
                     {apartment.price} USD
                 </h3>
             </div>
-            {/* Fav */}
+            {/* Add-to-Favorites Buttons : Shown for Visitors and Clients only */}
             {(!token || user.role == "client") && (
                 <a
                     href="#"

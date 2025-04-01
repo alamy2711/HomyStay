@@ -1,4 +1,28 @@
-/* Swiper Navigation */
+/* <==== Overall Website Size ====>  */
+
+/* For large screens (lg) - typically 1024px and up */
+@media (min-width: 1024px) {
+    html {
+        font-size: 0.7rem;
+    }
+}
+
+/* For extra large screens (xl) - typically 1280px and up */
+@media (min-width: 1280px) {
+    html {
+        font-size: 0.8rem;
+    }
+}
+
+/* For 2xl screens - typically 1536px and up */
+@media (min-width: 1536px) {
+    html {
+        font-size: 0.95rem;
+    }
+}
+
+/* <==== Swiper Navigation ====>  */
+
 @media only screen and (max-width: 600px) {
     .swiper-button-prev::after,
     .swiper-button-next::after {
@@ -6,8 +30,7 @@
     }
 }
 
-
-    .swiper-button-prev::after,
-    .swiper-button-next::after {
-        font-size: 1.75rem;
-    }
+.swiper-button-prev::after,
+.swiper-button-next::after {
+    font-size: 1.75rem;
+}

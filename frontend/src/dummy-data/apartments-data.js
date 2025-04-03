@@ -2,7 +2,7 @@ export const apartmentsData = [
     {
         id: 1,
         type: "apartment",
-        title: "Modern Studio Downtown",
+        title: "Modern Studio Downtown in the heart of New York",
         location: "New York, USA",
         price: 35,
         rooms: 1,

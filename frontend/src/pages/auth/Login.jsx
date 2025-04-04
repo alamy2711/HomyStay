@@ -1,19 +1,23 @@
+import MobileLogin from "@assets/illustrations/MobileLogin";
+import Button from "@components/common/Button";
+import FloatingLabel from "@components/common/FloatingLabel";
+import Section from "@components/common/Section";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { z } from "zod";
-import MobileLogin from "@assets/illustrations/MobileLogin";
-import Button from "@components/common/Button";
-import FloatingLabel from "@components/common/FloatingLabel";
-import Section from "@components/common/Section";
 
 const schema = z.object({
     email: z
         .string()
-        .email("Invalid email address")
-        .nonempty("Email is required"),
-    password: z.string().min(8, "Password must be at least 8 characters"),
+        .nonempty("Email is required")
+        .email("Invalid email address"),
+    password: z
+        .string()
+        .nonempty("Password is required")
+        .min(8, "Password must be at least 8 characters")
+        .max(100, "Password cannot exceed 100 characters"),
     rememberMe: z.boolean().optional(),
 });
 

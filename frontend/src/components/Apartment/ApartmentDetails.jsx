@@ -4,24 +4,24 @@ import ImageSwiper from "@components/common/ImageSwiper";
 import LoadingSpinner from "@components/common/LoadingSpinner";
 import { useApartments } from "@contexts/ApartmentsContext";
 import { useAuth } from "@contexts/AuthContext";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { addDays, subDays } from "date-fns";
-import React, { useState } from "react";
-import "react-datepicker/dist/react-datepicker.css";
+import React, { useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+import { z } from "zod";
+const schema = z.object({
+    startDate: z.string().nonempty("Check in is required"),
+    endDate: z.string().nonempty("Check out is required"),
+});
 
 export default function ApartmentDetails() {
-    const { user, token } = useAuth();
+    const { user, token, loading: userLoading } = useAuth();
     const { apartments, loading: apartmentsLoading } = useApartments();
     const apartment = apartments[0]; // Extracting 1 dummy apartemnt data for testing purposes
-
-    const [isFavorite, setIsFavorite] = useState(false); // Add-to-Favorites Button
-
-    const [startDate, setStartDate] = useState(null); // Date Picker (Check-in)
-    const [endDate, setEndDate] = useState(null); // Date Picker (Check-out)
-
-    // Spin while Loading
-    if (apartmentsLoading) {
-        return <LoadingSpinner className="h-screen" />;
-    }
 
     // Function to calculate total price
     const calculateTotalPrice = () => {
@@ -32,6 +32,50 @@ export default function ApartmentDetails() {
         }
         return 0;
     };
+
+    const [isFavorite, setIsFavorite] = useState(false); // Add-to-Favorites Button
+    const navigate = useNavigate(); // Navigation
+
+    const [startDate, setStartDate] = useState(null); // Date Picker (Check-in)
+    const [endDate, setEndDate] = useState(null); // Date Picker (Check-out)
+
+    // useForm
+    const {
+        register,
+        handleSubmit,
+        setError,
+        formState: { errors, isSubmitting },
+    } = useForm({
+        defaultValues: {
+            startDate: null,
+            endDate: null,
+        },
+        resolver: zodResolver(schema),
+    });
+
+    const onSubmit = (e) => {
+        if (!token) {
+            navigate("/login");
+        } else if (user.role == "client") {
+            toast.success("Reservation submitted.");
+            // Proceed with reservation logic
+            // Calling  API or navigate somewhere
+        } else {
+            toast.error("Only clients can reserve.");
+        }
+    };
+
+    const [formattedDateStart, formattedDateEnd] = useMemo(() => {
+        return [
+            `${apartment?.availability.start.getDate()} ${apartment?.availability.start.toLocaleString("default", { month: "short" })} ${apartment?.availability.start.getFullYear()}`,
+            `${apartment?.availability.end.getDate()} ${apartment?.availability.end.toLocaleString("default", { month: "short" })} ${apartment?.availability.end.getFullYear()}`,
+        ];
+    }, [apartment?.availability.start, apartment?.availability.end]);
+
+    // Spin while Loading
+    if (apartmentsLoading || userLoading) {
+        return <LoadingSpinner className="h-screen" />;
+    }
 
     return (
         <main>
@@ -93,7 +137,7 @@ export default function ApartmentDetails() {
                         </div>
                         {/* Date */}
                         <p className="text-lg font-thin">
-                            15 Mar 2025 - 23 Mar 2025
+                            {formattedDateStart} - {formattedDateEnd}
                         </p>
                         <hr className="bg-transpart mx-auto my-3 border-0"></hr>
                         {/* Rooms */}
@@ -153,88 +197,103 @@ export default function ApartmentDetails() {
                     </div>
                     {/* Reservation */}
 
-                    <form className="sticky bottom-0 col-span-12 flex max-h-max flex-col gap-5 rounded-lg border border-gray-200 bg-white p-3 shadow-sm shadow-gray-400 transition-all duration-300 ease-out lg:top-30 lg:col-span-4 lg:p-5">
-                        {/* Price & Rating */}
-                        <div className="hidden items-center justify-between lg:flex">
-                            <h3 className="text-primary-700 text-3xl font-bold">
-                                {apartment.price} USD{" "}
-                                <span className="text-primary-600 text-lg">
-                                    /Night
-                                </span>
-                            </h3>
-                            <div className="flex items-center gap-1 font-[600] text-gray-600">
-                                <i className="fa-solid fa-star text-xl text-yellow-400"></i>
-                                <span className="leading-none">
-                                    {apartment.rating}
-                                </span>
+                    {
+                        <form
+                            onSubmit={handleSubmit(onSubmit)}
+                            className="sticky bottom-0 col-span-12 flex max-h-max flex-col gap-5 rounded-lg border border-gray-200 bg-white p-3 shadow-sm shadow-gray-400 transition-all duration-300 ease-out lg:top-30 lg:col-span-4 lg:p-5"
+                        >
+                            {/* Price & Rating */}
+                            <div className="hidden items-center justify-between lg:flex">
+                                <h3 className="text-primary-700 text-3xl font-bold">
+                                    {apartment.price} USD{" "}
+                                    <span className="text-primary-600 text-lg">
+                                        /Night
+                                    </span>
+                                </h3>
+                                <div className="flex items-center gap-1 font-[600] text-gray-600">
+                                    <i className="fa-solid fa-star text-xl text-yellow-400"></i>
+                                    <span className="leading-none">
+                                        {apartment.rating}
+                                    </span>
+                                </div>
                             </div>
-                        </div>
-                        {/* Inputs */}
-                        <div className="flex items-center justify-between gap-5">
-                            <DatePickerInput
-                                selected={startDate}
-                                onChange={(date) => setStartDate(date)}
-                                selectsStart
-                                startDate={startDate}
-                                endDate={endDate}
-                                maxDate={endDate && subDays(endDate, 1)}
-                                openToDate={apartment.availability.start}
-                                includeDateIntervals={[
-                                    {
-                                        start: apartment.availability.start,
-                                        end: apartment.availability.end,
-                                    },
-                                ]}
-                                // Structure
-                                popperPlacement="bottom-start"
-                                // Input
-                                id="startDate"
-                                label="Check in"
-                            />
-                            <DatePickerInput
-                                selected={endDate}
-                                onChange={(date) => setEndDate(date)}
-                                selectsEnd
-                                startDate={startDate}
-                                endDate={endDate}
-                                openToDate={apartment.availability.end}
-                                minDate={addDays(startDate, 1)}
-                                includeDateIntervals={[
-                                    {
-                                        start: apartment.availability.start,
-                                        end: apartment.availability.end,
-                                    },
-                                ]}
-                                // Structure
-                                popperPlacement="bottom-end"
-                                // Input
-                                id="endDate"
-                                label="Check out"
-                            />
-                        </div>
-                        {/* Reserve Button */}
-                        <div className="flex items-center justify-between">
-                            <Button
-                                className="bg-primary-700 hover:bg-primary-800 zlg:w-auto w-full text-white"
-                                type="submit"
-                            >
-                                Reserve
-                            </Button>
-                        </div>
-                        {/* Total Price */}
-                        {calculateTotalPrice() ? (
-                            <div className="zhidden zlg:block text-sm lg:text-base text-center text-gray-500">
-                                {" "}
-                                Total cost for your stay:{" "}
-                                <h6 className="text-primary-700 inline-block  lg:text-[1.1rem]">
-                                    {calculateTotalPrice()} USD
-                                </h6>
-                                . Payment details can be arranged with the host.
+                            {/* Inputs */}
+                            <div className="flex items-center justify-between gap-5">
+                                <DatePickerInput
+                                    selected={startDate}
+                                    onChange={(date) => setStartDate(date)}
+                                    selectsStart
+                                    startDate={startDate}
+                                    endDate={endDate}
+                                    maxDate={endDate && subDays(endDate, 1)}
+                                    openToDate={apartment.availability.start}
+                                    includeDateIntervals={[
+                                        {
+                                            start: subDays(
+                                                apartment.availability.start,
+                                                1,
+                                            ),
+                                            end: apartment.availability.end,
+                                        },
+                                    ]}
+                                    // Structure
+                                    popperPlacement="bottom-start"
+                                    // Input
+                                    id="startDate"
+                                    label="Check in"
+                                    // {...register("startDate")}
+                                />
+                                <DatePickerInput
+                                    selected={endDate}
+                                    onChange={(date) => setEndDate(date)}
+                                    selectsEnd
+                                    startDate={startDate}
+                                    endDate={endDate}
+                                    openToDate={apartment.availability.end}
+                                    minDate={addDays(startDate, 1)}
+                                    includeDateIntervals={[
+                                        {
+                                            start: subDays(
+                                                apartment.availability.start,
+                                                1,
+                                            ),
+                                            end: apartment.availability.end,
+                                        },
+                                    ]}
+                                    // Structure
+                                    popperPlacement="bottom-end"
+                                    // Input
+                                    id="endDate"
+                                    label="Check out"
+                                    // {...register("endDate")}
+                                />
                             </div>
-                        ) : (
-                            ""
-                        )}
-                    </form>
+                            {/* Reserve Button */}
+                            <div className="flex items-center justify-between">
+                                <Button
+                                    className="bg-primary-700 hover:bg-primary-800 zlg:w-auto w-full text-white"
+                                    type="submit"
+                                    // disabled={isSubmitting}
+                                >
+                                    Reserve
+                                </Button>
+                            </div>
+                            {/* Total Price */}
+                            {calculateTotalPrice() ? (
+                                <div className="text-center text-sm text-gray-500 lg:text-base">
+                                    {" "}
+                                    Total cost for your stay:{" "}
+                                    <h6 className="text-primary-700 inline-block lg:text-[1.1rem]">
+                                        {calculateTotalPrice()} USD
+                                    </h6>
+                                    . Payment details can be arranged with the
+                                    host.
+                                </div>
+                            ) : (
+                                ""
+                            )}
+                        </form>
+                    }
                 </div>
             </section>
         </main>

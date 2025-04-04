@@ -10,8 +10,8 @@ export const apartmentsData = [
         bathrooms: 1,
         guests: 2,
         availability: {
-            start: new Date("2025-03-01"),
-            end: new Date("2025-03-10"),
+            start: new Date("2025-05-01"),
+            end: new Date("2025-05-10"),
         },
         rating: 4.3,
         images: [

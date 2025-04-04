@@ -23,7 +23,7 @@ export default function Button({
 
     return (
         <Component
-            className={`rounded-full px-4 py-2.5 text-sm font-bold lg:px-5 lg:py-3 ${className}`}
+            className={`disabled:opacity-40 rounded-full px-4 py-2.5 text-sm font-bold lg:px-5 lg:py-3 ${className}`}
             href={href}
             type={Component === "button" ? type : undefined}
             {...attributes}

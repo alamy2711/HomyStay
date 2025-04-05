@@ -18,8 +18,6 @@ return new class extends Migration
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
             $table->foreign('host_id')->references('id')->on('hosts')->onDelete('cascade');
             $table->timestamps();
-
-            // Ajout des relations de clé étrangère
            
         });
     }

@@ -20,7 +20,7 @@ export default function ApartmentCard({ apartment }) {
             {/* Invisible Link Layer */}
             <Link
                 to="/apartment-details"
-                onClick={() => window.scrollTo(0, 0)}
+                // onClick={() => window.scrollTo(0, 0)}
                 className="absolute inset-0 z-0"
             ></Link>
             {/* <!-- Image --> */}

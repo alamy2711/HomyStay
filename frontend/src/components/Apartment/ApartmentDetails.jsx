@@ -54,7 +54,7 @@ export default function ApartmentDetails() {
                                 {" "}
                                 {apartment?.rating}{" "}
                                 <a
-                                    href="#Reviews"
+                                    href="#reviews"
                                     className="leading-none underline"
                                 >
                                     (26 Reviews)

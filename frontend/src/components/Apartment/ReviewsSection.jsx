@@ -1,9 +1,78 @@
 import { reviews } from "@/dummy-data/reviews-data";
 import { users } from "@/dummy-data/users-data";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import ReactPaginate from "react-paginate";
 import ReviewForm from "./ReviewForm";
 
+const REVIEWS_PER_PAGE = 5;
+
+export default function ReviewsSection() {
+    const [currentPage, setCurrentPage] = useState(0);
+
+    const offset = currentPage * REVIEWS_PER_PAGE;
+    const currentReviews = reviews.slice(offset, offset + REVIEWS_PER_PAGE);
+    const pageCount = Math.ceil(reviews.length / REVIEWS_PER_PAGE);
+
+    const handlePageClick = (event) => {
+        if (event.selected !== currentPage) {
+            setCurrentPage(event.selected);
+        }
+    };
+
+    return (
+        <section className="relative my-10 mb-10 px-4 lg:px-6" id="reviews">
+            <div className="mx-auto grid max-w-screen-xl gap-5 gap-y-15 rounded-lg bg-white px-4 py-10 shadow-sm lg:grid-cols-10">
+                {/* Form Side */}
+                <ReviewForm />
+
+                {/* Reviews Side */}
+                <div className="zshadow-sm rounded-lg bg-white lg:col-span-6 lg:px-5">
+                    <div className="zborder-b border-gray-200 pb-6">
+                        <h3 className="text-2xl text-(--secondary)">
+                            Customer Reviews
+                        </h3>
+                        <p className="mb-4 text-sm text-gray-600">
+                            Showing {offset + 1}–{offset + REVIEWS_PER_PAGE} of{" "}
+                            {reviews.length} reviews
+                        </p>
+                    </div>
+
+                    <div className="divide-y divide-gray-200">
+                        {currentReviews.map((review) => {
+                            const user = users.find(
+                                (u) => u.id === review.userId,
+                            );
+                            return user ? (
+                                <ReviewCard
+                                    key={review.id}
+                                    review={review}
+                                    user={user}
+                                />
+                            ) : null;
+                        })}
+                    </div>
+                    {/* Pagination */}
+                    <ReactPaginate
+                        previousLabel="←"
+                        nextLabel="→"
+                        pageCount={pageCount}
+                        onPageChange={handlePageClick}
+                        containerClassName="flex justify-center space-x-2 mt-6 font-[500]"
+                        pageLinkClassName="w-8 h-8 flex items-center justify-center  rounded-full text-sm cursor-pointer hover:bg-primary-200 bg-primary-50 transition"
+                        activeLinkClassName="bg-gray-800 text-white bg-primary-700 hover:bg-primary-700"
+                        previousLinkClassName="w-8 h-8 flex items-center justify-center  rounded-full text-sm cursor-pointer hover:bg-primary-200 bg-primary-50 transition"
+                        nextLinkClassName="w-8 h-8 flex items-center justify-center  rounded-full text-sm cursor-pointer hover:bg-primary-200 bg-primary-50 transition"
+                        // Optional for disabled buttons
+                        disabledClassName="opacity-50 cursor-not-allowed"
+                    />
+                </div>
+            </div>
+        </section>
+    );
+}
+
 // Single review component
+
 const ReviewCard = ({ review, user }) => {
     return (
         <div className="border-b border-gray-200 py-4 last:border-b-0">
@@ -35,97 +104,6 @@ const ReviewCard = ({ review, user }) => {
         </div>
     );
 };
-
-export default function ReviewsSection() {
-    const [currentPage, setCurrentPage] = useState(1);
-    const [currentReviews, setCurrentReviews] = useState([]);
-    const reviewsPerPage = 5;
-
-    useEffect(() => {
-        // Calculate current reviews whenever currentPage changes
-        const indexOfLastReview = currentPage * reviewsPerPage;
-        const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
-        setCurrentReviews(reviews.slice(indexOfFirstReview, indexOfLastReview));
-    }, [currentPage]); // This dependency ensures the effect runs when currentPage changes
-
-    // Calculate total pages
-    const totalPages = Math.ceil(reviews.length / reviewsPerPage);
-
-    // Get current reviews
-    const indexOfLastReview = currentPage * reviewsPerPage;
-    const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
-
-    // Change page
-    const paginate = (pageNumber) => {
-        setCurrentPage(pageNumber);
-        window.scrollTo({ top: 0, behavior: "smooth" }); // Optional: scroll to top
-    };
-
-    return (
-        <section className="relative -z-1 my-10 mb-10 px-4 lg:px-6">
-            <div className="mx-auto grid max-w-screen-xl gap-5 gap-y-15 rounded-lg bg-white px-4 py-10 shadow-sm lg:grid-cols-10">
-                {/* Form Side */}
-                <ReviewForm />
-
-                {/* Reviews Side */}
-                <div className="zshadow-sm rounded-lg bg-white lg:col-span-6 lg:px-5">
-                    <div className="zborder-b border-gray-200 pb-6">
-                        <h3 className="text-2xl text-(--secondary)">
-                            Customer Reviews
-                        </h3>
-                        <p className="mt-1 text-sm text-gray-500">
-                            Showing {(currentPage - 1) * reviewsPerPage + 1}-
-                            {Math.min(
-                                currentPage * reviewsPerPage,
-                                reviews.length,
-                            )}{" "}
-                            of {reviews.length} reviews
-                        </p>
-                    </div>
-
-                    {/* <div className="divide-y divide-gray-200">
-                        {reviews.map((review) => {
-                            const user = users.find(
-                                (u) => u.id === review.userId,
-                            );
-                            return user ? (
-                                <ReviewCard
-                                    key={review.id}
-                                    review={review}
-                                    user={user}
-                                />
-                            ) : null;
-                        })}
-                    </div> */}
-
-                    <div className="divide-y divide-gray-200">
-                        {currentReviews.map((review) => {
-                            const user = users.find(
-                                (u) => u.id === review.userId,
-                            );
-                            return user ? (
-                                <ReviewCard
-                                    key={review.id}
-                                    review={review}
-                                    user={user}
-                                />
-                            ) : null;
-                        })}
-                    </div>
-
-                    {/* Pagination */}
-                    {totalPages > 1 && (
-                        <Pagination
-                            currentPage={currentPage}
-                            totalPages={totalPages}
-                            onPageChange={paginate}
-                        />
-                    )}
-                </div>
-            </div>
-        </section>
-    );
-}
 
 // Time formatting function
 const formatTimeAgo = (date) => {
@@ -167,109 +145,6 @@ const StarRating = ({ rating = 0 }) => {
                     />
                 </svg>
             ))}
-        </div>
-    );
-};
-
-// Pagination component
-const Pagination = ({ currentPage, totalPages, onPageChange }) => {
-    const handleClick = (page) => {
-        if (page !== currentPage) {
-            onPageChange(page);
-        }
-    };
-
-    const renderPageNumbers = () => {
-        const pages = [];
-        const maxVisible = 5;
-        let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
-        let endPage = Math.min(totalPages, startPage + maxVisible - 1);
-
-        if (endPage - startPage + 1 < maxVisible) {
-            startPage = Math.max(1, endPage - maxVisible + 1);
-        }
-
-        // Always show first page
-        if (startPage > 1) {
-            pages.push(
-                <button
-                    key={1}
-                    onClick={() => handleClick(1)}
-                    className={`rounded-md px-3 py-1 ${1 === currentPage ? "bg-blue-100 text-blue-600" : "text-gray-700 hover:bg-gray-100"}`}
-                >
-                    1
-                </button>,
-            );
-            if (startPage > 2) {
-                pages.push(
-                    <span key="start-ellipsis" className="px-2">
-                        ...
-                    </span>,
-                );
-            }
-        }
-
-        // Visible pages
-        for (let i = startPage; i <= endPage; i++) {
-            pages.push(
-                <button
-                    key={i}
-                    onClick={() => handleClick(i)}
-                    className={`rounded-md px-3 py-1 ${i === currentPage ? "bg-blue-100 text-blue-600" : "text-gray-700 hover:bg-gray-100"}`}
-                >
-                    {i}
-                </button>,
-            );
-        }
-
-        // Always show last page
-        if (endPage < totalPages) {
-            if (endPage < totalPages - 1) {
-                pages.push(
-                    <span key="end-ellipsis" className="px-2">
-                        ...
-                    </span>,
-                );
-            }
-            pages.push(
-                <button
-                    key={totalPages}
-                    onClick={() => handleClick(totalPages)}
-                    className={`rounded-md px-3 py-1 ${totalPages === currentPage ? "bg-blue-100 text-blue-600" : "text-gray-700 hover:bg-gray-100"}`}
-                >
-                    {totalPages}
-                </button>,
-            );
-        }
-
-        return pages;
-    };
-
-    return (
-        <div className="mt-6 flex items-center justify-center">
-            <nav className="flex items-center gap-1">
-                <button
-                    onClick={() => handleClick(Math.max(1, currentPage - 1))}
-                    disabled={currentPage === 1}
-                    className={`rounded-md px-3 py-1 ${currentPage === 1 ? "cursor-not-allowed text-gray-400" : "text-gray-700 hover:bg-gray-100"}`}
-                    aria-label="Previous page"
-                >
-                    &laquo;
-                </button>
-
-                {renderPageNumbers()}
-
-                <button
-                    onClick={() =>
-                        handleClick(Math.min(totalPages, currentPage + 1))
-                    }
-                    disabled={currentPage === totalPages}
-                    className={`rounded-md px-3 py-1 ${currentPage === totalPages ? "cursor-not-allowed text-gray-400" : "text-gray-700 hover:bg-gray-100"}`}
-                    aria-label="Next page"
-                >
-                    &raquo;
-                </button>
-            </nav>
         </div>
     );
 };

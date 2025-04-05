@@ -1,22 +1,15 @@
+import { iconMap } from "@/constants/IconMap";
 import Button from "@components/common/Button";
 import DatePickerInput from "@components/common/DatePickerInput";
 import ImageSwiper from "@components/common/ImageSwiper";
 import LoadingSpinner from "@components/common/LoadingSpinner";
 import { useApartments } from "@contexts/ApartmentsContext";
 import { useAuth } from "@contexts/AuthContext";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { addDays, subDays } from "date-fns";
 import React, { useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-import { z } from "zod";
-const schema = z.object({
-    startDate: z.string().nonempty("Check in is required"),
-    endDate: z.string().nonempty("Check out is required"),
-});
 
 export default function ApartmentDetails() {
     const { user, token, loading: userLoading } = useAuth();
@@ -39,22 +32,14 @@ export default function ApartmentDetails() {
     const [startDate, setStartDate] = useState(null); // Date Picker (Check-in)
     const [endDate, setEndDate] = useState(null); // Date Picker (Check-out)
 
-    // useForm
-    const {
-        register,
-        handleSubmit,
-        setError,
-        formState: { errors, isSubmitting },
-    } = useForm({
-        defaultValues: {
-            startDate: null,
-            endDate: null,
-        },
-        resolver: zodResolver(schema),
-    });
-
-    const onSubmit = (e) => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (!startDate || !endDate) {
+            toast.warning("Please select a check-in and check-out date.");
+            return;
+        }
         if (!token) {
+            toast.warning("Please log in to make a reservation.");
             navigate("/login");
         } else if (user.role == "client") {
             toast.success("Reservation submitted.");
@@ -62,6 +47,16 @@ export default function ApartmentDetails() {
             // Calling  API or navigate somewhere
         } else {
             toast.error("Only clients can reserve.");
+        }
+    };
+
+    const handleContactClick = () => {
+        if (!token) {
+            toast.warning("Please log in to contact the host.");
+            navigate("/login");
+        }
+        else if (user.role != "client") {
+            toast.error("Only clients can contact the host.");
         }
     };
 
@@ -99,10 +94,13 @@ export default function ApartmentDetails() {
                         {/* Rating */}
                         <div className="flex items-center gap-2 text-yellow-400">
                             <StarRating rating={apartment.rating} />
-                            <span className="text-gray-500">
+                            <span className="leading-none text-gray-500">
                                 {" "}
                                 {apartment?.rating}{" "}
-                                <a href="#Reviews" className="underline">
+                                <a
+                                    href="#Reviews"
+                                    className="leading-none underline"
+                                >
                                     (26 Reviews)
                                 </a>
                             </span>
@@ -136,34 +134,47 @@ export default function ApartmentDetails() {
                             )}
                         </div>
                         {/* Date */}
-                        <p className="text-lg font-thin">
+                        <p className="text-lg font-[400]">
                             {formattedDateStart} - {formattedDateEnd}
                         </p>
                         <hr className="bg-transpart mx-auto my-3 border-0"></hr>
-                        {/* Rooms */}
+                        {/* General Infos */}
                         <div className="grid grid-cols-2 flex-col gap-3 gap-x-12">
                             <div>
-                                <i className="fa-solid fa-door-closed w-5"></i>{" "}
-                                {apartment.rooms} Room(s)
+                                <div className="inline-block w-6">
+                                    <i className="fa-solid fa-door-closed"></i>
+                                </div>
+                                <span>{apartment.rooms} Room(s)</span>
                             </div>
                             <div>
-                                <i className="fa-solid fa-bed w-5"></i>{" "}
-                                {apartment.beds} Bed(s)
+                                <div className="inline-block w-6">
+                                    <i className="fa-solid fa-bed"></i>
+                                </div>
+                                <span>{apartment.beds} Bed(s)</span>
                             </div>
                             <div>
-                                <i className="fa-solid fa-bath w-5"></i>{" "}
-                                {apartment.bathrooms} Bathroom(s)
+                                <div className="inline-block w-6">
+                                    <i className="fa-solid fa-bath"></i>
+                                </div>
+                                <span>{apartment.bathrooms} Bathroom(s)</span>
                             </div>
                             <div>
-                                <i className="fa-solid fa-user-group w-5"></i>{" "}
-                                {apartment.guests} Guest(s)
+                                <div className="inline-block w-6">
+                                    <i className="fa-solid fa-user-group"></i>
+                                </div>
+                                <span>{apartment.guests} Guest(s)</span>
                             </div>
                             <div>
-                                <i className="fa-solid fa-object-group w-5"></i>{" "}
+                                <div className="inline-block w-6">
+                                    <i className="fa-solid fa-object-group"></i>
+                                </div>
                                 85 m<sup>2</sup>
                             </div>
-                            <div className="line-through">
-                                <i className="fa-solid fa-paw w-5"></i> No Pets
+                            <div>
+                                <div className="inline-block w-6">
+                                    {iconMap[apartment.type].icon}
+                                </div>
+                                <span>{iconMap[apartment.type].label}</span>
                             </div>
                         </div>
                         <hr className="bg-transpart mx-auto mt-6 mb-2 h-0.5 w-[95%] rounded-sm border-0"></hr>
@@ -190,110 +201,159 @@ export default function ApartmentDetails() {
 
             {/* Description & Reservation */}
             <section className="relative my-10 mb-10 px-4 lg:px-6">
-                <div className="mx-auto grid max-w-screen-xl grid-cols-1 gap-5 rounded-lg bg-white px-4 py-10 font-bold shadow-sm lg:grid-cols-12">
-                    {/* Description */}
-                    <div className="col-span-12 h-300 bg-gray-100 lg:col-span-8">
-                        Description Section
+                <div className="mx-auto grid max-w-screen-xl grid-cols-1 gap-5 rounded-lg bg-white px-4 py-10 shadow-sm lg:grid-cols-12">
+                    {/* Full Info */}
+                    <div className="col-span-12 lg:col-span-8 lg:px-5">
+                        {/* Host */}
+                        <div className="zlg:justify-start flex items-center justify-between gap-3">
+                            <div className="flex items-center gap-3">
+                                <div className="border-primary-700 h-13 w-13 overflow-hidden rounded-full border">
+                                    <img
+                                        className="h-full w-full object-cover object-center"
+                                        src={user.profilePicture}
+                                        alt="Host Profile Picture"
+                                    />
+                                </div>
+                                <h5 className="text-xl text-gray-600">
+                                    {user.name}
+                                </h5>
+                            </div>
+                            <Button
+                                className="border-primary-700 text-primary-700 hover:bg-primary-200 flex items-center border-2"
+                                onClick={handleContactClick}
+                            >
+                                <i className="fa-solid fa-envelope mr-2 text-xl"></i>
+                                Contact
+                            </Button>
+                        </div>
+                        <hr className="mt-6 mb-10 h-0.5 w-full rounded-sm border-0 bg-gray-100"></hr>
+                        {/* About the Place */}
+                        <div>
+                            <h3 className="mb-5 text-2xl font-bold text-gray-700">
+                                About the Place
+                            </h3>
+                            <p className="text-lg leading-7.5 font-[500] text-gray-500">
+                                {apartment.description}
+                            </p>
+                        </div>
+                        <hr className="mt-6 mb-6 h-0.5 w-full rounded-sm border-0 bg-transparent"></hr>
+                        {/* Amenities */}
+                        <div>
+                            <h3 className="mb-5 text-2xl font-bold text-gray-700">
+                                Amenities
+                            </h3>
+                            <div className="grid grid-cols-1 gap-5 text-lg font-bold text-gray-500 md:grid-cols-2">
+                                {apartment.amenities.map((amenity, i) => (
+                                    <div key={i}>
+                                        <div className="[&_i]:text-primary-700 inline-block w-10 [&_i]:text-2xl">
+                                            {iconMap[amenity].icon}
+                                        </div>
+                                        <span>{iconMap[amenity].label}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     </div>
                     {/* Reservation */}
+                    <form
+                        onSubmit={handleSubmit}
+                        className="sticky bottom-0 col-span-12 flex max-h-max flex-col gap-5 rounded-lg border border-gray-200 bg-white p-3 shadow-sm shadow-gray-400 transition-all duration-300 ease-out lg:top-30 lg:col-span-4 lg:p-5"
+                    >
+                        {/* Price & Rating */}
+                        <div className="hidden items-center justify-between lg:flex">
+                            <h3 className="text-primary-700 text-3xl font-bold">
+                                {apartment.price} USD{" "}
+                                <span className="text-primary-600 text-lg">
+                                    /Night
+                                </span>
+                            </h3>
+                            <div className="flex items-center gap-1 font-[600] text-gray-600">
+                                <i className="fa-solid fa-star text-xl text-yellow-400"></i>
+                                <span className="leading-none">
+                                    {apartment.rating}
+                                </span>
+                            </div>
+                        </div>
+                        {/* Inputs */}
+                        <div className="flex items-center justify-between gap-5">
+                            <DatePickerInput
+                                selected={startDate}
+                                onChange={(date) => setStartDate(date)}
+                                selectsStart
+                                startDate={startDate}
+                                endDate={endDate}
+                                maxDate={endDate && subDays(endDate, 1)}
+                                openToDate={apartment.availability.start}
+                                includeDateIntervals={[
+                                    {
+                                        start: subDays(
+                                            apartment.availability.start,
+                                            1,
+                                        ),
+                                        end: apartment.availability.end,
+                                    },
+                                ]}
+                                // Structure
+                                popperPlacement="bottom-start"
+                                // Input
+                                id="startDate"
+                                label="Check in"
+                            />
+                            <DatePickerInput
+                                selected={endDate}
+                                onChange={(date) => setEndDate(date)}
+                                selectsEnd
+                                startDate={startDate}
+                                endDate={endDate}
+                                openToDate={apartment.availability.end}
+                                minDate={addDays(startDate, 1)}
+                                includeDateIntervals={[
+                                    {
+                                        start: subDays(
+                                            apartment.availability.start,
+                                            1,
+                                        ),
+                                        end: apartment.availability.end,
+                                    },
+                                ]}
+                                // Structure
+                                popperPlacement="bottom-end"
+                                // Input
+                                id="endDate"
+                                label="Check out"
+                                // {...register("endDate")}
+                            />
+                        </div>
+                        {/* Reserve Button */}
+                        <div className="flex items-center justify-between">
+                            <Button
+                                className="bg-primary-700 hover:bg-primary-800 zlg:w-auto w-full text-white"
+                                type="submit"
+                            >
+                                Reserve
+                            </Button>
+                        </div>
+                        {/* Total Price */}
+                        {calculateTotalPrice() ? (
+                            <div className="text-center text-sm font-[600] text-gray-500 lg:text-base">
+                                {" "}
+                                Total cost for your stay:{" "}
+                                <h6 className="text-primary-700 inline-block lg:text-[1.1rem]">
+                                    {calculateTotalPrice()} USD
+                                </h6>
+                                . Payment details can be arranged with the host.
+                            </div>
+                        ) : (
+                            ""
+                        )}
+                    </form>
+                </div>
+            </section>
 
-                    {
-                        <form
-                            onSubmit={handleSubmit(onSubmit)}
-                            className="sticky bottom-0 col-span-12 flex max-h-max flex-col gap-5 rounded-lg border border-gray-200 bg-white p-3 shadow-sm shadow-gray-400 transition-all duration-300 ease-out lg:top-30 lg:col-span-4 lg:p-5"
-                        >
-                            {/* Price & Rating */}
-                            <div className="hidden items-center justify-between lg:flex">
-                                <h3 className="text-primary-700 text-3xl font-bold">
-                                    {apartment.price} USD{" "}
-                                    <span className="text-primary-600 text-lg">
-                                        /Night
-                                    </span>
-                                </h3>
-                                <div className="flex items-center gap-1 font-[600] text-gray-600">
-                                    <i className="fa-solid fa-star text-xl text-yellow-400"></i>
-                                    <span className="leading-none">
-                                        {apartment.rating}
-                                    </span>
-                                </div>
-                            </div>
-                            {/* Inputs */}
-                            <div className="flex items-center justify-between gap-5">
-                                <DatePickerInput
-                                    selected={startDate}
-                                    onChange={(date) => setStartDate(date)}
-                                    selectsStart
-                                    startDate={startDate}
-                                    endDate={endDate}
-                                    maxDate={endDate && subDays(endDate, 1)}
-                                    openToDate={apartment.availability.start}
-                                    includeDateIntervals={[
-                                        {
-                                            start: subDays(
-                                                apartment.availability.start,
-                                                1,
-                                            ),
-                                            end: apartment.availability.end,
-                                        },
-                                    ]}
-                                    // Structure
-                                    popperPlacement="bottom-start"
-                                    // Input
-                                    id="startDate"
-                                    label="Check in"
-                                    // {...register("startDate")}
-                                />
-                                <DatePickerInput
-                                    selected={endDate}
-                                    onChange={(date) => setEndDate(date)}
-                                    selectsEnd
-                                    startDate={startDate}
-                                    endDate={endDate}
-                                    openToDate={apartment.availability.end}
-                                    minDate={addDays(startDate, 1)}
-                                    includeDateIntervals={[
-                                        {
-                                            start: subDays(
-                                                apartment.availability.start,
-                                                1,
-                                            ),
-                                            end: apartment.availability.end,
-                                        },
-                                    ]}
-                                    // Structure
-                                    popperPlacement="bottom-end"
-                                    // Input
-                                    id="endDate"
-                                    label="Check out"
-                                    // {...register("endDate")}
-                                />
-                            </div>
-                            {/* Reserve Button */}
-                            <div className="flex items-center justify-between">
-                                <Button
-                                    className="bg-primary-700 hover:bg-primary-800 zlg:w-auto w-full text-white"
-                                    type="submit"
-                                    // disabled={isSubmitting}
-                                >
-                                    Reserve
-                                </Button>
-                            </div>
-                            {/* Total Price */}
-                            {calculateTotalPrice() ? (
-                                <div className="text-center text-sm text-gray-500 lg:text-base">
-                                    {" "}
-                                    Total cost for your stay:{" "}
-                                    <h6 className="text-primary-700 inline-block lg:text-[1.1rem]">
-                                        {calculateTotalPrice()} USD
-                                    </h6>
-                                    . Payment details can be arranged with the
-                                    host.
-                                </div>
-                            ) : (
-                                ""
-                            )}
-                        </form>
-                    }
+            {/* Reviews */}
+            <section className="relative my-10 mb-10 px-4 lg:px-6">
+                <div className="mx-auto max-w-screen-xl rounded-lg bg-white px-4 py-10 shadow-sm">
+                    Review Section
                 </div>
             </section>
         </main>

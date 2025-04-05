@@ -71,6 +71,8 @@
 }
 
 .react-datepicker {
+    position: relative;
+    z-index: 999;
     font-family: "Quicksand";
     font-weight: 700;
     border-radius: 0.75rem;

@@ -13,7 +13,7 @@ export const apartmentsData = [
             start: new Date("2025-05-01"),
             end: new Date("2025-05-10"),
         },
-        rating: 4.3,
+        rating: 4.5,
         images: [
             "https://images.pexels.com/photos/276724/pexels-photo-276724.jpeg?auto=compress&cs=tinysrgb&w=500&h=300",
             "https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=500&auto=format&fit=crop&h=300",

@@ -22,7 +22,7 @@ export default function ApartmentDescription() {
 
     return (
         <section className="relative my-10 mb-10 px-4 lg:px-6">
-            <div className="mx-auto grid max-w-screen-xl grid-cols-1 gap-5 rounded-lg bg-white px-4 py-10 shadow-sm lg:grid-cols-12">
+            <div className="mx-auto grid max-w-screen-xl grid-cols-1 gap-5 gap-y-10 rounded-lg bg-white px-4 py-10 shadow-sm lg:grid-cols-12">
                 {/* Full Info */}
                 <div className="col-span-12 lg:col-span-8 lg:px-5">
                     {/* Host */}

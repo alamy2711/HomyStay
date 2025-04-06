@@ -27,10 +27,13 @@ class LoginController extends Controller
             ], 401);
         }
 
+        $token = $user->createToken('auth_token')->plainTextToken;
+
         return response()->json([
             'message' => 'Connexion réussie',
             'user' => $user,
             'token' => $token
         ]);
+
     }
 }

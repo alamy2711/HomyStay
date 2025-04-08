@@ -8,7 +8,7 @@ export default function GuestLayout() {
 
     if (loading) return null;
 
-    if (token) return <Navigate to="/profile" />;
+    if (token) return <Navigate to="/dashboard" />;
 
     return (
         <>

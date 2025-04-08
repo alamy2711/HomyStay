@@ -31,7 +31,7 @@ export default function ApartmentDescription() {
                             <div className="border-primary-700 h-13 w-13 overflow-hidden rounded-full border">
                                 <img
                                     className="h-full w-full object-cover object-center"
-                                    src={user.profilePicture}
+                                    src={user.avatar}
                                     alt="Host Profile Picture"
                                 />
                             </div>

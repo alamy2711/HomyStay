@@ -151,7 +151,7 @@ export default function Header() {
                                 >
                                     <img
                                         className="h-full w-full object-cover"
-                                        src={user.profilePicture}
+                                        src={user.avatar}
                                         alt="User Profile Avatar"
                                     />
                                 </div>

@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import ReactPaginate from "react-paginate";
 import ReviewForm from "./ReviewForm";
 
-const REVIEWS_PER_PAGE = 5;
+const REVIEWS_PER_PAGE = 10;
 
 export default function ReviewsSection() {
     const [currentPage, setCurrentPage] = useState(0);
@@ -21,13 +21,13 @@ export default function ReviewsSection() {
 
     return (
         <section className="relative my-10 mb-10 px-4 lg:px-6" id="reviews">
-            <div className="mx-auto grid max-w-screen-xl gap-5 gap-y-15 rounded-lg bg-white px-4 py-10 shadow-sm lg:grid-cols-10">
+            <div className="mx-auto grid max-w-screen-xl grid-cols-1 gap-5 gap-y-15 rounded-lg bg-white px-4 py-10 shadow-sm lg:grid-cols-10">
                 {/* Form Side */}
                 <ReviewForm />
 
                 {/* Reviews Side */}
-                <div className="zshadow-sm rounded-lg bg-white lg:col-span-6 lg:px-5">
-                    <div className="zborder-b border-gray-200 pb-6">
+                <div className="rounded-lg bg-white lg:col-span-6 lg:px-5">
+                    <div className="border-gray-200 pb-6">
                         <h3 className="text-2xl text-(--secondary)">
                             Customer Reviews
                         </h3>
@@ -37,7 +37,7 @@ export default function ReviewsSection() {
                         </p>
                     </div>
 
-                    <div className="divide-y divide-gray-200">
+                    <div className="relative h-100 divide-y divide-gray-200 overflow-y-auto">
                         {currentReviews.map((review) => {
                             const user = users.find(
                                 (u) => u.id === review.userId,
@@ -50,6 +50,9 @@ export default function ReviewsSection() {
                                 />
                             ) : null;
                         })}
+                        {/* Fog overlay */}
+                        {/* <div className="pointer-events-none sticky bottom-0 h-20 w-full bg-gradient-to-t from-white to-transparent" /> */}
+                        <div className="pointer-events-none sticky bottom-0 h-24 w-full bg-gradient-to-t from-white via-white/70 to-transparent" />
                     </div>
                     {/* Pagination */}
                     <ReactPaginate
@@ -57,7 +60,7 @@ export default function ReviewsSection() {
                         nextLabel="→"
                         pageCount={pageCount}
                         onPageChange={handlePageClick}
-                        containerClassName="flex justify-center space-x-2 mt-6 font-[500]"
+                        containerClassName="flex justify-center space-x-2 mt-10 font-[500]"
                         pageLinkClassName="w-8 h-8 flex items-center justify-center  rounded-full text-sm cursor-pointer hover:bg-primary-200 bg-primary-50 transition"
                         activeLinkClassName="bg-gray-800 text-white bg-primary-700 hover:bg-primary-700"
                         previousLinkClassName="w-8 h-8 flex items-center justify-center  rounded-full text-sm cursor-pointer hover:bg-primary-200 bg-primary-50 transition"

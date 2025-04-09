@@ -1,22 +1,10 @@
-import { createContext, useContext, useEffect, useState } from "react";
-
-const AuthContext = createContext({
-    user: {},
-    setUser: () => {},
-    token: null,
-    setToken: () => {},
-    loading: null,
-});
-
-// Dummy User Data
 import { ROLES } from "@/constants/userRoles";
 
-const users = [
+export const users = [
     {
         id: 1,
         name: "Carl Johnson",
         avatar: "https://randomuser.me/api/portraits/men/1.jpg",
-        profilePicture: "/images/users/pfp-0004.jpg",
         email: "carl.johnson@gmail.com",
         role: ROLES.CLIENT,
         joinDate: "2023-01-15",
@@ -86,51 +74,3 @@ const users = [
         joinDate: "2022-12-07",
     },
 ];
-const userData = {
-    id: 1,
-    name: "John Doe",
-    email: "john.doe@example.com",
-    profilePicture: "/images/users/pfp-0004.jpg",
-    role: "admin",
-};
-
-export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState();
-    const [token, setToken] = useState();
-    const [loading, setLoading] = useState(true);
-    // const [token, setToken] = useState(localStorage.getItem("token"));
-
-    // Dummy User Data / Token for demonstration purposes
-    useEffect(() => {
-        setUser(users[6]);
-        setToken(1);
-        setLoading(false);
-    }, []);
-
-    const logout = () => {
-        setUser(null);
-        setToken(null);
-        // localStorage.removeItem("token");
-    }
-
-    // Save token and user info in local storage (so it persists on page refresh)
-    // useEffect(() => {
-    //     if (token) {
-    //         localStorage.setItem("token", token);
-    //     } else {
-    //         localStorage.removeItem("token");
-    //     }
-    // }, [token]);
-
-    return (
-        <AuthContext.Provider
-            value={{ user, setUser, token, setToken, logout, loading }}
-        >
-            {children}
-        </AuthContext.Provider>
-    );
-};
-
-export const useAuth = () => {
-    return useContext(AuthContext);
-};

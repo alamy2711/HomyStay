@@ -10,13 +10,13 @@ export default function FloatingLabel({
     ...attributes
 }) {
     return (
-        <div className={`relative ${className}`}>
+        <div className={`relative max-h-max ${className}`}>
             <input
                 id={id}
                 type={type}
                 placeholder=" "
                 {...attributes}
-                className="peer focus:border-primary-700 block w-full appearance-none rounded-full border-2 border-gray-300 bg-transparent px-5 pt-3 pb-2 text-sm text-gray-900 focus:ring-0 focus:outline-none"
+                className="peer focus:border-primary-700 block w-full appearance-none rounded-full border-2 bg-white border-gray-300 px-5 pt-3 pb-2 text-sm text-gray-900 focus:ring-0 focus:outline-none"
             />
             <label
                 htmlFor={id}

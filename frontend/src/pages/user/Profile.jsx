@@ -8,6 +8,10 @@ export default function Profile() {
         <PageHeading
             title="Profile"
             description={`ID : ${user?.id} - - - Name: ${user?.name} - - - Email: ${user?.email}`}
-        ></PageHeading>
+        >
+            {" "}
+            <div className="h-300"></div>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur, consectetur?</p>
+        </PageHeading>
     );
 }

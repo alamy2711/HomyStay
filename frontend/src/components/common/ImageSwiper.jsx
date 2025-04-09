@@ -3,20 +3,12 @@ import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import {
-    EffectFade,
-    EffectCube,
-    EffectCoverflow,
-    FreeMode,
-    Navigation,
-    Pagination,
-    Thumbs,
-
-} from "swiper/modules";
+import { FreeMode, Navigation, Pagination, Thumbs } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 export default function ImageSwiper({ images, isGallery }) {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
+
     return (
         <div className="flex h-full flex-col select-none">
             {/* Main Swiper */}
@@ -26,26 +18,19 @@ export default function ImageSwiper({ images, isGallery }) {
                     "--swiper-navigation-color": "#fff",
                     "--swiper-pagination-color": "#fff",
                 }}
-                modules={[
-                    Navigation,
-                    Pagination,
-                    Thumbs,
-                    EffectFade,
-                    EffectCube,
-                    EffectCoverflow,
-                ]}
+                modules={[Navigation, Pagination, Thumbs]}
                 spaceBetween={0}
                 slidesPerView={1}
                 navigation
                 loop={true}
-                pagination={{ clickable: true }}
+                pagination={{
+                    clickable: true,
+                }}
                 thumbs={{ swiper: thumbsSwiper }}
-                effect={"coverflow"}
             >
                 {images.map((image, index) => {
                     return (
                         <SwiperSlide key={index}>
-                            {/* <div className="h-60 border-2 bg-amber-300"> */}
                             <img
                                 className="h-full w-full object-cover object-center"
                                 src={image}
@@ -53,7 +38,6 @@ export default function ImageSwiper({ images, isGallery }) {
                                 loading="lazy"
                                 decoding="async"
                             />
-                            {/* </div> */}
                         </SwiperSlide>
                     );
                 })}
@@ -64,15 +48,18 @@ export default function ImageSwiper({ images, isGallery }) {
                 <Swiper
                     className="mt-2 h-13 w-full md:h-23"
                     onSwiper={setThumbsSwiper}
-                    spaceBetween={10}
-                    slidesPerView={4.25}
+                    spaceBetween={8}
+                    slidesPerView={4.75}
                     freeMode={true}
                     watchSlidesProgress={true}
-                    modules={[FreeMode, Navigation, Thumbs, FreeMode]}
+                    modules={[FreeMode, Navigation, Thumbs]}
                 >
                     {images.map((image, index) => {
                         return (
-                            <SwiperSlide key={index}>
+                            <SwiperSlide
+                                key={index}
+                                className="border-primary-700 cursor-pointer overflow-hidden rounded-lg opacity-50 duration-300 ease-in-out hover:opacity-100 [&.swiper-slide-thumb-active]:border-2 [&.swiper-slide-thumb-active]:opacity-100"
+                            >
                                 <img
                                     className="h-full w-full object-cover object-center"
                                     src={image}

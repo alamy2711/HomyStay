@@ -1,8 +1,8 @@
 export const apartmentsData = [
     {
         id: 1,
-        type: "apartment",
-        title: "Modern Studio Downtown",
+        type: "house",
+        title: "Modern Studio Downtown in the heart of New York",
         location: "New York, USA",
         price: 35,
         rooms: 1,
@@ -10,10 +10,10 @@ export const apartmentsData = [
         bathrooms: 1,
         guests: 2,
         availability: {
-            start: new Date("2025-03-01"),
-            end: new Date("2025-03-10"),
+            start: new Date("2025-05-01"),
+            end: new Date("2025-05-10"),
         },
-        rating: 4.3,
+        rating: 4.5,
         images: [
             "https://images.pexels.com/photos/276724/pexels-photo-276724.jpeg?auto=compress&cs=tinysrgb&w=500&h=300",
             "https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=500&auto=format&fit=crop&h=300",
@@ -23,7 +23,18 @@ export const apartmentsData = [
             "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=500&auto=format&fit=crop&h=300",
             "https://images.pexels.com/photos/2724749/pexels-photo-2724749.jpeg?auto=compress&cs=tinysrgb&w=500&h=300",
         ],
-        description: "Cozy studio with city views in the heart of Manhattan.",
+        description:
+            "A charming and cozy studio apartment offering stunning city views, nestled in the vibrant heart of Manhattan. Perfect for solo travelers, couples, or business visitors, this thoughtfully designed space features modern furnishings, a comfortable queen-sized bed, a fully equipped kitchenette, and a stylish bathroom with premium amenities. Large windows flood the room with natural light while framing picturesque skyline vistas, creating a bright and inviting atmosphere.",
+        amenities: [
+            "wifi",
+            "air_conditioning",
+            "heating",
+            "kitchen",
+            "tv",
+            "parking",
+            "washer",
+            "elevator",
+        ],
     },
     {
         id: 2,

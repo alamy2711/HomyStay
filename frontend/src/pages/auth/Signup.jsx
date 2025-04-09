@@ -1,12 +1,12 @@
+import MobileSignup from "@assets/illustrations/MobileSignup";
+import Button from "@components/common/Button";
+import FloatingLabel from "@components/common/FloatingLabel";
+import Section from "@components/common/Section";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { z } from "zod";
-import MobileSignup from "@assets/illustrations/MobileSignup";
-import Button from "@components/common/Button";
-import FloatingLabel from "@components/common/FloatingLabel";
-import Section from "@components/common/Section";
 
 const schema = z.object({
     role: z.enum(["client", "host"], {
@@ -31,8 +31,12 @@ const schema = z.object({
     birthday: z
         .string()
         .nonempty("Birthday is required")
+        .regex(
+            /^([1-9]|0[1-9]|[12][0-9]|3[01])\/([1-9]|0[1-9]|1[0-2])\/(19|20)\d{2}$/,
+            "Birthday must be in the format dd/mm/yyyy",
+        )
         .refine((date) => {
-            const [day, month, year] = date.split("-");
+            const [day, month, year] = date.split("/");
             const formattedDate = `${year}-${month}-${day}`;
             const parsedDate = new Date(formattedDate);
 
@@ -107,7 +111,7 @@ export default function Login() {
                         Sign up As
                     </h3>
                     {/* Client OR Host */}
-                    <div className="grid grid-cols-2 px-10 gap-y-2">
+                    <div className="grid grid-cols-2 gap-y-2 px-10">
                         <input
                             type="radio"
                             id="client"
@@ -137,7 +141,7 @@ export default function Login() {
                             Host
                         </label>
                         {errors.role && (
-                            <p className="ml-2 text-sm text-red-500 col-span-2 text-center">
+                            <p className="col-span-2 ml-2 text-center text-sm text-red-500">
                                 {errors.role.message}
                             </p>
                         )}
@@ -213,12 +217,10 @@ export default function Login() {
                             <FloatingLabel
                                 id="birthday"
                                 type="text"
-                                label="Birthday"
+                                label="dd/mm/yyyy"
+                                placeholder="dd/mm/yyyy"
                                 icon="fa-solid fa-calendar"
                                 iconClass="text-[16px]"
-                                datepicker="true"
-                                datepicker-format="dd-mm-yyyy"
-                                datepicker-autohide="true"
                                 {...register("birthday")}
                             />
                             {errors.birthday && (
@@ -269,7 +271,7 @@ export default function Login() {
                     {/* Sign up Button */}
                     <Button
                         type="submit"
-                        className="bg-primary-700 hover:bg-primary-800 disabled:bg-primary-500 text-white"
+                        className="bg-primary-700 hover:bg-primary-800 text-white"
                         disabled={isSubmitting}
                     >
                         {isSubmitting ? "Loading..." : "Sign up"}

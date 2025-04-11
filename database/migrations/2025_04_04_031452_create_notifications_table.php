@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('admin_id'); 
             $table->unsignedBigInteger('user_id'); 
-            $table->string('notif_content');
-            $table->boolean('notif_is_readen');
+            $table->string('content');
+            $table->boolean('is_readen');
             $table->timestamps();
 
             // Ajout des relations de clé étrangère

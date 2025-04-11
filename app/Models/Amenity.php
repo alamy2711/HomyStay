@@ -13,7 +13,7 @@ class Amenity extends Model
     // Specify the fillable fields
     protected $fillable = [
         'apartement_id', 
-        'amenity_type'
+        'type'
     ];
 
     /**

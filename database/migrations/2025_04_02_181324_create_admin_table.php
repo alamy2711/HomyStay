@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('user_name');
             $table->string('password');
-            $table->string('type');
+            $table->enum('type', ['Admin', 'superAdmin']);
             $table->timestamps();
         });
     }

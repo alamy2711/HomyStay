@@ -16,12 +16,14 @@ class Apartement extends Model
     // Define the fillable properties to allow mass assignment
     protected $fillable = [
         'host_id',
-        'apart_title',
-        'apart_description',
-        'apart_price',
+        'title',
+        'type',
+        'description',
+        'price',
+        'room_nbr',
         'nbr_guests',
         'availability_calendar',
-        'aprt_rating',
+        'rating',
     ];
 
     // Specify that 'availability_calendar' should be cast as a JSON array

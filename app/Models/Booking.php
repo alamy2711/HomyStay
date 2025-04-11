@@ -19,6 +19,7 @@ class Booking extends Model
         'apartement_id',
         'check_in_date',
         'check_out_date',
+        'price',
         'booking_status',
     ];
 

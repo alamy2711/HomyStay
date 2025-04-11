@@ -12,15 +12,16 @@ use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
+    //REGISTER
     public function register(Request $request){
 
         $validator = Validator::make($request->all(),[
-            'first_name' => 'required | string',
-            'last_name' => 'required | string',
-            'phone' => 'required | string',
-            'birthday' => 'required | date',
+            'first_name' => 'required | string | min:3 | max:255',
+            'last_name' => 'required | string | min:3 | max:255',
+            'phone' => 'required | string | min:10 | max:15',
+            'birthday' => 'required | date | date_format:DD/MM/YYYY',
             'email' => 'required | email | unique:users',
-            'password' => 'required | string | min:6',
+            'password' => 'required | string | min:6 | max:20 | confirmed',
             'role' => 'required | in:client, host',
         ]);
 
@@ -38,6 +39,8 @@ class RegisterController extends Controller
             'role' => $request->role,
         ]);
 
+        $user->sendEmailVerificationNotifications();
+
         if ($role === 'client') {
             $client = Client::create([
                 'id_user' => $request->id_user,
@@ -48,10 +51,48 @@ class RegisterController extends Controller
                 'id_user' => $request->id_user,
             ]);
         }
+
+        $token = $user->createToken('auth_token')->plainTextToken;
         
         return response->json([
             'message' => 'Inscription réussie',
-            'user' => $user
+            'user' => $user,
+            'token' => $token,
         ], 201);
     }    
+
+    //LOGIN
+    public function login(Request $request)
+    {
+        $request->validate([
+            'email' => 'required | email',
+            'password' => 'required | string',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if(!$user || !Hash::check($request->password, $user->password)){
+            return response()->json([
+                'message' => 'Identifiants invalides'
+            ], 401);
+        }
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json([
+            'message' => 'Connexion réussie',
+            'user' => $user,
+            'token' => $token
+        ]);
+
+    }
+
+    //LOGOUT
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+        return response()->json([
+            'message' =>'Déconnexion réussie'
+        ]);
+    }
 }

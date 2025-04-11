@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('chat_id')->constrained('chats')->onDelete('cascade');
             $table->unsignedBigInteger('sender_id');
             $table->foreign('sender_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('msg_content');
-            $table->boolean('msg_is_readen');
+            $table->string('content');
+            $table->boolean('is_readen');
             $table->timestamps();
 
             

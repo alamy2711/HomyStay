@@ -14,12 +14,14 @@ return new class extends Migration
         Schema::create('apartements', function (Blueprint $table) {
             $table->id();
             $table->foreignId('host_id')->constrained('hosts')->onDelete('cascade');
-            $table->string('apart_title');
-            $table->string('apart_description');
-            $table->decimal('apart_price');
+            $table->string('title');
+            $table->enum('type',['apartment', 'house', 'mansion', 'hotel']);
+            $table->string('description');
+            $table->decimal('price');
+            $table->integer('room_nbr');
             $table->integer('nbr_guests');
             $table->json('availability_calendar');
-            $table->double('aprt_rating', 1, 1);
+            $table->double('rating', 1, 1);
             $table->timestamps();
         });
     }

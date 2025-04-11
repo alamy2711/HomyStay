@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('apartement_id'); // Clé étrangère vers la table des apartements
             $table->date('check_in_date');
             $table->date('check_out_date');
+            $table->decimal('price');
             $table->string('booking_status');
             $table->timestamps();
 

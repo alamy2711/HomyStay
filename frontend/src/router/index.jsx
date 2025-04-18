@@ -1,6 +1,9 @@
+import AdminLayout from "@/layouts/AdminLayout";
+import ClientLayout from "@/layouts/ClientLayout";
+import DashboardLayout from "@/layouts/DashboardLayout";
 import DefaultLayout from "@/layouts/DefaultLayout";
 import GuestLayout from "@/layouts/GuestLayout";
-import UserLayout from "@/layouts/UserLayout";
+import HostLayout from "@/layouts/HostLayout";
 import ApartmentDetails from "@components/Apartment/ApartmentDetails";
 import About from "@pages/About";
 import Contact from "@pages/Contact";
@@ -8,10 +11,6 @@ import Explore from "@pages/Explore";
 import Home from "@pages/Home";
 import Login from "@pages/auth/Login";
 import Signup from "@pages/auth/Signup";
-import { createBrowserRouter } from "react-router-dom";
-import NotFound from "../pages/NotFound";
-import PrivacyPolicy from "../pages/PrivacyPolicy";
-
 import Dashboard from "@pages/user/Dashboard";
 import Favorites from "@pages/user/Favorites";
 import Inbox from "@pages/user/Inbox";
@@ -22,6 +21,9 @@ import Requests from "@pages/user/Requests";
 import Reservations from "@pages/user/Reservations";
 import Settings from "@pages/user/Settings";
 import Users from "@pages/user/Users";
+import { createBrowserRouter } from "react-router-dom";
+import NotFound from "../pages/NotFound";
+import PrivacyPolicy from "../pages/PrivacyPolicy";
 
 export const router = createBrowserRouter([
     // Default routes
@@ -79,24 +81,40 @@ export const router = createBrowserRouter([
     // User routes for authenticated users (logged in)
     {
         path: "/",
-        element: <UserLayout />,
+        element: <DashboardLayout />,
         children: [
             { path: "/dashboard", element: <Dashboard /> },
             { path: "/profile", element: <Profile /> },
             { path: "/settings", element: <Settings /> },
-            { path: "/inbox", element: <Inbox /> },
             { path: "/notifications", element: <Notifications /> },
+            { path: "/inbox", element: <Inbox /> },
 
             // Client-specific routes
-            { path: "/favorites", element: <Favorites /> },
-            { path: "/reservations", element: <Reservations /> },
+            {
+                path: "/",
+                element: <ClientLayout />,
+                children: [
+                    { path: "/favorites", element: <Favorites /> },
+                    { path: "/reservations", element: <Reservations /> },
+                ],
+            },
 
             // Host-specific routes
-            { path: "/listings", element: <Listings /> },
-            { path: "/requests", element: <Requests /> },
+            {
+                path: "/",
+                element: <HostLayout />,
+                children: [
+                    { path: "/listings", element: <Listings /> },
+                    { path: "/requests", element: <Requests /> },
+                ],
+            },
 
             // Admin-specific routes
-            { path: "/users", element: <Users /> },
+            {
+                path: "/",
+                element: <AdminLayout />,
+                children: [{ path: "/users", element: <Users /> }],
+            },
         ],
     },
 ]);

@@ -10,6 +10,8 @@ import { Link, useLocation } from "react-router-dom";
 import { NAV_ITEMS } from "../../constants/navigationItems";
 import { useSidebar } from "../../contexts/SidebarContext";
 import NavItem from "./NavItem";
+import { beautifyString } from "../../utils/stringUtils";
+
 
 
 export default function Sidebar() {
@@ -25,7 +27,7 @@ export default function Sidebar() {
                 isCollapsed ? "w-18.5" : "w-64"
             } border-r border-gray-200 bg-white shadow-sm`} // 18.5 => 64
         >
-            <div className="zoverflow-x-hidden h-full overflow-y-auto px-3 py-4">
+            <div className="h-full overflow-x-hidden overflow-y-auto px-3 py-4">
                 {/* Logo and Toggle */}
                 <div className="mb-8 flex items-center justify-between px-2">
                     <Link to="/">
@@ -76,20 +78,20 @@ export default function Sidebar() {
                             >
                                 <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-gray-300">
                                     <img
-                                        src={user.avatar}
+                                        src={user.profile_picture}
                                         className="h-full w-full object-cover object-center"
-                                        alt="User Avatar"
+                                        alt="User Profile Picture"
                                     />
                                 </div>
                                 <div
                                     className={`overflow-hidden text-nowrap ${isCollapsed ? "w-0" : "w-35"} `}
                                 >
                                     <p className="truncate text-sm font-medium text-gray-900">
-                                        {user.name}
+                                        {`${user.first_name}  ${user.last_name}`}
                                     </p>
                                     <p className="truncate text-xs text-gray-500">
                                         {/* {user.email} */}
-                                        {user.role}
+                                        {beautifyString(user.role)}
                                     </p>
                                 </div>
                             </Link>

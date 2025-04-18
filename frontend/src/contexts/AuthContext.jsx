@@ -10,6 +10,7 @@ const AuthContext = createContext({
 
 // Dummy User Data
 import { ROLES } from "@/constants/userRoles";
+import axiosClient from "../lib/axiosClient";
 
 const users = [
     {
@@ -96,35 +97,64 @@ const userData = {
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState();
-    const [token, setToken] = useState();
+    const [token, _setToken] = useState(localStorage.getItem("TOKEN") || null);
     const [loading, setLoading] = useState(true);
-    // const [token, setToken] = useState(localStorage.getItem("token"));
 
-    // Dummy User Data / Token for demonstration purposes
+    const setToken = (newToken) => {
+        _setToken(newToken);
+
+        if (newToken) {
+            localStorage.setItem("TOKEN", newToken);
+        } else {
+            localStorage.removeItem("TOKEN");
+        }
+    };
+
+    const logout = async () => {
+        setLoading(true);
+        try {
+            // await axiosClient.get("/sanctum/csrf-cookie");
+            await axiosClient.post("/logout");
+            setUser(null);
+            setToken(null);
+            localStorage.removeItem("TOKEN");
+        } catch (error) {
+            console.error("Logout failed", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        setUser(users[6]);
-        setToken(1);
-        setLoading(false);
-    }, []);
+        if (token) {
+            setLoading(true); // start loading before request
 
-    const logout = () => {
-        setUser(null);
-        setToken(null);
-        // localStorage.removeItem("token");
-    }
-
-    // Save token and user info in local storage (so it persists on page refresh)
-    // useEffect(() => {
-    //     if (token) {
-    //         localStorage.setItem("token", token);
-    //     } else {
-    //         localStorage.removeItem("token");
-    //     }
-    // }, [token]);
+            axiosClient
+                .get("/user")
+                .then(({ data }) => {
+                    setUser(data);
+                })
+                .catch(() => {
+                    setToken(null);
+                    setUser(null);
+                })
+                .finally(() => setLoading(false)); // stop loading in any case
+        } else {
+            setLoading(false); // no token = no need to load
+        }
+    }, [token]);
 
     return (
         <AuthContext.Provider
-            value={{ user, setUser, token, setToken, logout, loading }}
+            value={{
+                user,
+                setUser,
+                token,
+                setToken,
+                logout,
+                loading,
+                setLoading,
+            }}
         >
             {children}
         </AuthContext.Provider>

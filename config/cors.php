@@ -15,13 +15,14 @@ return [
     |
     */
 
-    'paths' => ['*'],
+    // 'paths' => ['*'],
+    'paths' => ['api/*', 'sanctum/csrf-cookie', 'login', 'logout', 'signup'],
 
     'allowed_methods' => ['*'],
 
     'allowed_origins' => [env('FRONTEND_URL', 'http://localhost:3000')],
 
-    'allowed_origins_patterns' => [],
+    'allowed_origins_patterns' => ['/^https?:\/\/[\w.-]+:3000$/'], // Added
 
     'allowed_headers' => ['*'],
 

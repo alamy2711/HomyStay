@@ -6,11 +6,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
+    use HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -18,9 +21,15 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
+        // 'gender',
+        'birthday',
+        'profile_picture',
+        'phone',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -44,5 +53,14 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function getProfilePictureAttribute($value)
+    {
+        if ($value) {
+            return asset('storage/' . $value); // If user uploaded one
+        }
+
+        return env('FRONTEND_URL') . '/images/defaultPFP.png';
     }
 }

@@ -11,3 +11,47 @@
         transform: translateY(0);
     }
 }
+
+/* react-modal animation */
+.modal-content {
+    transform: scale(0.5);
+    opacity: 0;
+}
+
+.modal-content--after-open {
+    animation: zoomIn 0.3s ease-out forwards;
+}
+
+.modal-content--before-close {
+    animation: zoomOut 0.3s ease-in forwards;
+}
+
+.modal-overlay--after-open {
+    opacity: 1;
+}
+
+.modal-overlay--before-close {
+    opacity: 0;
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes zoomOut {
+    from {
+        transform: scale(1);
+        opacity: 1;
+    }
+    to {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+}

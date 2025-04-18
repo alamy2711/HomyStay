@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router";
 import Button from "../components/common/Button";
 import { useAuth } from "../contexts/AuthContext";
+import UserDrowpdownMenu from "@/components/Header/UserDrowpdownMenu";
 
 function UserDropdown() {
     const { user } = useAuth();
@@ -100,17 +101,6 @@ export default function Header() {
     }
 
     return (
-        // <header
-        //     id="header"
-        //     className={`${
-        //         location.pathname === "/explore"
-        //             ? "bg-white shadow-md" // White background, no sticky
-        //             : (token || scrolled || !isHeroPresent) &&
-        //                 document.readyState === "complete"
-        //               ? "slide-down sticky top-0 z-50 bg-white shadow-md"
-        //               : "bg-(--bg-sky)"
-        //     }`}
-        // >
         <header
             id="header"
             className={`${
@@ -151,12 +141,11 @@ export default function Header() {
                                 >
                                     <img
                                         className="h-full w-full object-cover"
-                                        src={user.avatar}
+                                        src={user.profile_picture}
                                         alt="User Profile Avatar"
                                     />
                                 </div>
-
-                                <UserDropdown />
+                                <UserDrowpdownMenu />
                             </div>
                         ) : (
                             // If token does not exist => Show Login/Signup buttons
@@ -213,13 +202,6 @@ export default function Header() {
                     >
                         <ul className="mt-4 flex flex-col font-bold lg:mt-0 lg:flex-row lg:space-x-8">
                             <li>
-                                {/* <a
-                                    href="/"
-                                    className={`lg:hover:text-primary-700 hover:bg-primary-700 block border-b border-gray-100 py-2 pr-4 pl-3 hover:text-white lg:border-0 lg:p-0 lg:hover:bg-transparent ${isActive("/")}`}
-                                    aria-current="page"
-                                >
-                                    Home
-                                </a> */}
                                 <Link
                                     to={"/"}
                                     className={`lg:hover:text-primary-700 hover:bg-primary-700 block border-b border-gray-100 py-2 pr-4 pl-3 hover:text-white lg:border-0 lg:p-0 lg:hover:bg-transparent ${isActive("/")}`}

@@ -1,3 +1,4 @@
+import axiosClient from "@/lib/axiosClient";
 import MobileSignup from "@assets/illustrations/MobileSignup";
 import Button from "@components/common/Button";
 import FloatingLabel from "@components/common/FloatingLabel";
@@ -7,6 +8,8 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { z } from "zod";
+import { useAuth } from "../../contexts/AuthContext";
+import { formatDate, parseDate } from "../../utils/dateFormatter";
 
 const schema = z.object({
     role: z.enum(["client", "host"], {
@@ -36,17 +39,18 @@ const schema = z.object({
             "Birthday must be in the format dd/mm/yyyy",
         )
         .refine((date) => {
-            const [day, month, year] = date.split("/");
-            const formattedDate = `${year}-${month}-${day}`;
-            const parsedDate = new Date(formattedDate);
+            const parsedBirthday = parseDate(date, "dd/MM/yyyy");
 
-            if (isNaN(parsedDate)) return false;
+            if (isNaN(parsedBirthday)) return false;
 
             const today = new Date();
-            const minAge = 18; // Example: Require at least 18 years old
-            const age = today.getFullYear() - parsedDate.getFullYear();
+            const minDate = new Date(
+                today.getFullYear() - 18,
+                today.getMonth(),
+                today.getDate(),
+            );
 
-            return age >= minAge;
+            return parsedBirthday <= minDate;
         }, "You must be at least 18 years old"),
     email: z
         .string()
@@ -59,7 +63,8 @@ const schema = z.object({
         .max(100, "Password cannot exceed 100 characters"),
 });
 
-export default function Login() {
+export default function Signup() {
+    const { setToken, setUser } = useAuth();
     const {
         register,
         handleSubmit,
@@ -67,20 +72,45 @@ export default function Login() {
         formState: { errors, isSubmitting },
     } = useForm({
         defaultValues: {
-            // email: "",
+            firstName: "Rachid",
+            lastName: "Raiss",
+            birthday: "25/11/1988",
+            phone: "0606984716",
+            email: "rachidraiss@email.com",
+            password: "123456789",
+            role: "client",
         },
         resolver: zodResolver(schema),
     });
 
-    const onSubmit = async (data) => {
+    const onSubmit = async (formData) => {
+        const parsedBirthday = parseDate(formData.birthday, "dd/MM/yyyy");
+        const formattedData = {
+            ...formData,
+            birthday: formatDate(parsedBirthday, "yyyy-MM-dd"),
+        };
+
         try {
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-            console.log(data);
-            // throw new Error();
-        } catch (error) {
-            setError("email", {
-                message: "This email is already taken",
-            });
+            // await axiosClient.get("/sanctum/csrf-cookie");
+            const response = await axiosClient.post("/signup", formattedData);
+            const { user, token } = response.data;
+
+            setToken(token);
+            setUser(user);
+        } catch (err) {
+            if (err.response) {
+                console.error("Error:", err.response.data.message);
+                if (err.response.status === 422) {
+                    const validationErrors = err.response.data.errors;
+                    Object.keys(validationErrors).forEach((field) => {
+                        setError(field, {
+                            message: validationErrors[field][0],
+                        });
+                    });
+                }
+            } else {
+                console.error("Network error:", err.message);
+            }
         }
     };
 

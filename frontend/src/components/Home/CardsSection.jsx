@@ -16,7 +16,7 @@ export default function CardsSection() {
                         Find Your Perfect
                         <span className="text-primary-700"> Apartment</span>
                     </h1>
-                    <p className="lg:text-md text-sm text-gray-500">
+                    <p className="lg:text-base text-sm text-gray-500">
                         Discover the best apartments available for your next
                         stay.
                     </p>

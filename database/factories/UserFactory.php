@@ -21,15 +21,37 @@ class UserFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition(): array
+    public function definition()
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
+            'first_name' => $this->faker->firstName(),
+            'last_name' => $this->faker->lastName(),
+            'email' => $this->faker->unique()->safeEmail(),
+            // 'email_verified_at' => now(),
+            'password' => Hash::make('password'), // default password
+            // 'remember_token' => Str::random(10),
+            'role' => 'client',
+            'phone' => $this->faker->phoneNumber(),
+            'birthday' => $this->faker->date(),
         ];
+    }
+
+    /**
+     * State for the specific super admin user
+     */
+    public function superAdmin()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'first_name' => 'Carle',
+                'last_name' => 'James',
+                'email' => 'superadmin@email.com',
+                'password' => Hash::make('123456789'),
+                'role' => 'super_admin',
+                'phone' => null,
+                'birthday' => null,
+            ];
+        });
     }
 
     /**

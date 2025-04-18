@@ -7,6 +7,8 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { z } from "zod";
+import { useAuth } from "../../contexts/AuthContext";
+import axiosClient from "../../lib/axiosClient";
 
 const schema = z.object({
     email: z
@@ -22,6 +24,7 @@ const schema = z.object({
 });
 
 export default function Login() {
+    const { setToken, setUser } = useAuth();
     const {
         register,
         handleSubmit,
@@ -29,20 +32,34 @@ export default function Login() {
         formState: { errors, isSubmitting },
     } = useForm({
         defaultValues: {
-            // email: "",
+            password: "123456789",
         },
         resolver: zodResolver(schema),
     });
 
-    const onSubmit = async (data) => {
+    const onSubmit = async (formData) => {
         try {
+            // await axiosClient.get("/sanctum/csrf-cookie");
+            const response = await axiosClient.post("/login", formData);
             await new Promise((resolve) => setTimeout(resolve, 1000));
-            console.log(data);
-            // throw new Error();
-        } catch (error) {
-            setError("email", {
-                message: "This email is already taken",
-            });
+            const { user, token } = response.data;
+
+            setUser(user);
+            setToken(token);
+        } catch (err) {
+            if (err.response) {
+                console.error("Error:", err.response.data.message);
+                if (err.response.status === 401) {
+                    const validationErrors = err.response.data.errors;
+                    Object.keys(validationErrors).forEach((field) => {
+                        setError(field, {
+                            message: validationErrors[field][0],
+                        });
+                    });
+                }
+            } else {
+                console.error("Network error:", err.message);
+            }
         }
     };
 

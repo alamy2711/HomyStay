@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,7 +22,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/signup', [AuthController::class, 'signup']);
-Route::post('/users', [AuthController::class, 'createAdmin']);
+Route::post('/admin/create', [AdminController::class, 'createAdmin']);
+Route::get('/admin/users', [UserController::class, 'index']);
 
 
 Route::group(['prefix' => 'sanctum'], function () {

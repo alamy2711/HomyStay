@@ -1,3 +1,4 @@
+import axiosClient from "@/lib/axiosClient";
 import { useAuth } from "@contexts/AuthContext";
 import { useEffect, useState } from "react";
 import { FiEye, FiMail, FiSearch, FiTrash2 } from "react-icons/fi";
@@ -6,6 +7,7 @@ import Modal from "react-modal";
 import ReactPaginate from "react-paginate";
 import Select from "react-select";
 import { Tooltip as ReactTooltip } from "react-tooltip";
+import {parseDate} from "@/utils/dateFormatter";
 
 // Components
 import AdminCreationModal from "@/components/Users/modals/AdminCreationModal";
@@ -15,6 +17,7 @@ import NotificationModal from "@/components/Users/modals/NotificationModal";
 import Button from "@components/common/Button";
 import ReportsBadge from "@components/Users/ReportsBadge";
 import RoleBadge from "@components/Users/RoleBadge";
+import { formatDate } from "../../utils/dateFormatter";
 
 // Set app element for react-modal
 Modal.setAppElement("#root");
@@ -38,106 +41,13 @@ export default function Users() {
     });
     const usersPerPage = 5;
 
-    // Mock data - replace with API calls in production
     useEffect(() => {
-        const mockUsers = [
-            {
-                id: 1,
-                firstName: "John",
-                lastName: "Doe",
-                profile_picture:
-                    "https://randomuser.me/api/portraits/men/1.jpg",
-                email: "john@example.com",
-                role: "client",
-                reports: 2,
-                joinDate: "2023-01-15",
-                apartments: [],
-            },
-            {
-                id: 14,
-                firstName: "John",
-                lastName: "Doe",
-                profile_picture:
-                    "https://randomuser.me/api/portraits/men/2.jpg",
-                email: "john@example.com",
-                role: "host",
-                reports: 5,
-                joinDate: "2023-01-15",
-                apartments: [],
-            },
-            {
-                id: 24,
-                firstName: "Jane",
-                lastName: "Smith",
-                profile_picture:
-                    "https://randomuser.me/api/portraits/men/3.jpg",
-                email: "jane@example.com",
-                role: "host",
-                reports: 0,
-                joinDate: "2023-02-20",
-                apartments: [
-                    { id: 1, title: "Cozy Studio", link: "/apartments/1" },
-                    { id: 2, title: "Luxury Penthouse", link: "/apartments/2" },
-                ],
-            },
-            {
-                id: 3,
-                firstName: "Admin",
-                lastName: "One",
-                profile_picture:
-                    "https://randomuser.me/api/portraits/men/4.jpg",
-                email: "admin1@example.com",
-                role: "admin",
-                reports: null,
-                joinDate: "2023-03-10",
-                apartments: [],
-            },
-            {
-                id: 4,
-                firstName: "Super",
-                lastName: "Admin",
-                email: "super@example.com",
-                role: "super_admin",
-                reports: null,
-                joinDate: "2023-01-05",
-                apartments: [],
-            },
-            {
-                id: 5,
-                firstName: "Super",
-                lastName: "Admin",
-                email: "super@example.com",
-                role: "super_admin",
-                reports: null,
-                joinDate: "2023-01-05",
-                apartments: [],
-            },
-            {
-                id: 144,
-                firstName: "John",
-                lastName: "Doe",
-                email: "john@example.com",
-                role: "client",
-                reports: 55,
-                joinDate: "2023-01-15",
-                apartments: [],
-            },
-            {
-                id: 134,
-                firstName: "John",
-                lastName: "Doe",
-                email: "john@example.com",
-                role: "client",
-                reports: 0,
-                joinDate: "2023-01-15",
-                apartments: [],
-            },
-            // Add more mock users as needed
-        ];
-        setUsers(mockUsers);
+        axiosClient.get("/admin/users").then((response) => {
+            setUsers(response.data);
+            setLoading(false);
+        });
 
-        setLoading(false);
-    }, []);
+    }, [loading]);
 
     // Role options for react-select
     const roleOptions = [
@@ -147,7 +57,7 @@ export default function Users() {
         ...(currentUser?.role === "super_admin"
             ? [
                   { value: "admin", label: "Admins" },
-                //   { value: "super_admin", label: "Super Admins" },
+                  //   { value: "super_admin", label: "Super Admins" },
               ]
             : []),
     ];
@@ -389,8 +299,8 @@ export default function Users() {
                                                         </div>
                                                         <div className="ml-4">
                                                             <div className="flex items-center text-sm font-medium text-gray-900">
-                                                                {user.firstName}{" "}
-                                                                {user.lastName}
+                                                                {user.first_name}{" "}
+                                                                {user.last_name}
                                                             </div>
                                                             <div className="text-sm text-gray-500">
                                                                 {user.email}
@@ -399,9 +309,7 @@ export default function Users() {
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-500">
-                                                    {new Date(
-                                                        user.joinDate,
-                                                    ).toLocaleDateString()}
+                                                        {formatDate(new Date(user.created_at), "dd MMM yyyy")}
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <RoleBadge
@@ -439,10 +347,10 @@ export default function Users() {
                                                             <FiEye className="mr-1" />
                                                             {
                                                                 user.apartments
-                                                                    .length
+                                                                    ?.length
                                                             }{" "}
                                                             {user.apartments
-                                                                .length === 1
+                                                                ?.length === 1
                                                                 ? "Apartment"
                                                                 : "Apartments"}
                                                         </button>
@@ -576,6 +484,7 @@ export default function Users() {
                 <AdminCreationModal
                     isOpen={modalState.createAdmin.isOpen}
                     onClose={() => closeModal("createAdmin")}
+                    setLoading={setLoading}
                 />
 
                 <ApartmentsModal

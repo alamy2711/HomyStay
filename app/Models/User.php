@@ -23,12 +23,12 @@ class User extends Authenticatable
     protected $fillable = [
         'first_name',
         'last_name',
-        // 'gender',
-        'birthday',
-        'profile_picture',
-        'phone',
         'email',
         'password',
+        'phone',
+        'birthday',
+        'gender',
+        'profile_picture',
         'role',
     ];
 
@@ -47,13 +47,13 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    // protected function casts(): array
+    // {
+    //     return [
+    //         'email_verified_at' => 'datetime',
+    //         'password' => 'hashed',
+    //     ];
+    // }
 
     public function getProfilePictureAttribute($value)
     {
@@ -63,4 +63,36 @@ class User extends Authenticatable
 
         return env('FRONTEND_URL') . '/images/defaultPFP.png';
     }
+
+    /**
+     * Relationship: For host users – one host can have many apartments.
+     */
+    public function apartments()
+    {
+        return $this->hasMany(Apartment::class, 'host_id');
+    }
+
+    /**
+     * Relationship: For client users – a client can make many reservations.
+     */
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class, 'client_id');
+    }
+
+    /**
+     * Relationship: For client users – a client has many favorites.
+     */
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class, 'client_id');
+    }
+
+
+    public function reviews()
+    {
+        return $this->hasMany(Favorite::class, 'client_id');
+    }
 }
+
+

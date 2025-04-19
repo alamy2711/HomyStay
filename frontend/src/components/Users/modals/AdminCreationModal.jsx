@@ -1,6 +1,6 @@
 // src/components/UserManagement/AdminCreationModal.jsx
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { FiX } from "react-icons/fi";
 import Modal from "react-modal";
 import { z } from "zod";
@@ -34,7 +34,7 @@ const schema = z.object({
         .max(100, "Password cannot exceed 100 characters"),
 });
 
-const AdminCreationModal = ({ isOpen, onClose }) => {
+const AdminCreationModal = ({ isOpen, onClose, setLoading }) => {
     const {
         register,
         handleSubmit,
@@ -53,11 +53,11 @@ const AdminCreationModal = ({ isOpen, onClose }) => {
     const onSubmit = async (formData) => {
         try {
             const payload = { ...formData, role: "admin" }; // Add "admin" role
-            console.log(payload);
-            const response = await axiosClient.post("/users", payload);
+            const response = await axiosClient.post("/admin/create", payload);
             reset();
             onClose();
             toast.success("Admin created successfully!");
+            setLoading(true);
         } catch (err) {
             if (err.response) {
                 console.error("Error:", err.response.data.message);

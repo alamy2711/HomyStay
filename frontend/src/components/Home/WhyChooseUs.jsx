@@ -19,7 +19,7 @@ function MiniCard(props) {
 export default function WhyChooseUs() {
     return (
         <section className="mb-10 px-4 lg:px-6">
-            <div className="mx-auto grid  grid-cols-2 items-start gap-y-6 rounded-lg bg-white px-4 py-10 font-bold shadow-sm">
+            <div className="mx-auto grid max-w-screen-xl grid-cols-2 items-start gap-y-6 rounded-lg bg-white px-4 py-10 font-bold shadow-sm">
                 {/* Heading */}
                 <div className="col-span-2 mb-10 text-center">
                     <h1 className="text-3xl text-(--secondary)">

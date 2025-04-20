@@ -91,7 +91,12 @@ class User extends Authenticatable
 
     public function reviews()
     {
-        return $this->hasMany(Favorite::class, 'client_id');
+        return $this->hasMany(Review::class, 'client_id');
+    }
+
+    public function reports()
+    {
+        return $this->hasMany(Report::class, 'user_id');
     }
 }
 

@@ -3,12 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateAdminRequest;
+use App\Http\Resources\UserResource;
 use App\Models\Apartment;
 use App\Models\User;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
+    /**
+     * Get all users.
+     * Admins can view all users.
+     */
+    public function showUsers()
+    {
+        $users = User::with(['apartments', 'reports'])->get();
+
+        return UserResource::collection($users);
+    }
+
     /**
      * Delete a user.
      * Admins cannot delete other admins or super admins.

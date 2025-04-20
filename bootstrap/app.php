@@ -22,6 +22,11 @@ return Application::configure(basePath: dirname(__DIR__))
 
         // Prevent CSRF in api/ routes
         $middleware->validateCsrfTokens(except: ["api/*"]);
+
+        // Custom middleware
+        $middleware->alias([
+            'role' => \App\Http\Middleware\RoleMiddleware::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

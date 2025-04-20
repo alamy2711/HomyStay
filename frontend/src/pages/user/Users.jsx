@@ -7,7 +7,9 @@ import Modal from "react-modal";
 import ReactPaginate from "react-paginate";
 import Select from "react-select";
 import { Tooltip as ReactTooltip } from "react-tooltip";
-import {parseDate} from "@/utils/dateFormatter";
+import { formatDate } from "../../utils/dateFormatter";
+import { toast } from "react-toastify";
+
 
 // Components
 import AdminCreationModal from "@/components/Users/modals/AdminCreationModal";
@@ -17,7 +19,8 @@ import NotificationModal from "@/components/Users/modals/NotificationModal";
 import Button from "@components/common/Button";
 import ReportsBadge from "@components/Users/ReportsBadge";
 import RoleBadge from "@components/Users/RoleBadge";
-import { formatDate } from "../../utils/dateFormatter";
+import UsersTableSkeleton from "@components/skeletons/UsersTableSkeleton";
+
 
 // Set app element for react-modal
 Modal.setAppElement("#root");
@@ -43,10 +46,11 @@ export default function Users() {
 
     useEffect(() => {
         axiosClient.get("/admin/users").then((response) => {
-            setUsers(response.data);
+            setUsers(response.data.data);
             setLoading(false);
+        }).catch((error) => {
+            console.error("Error fetching users:", error);
         });
-
     }, [loading]);
 
     // Role options for react-select
@@ -110,11 +114,23 @@ export default function Users() {
     };
 
     // Action handlers
-    const handleDeleteUser = () => {
-        const userId = modalState.deleteUser.user?.id;
-        if (userId) {
-            setUsers(users.filter((user) => user.id !== userId));
+    const handleDeleteUser = (user) => {
+        let apiRoute = "/admin/users";
+        if (currentUser.role === "super_admin") {
+            if (user.role === "admin") {
+                apiRoute = "/super-admin/delete-admin";
+            }
         }
+
+        axiosClient
+            .delete(`${apiRoute}/${user?.id}`)
+            .then((response) => {
+                setLoading(true);
+                toast.success("User deleted successfully!");
+            })
+            .catch((error) => {
+                console.error("Error deleting user:", error);
+            })
         closeModal("deleteUser");
     };
 
@@ -234,7 +250,8 @@ export default function Users() {
                 {/* Users Table */}
                 <div className="overflow-x-auto">
                     {loading ? (
-                        <div className="p-6 text-center">Loading users...</div>
+                        // <div className="p-6 text-center">Loading users...</div>
+                        <UsersTableSkeleton />
                     ) : (
                         <>
                             <table className="min-w-full divide-y divide-gray-200">
@@ -299,7 +316,9 @@ export default function Users() {
                                                         </div>
                                                         <div className="ml-4">
                                                             <div className="flex items-center text-sm font-medium text-gray-900">
-                                                                {user.first_name}{" "}
+                                                                {
+                                                                    user.first_name
+                                                                }{" "}
                                                                 {user.last_name}
                                                             </div>
                                                             <div className="text-sm text-gray-500">
@@ -309,7 +328,12 @@ export default function Users() {
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-500">
-                                                        {formatDate(new Date(user.created_at), "dd MMM yyyy")}
+                                                    {formatDate(
+                                                        new Date(
+                                                            user.created_at,
+                                                        ),
+                                                        "dd MMM yyyy",
+                                                    )}
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <RoleBadge
@@ -322,6 +346,7 @@ export default function Users() {
                                                         <ReportsBadge
                                                             reports={
                                                                 user.reports
+                                                                    .length
                                                             }
                                                         />
                                                     ) : (
@@ -466,9 +491,9 @@ export default function Users() {
                 <ConfirmationModal
                     isOpen={modalState.deleteUser.isOpen}
                     onClose={() => closeModal("deleteUser")}
-                    onConfirm={handleDeleteUser}
+                    onConfirm={() => handleDeleteUser(modalState.deleteUser.user)}
                     title="Confirm User Deletion"
-                    message={`Are you sure you want to delete ${modalState.deleteUser.user?.firstName} ${modalState.deleteUser.user?.lastName}?`}
+                    message={`Are you sure you want to delete ${modalState.deleteUser.user?.first_name} ${modalState.deleteUser.user?.last_name}?`}
                     confirmText="Delete"
                     confirmColor="red"
                     user={modalState.deleteUser.user}

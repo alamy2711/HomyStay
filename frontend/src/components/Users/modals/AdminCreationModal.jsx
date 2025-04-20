@@ -1,13 +1,13 @@
 // src/components/UserManagement/AdminCreationModal.jsx
+import Button from "@components/common/Button";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { set, useForm } from "react-hook-form";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { FiX } from "react-icons/fi";
 import Modal from "react-modal";
+import { toast } from "react-toastify";
 import { z } from "zod";
 import axiosClient from "../../../lib/axiosClient";
-import Button from "@components/common/Button";
-import { toast } from "react-toastify";
-import { useEffect } from "react";
 
 const schema = z.object({
     firstName: z
@@ -46,6 +46,7 @@ const AdminCreationModal = ({ isOpen, onClose, setLoading }) => {
             // firstName: "Rachid",
             // lastName: "Raiss",
             // email: "rachidraiss@email.com",
+            password: "123456789",
         },
         resolver: zodResolver(schema),
     });
@@ -53,7 +54,10 @@ const AdminCreationModal = ({ isOpen, onClose, setLoading }) => {
     const onSubmit = async (formData) => {
         try {
             const payload = { ...formData, role: "admin" }; // Add "admin" role
-            const response = await axiosClient.post("/admin/create", payload);
+            const response = await axiosClient.post(
+                "/super-admin/create-admin",
+                payload,
+            );
             reset();
             onClose();
             toast.success("Admin created successfully!");

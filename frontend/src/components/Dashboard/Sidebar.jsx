@@ -11,6 +11,12 @@ import { NAV_ITEMS } from "../../constants/navigationItems";
 import { useSidebar } from "../../contexts/SidebarContext";
 import NavItem from "./NavItem";
 import { beautifyString } from "../../utils/stringUtils";
+import {
+    TbLayoutSidebarLeftCollapse,
+    TbLayoutSidebarRightCollapse,
+} from "react-icons/tb";
+import { FaAngleLeft } from "react-icons/fa6";
+import { FaAngleRight } from "react-icons/fa6";
 
 
 
@@ -20,6 +26,8 @@ export default function Sidebar() {
     const navItems = NAV_ITEMS[user?.role] || [];
     const { isHidden, toggleHidden, isCollapsed, toggleCollapsed } =
         useSidebar();
+
+    console.log(user)
 
     return (
         <aside
@@ -39,13 +47,15 @@ export default function Sidebar() {
                     </Link>
                     <button
                         onClick={toggleCollapsed}
-                        className="hover:bg-primary-50 rounded-lg p-2"
+                        className="hover:bg-primary-50 rounded-lg p-2 "
                         aria-label="Toggle sidebar"
                     >
                         {isCollapsed ? (
-                            <ChevronDoubleRightIcon className="h-6 w-6 text-gray-700" />
+                            // <ChevronDoubleRightIcon className="h-6 w-6 text-gray-700" />
+                            <FaAngleRight className="h-6 w-6 text-gray-700" />
                         ) : (
-                            <ChevronDoubleLeftIcon className="h-6 w-6 text-gray-700" />
+                            // <ChevronDoubleLeftIcon className="h-6 w-6 text-gray-700" />
+                            <FaAngleLeft className="h-6 w-6 text-gray-700" />
                         )}
                     </button>
                 </div>

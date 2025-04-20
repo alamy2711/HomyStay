@@ -6,10 +6,9 @@ import { RiUserAddLine } from "react-icons/ri";
 import Modal from "react-modal";
 import ReactPaginate from "react-paginate";
 import Select from "react-select";
+import { toast } from "react-toastify";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { formatDate } from "../../utils/dateFormatter";
-import { toast } from "react-toastify";
-
 
 // Components
 import AdminCreationModal from "@/components/Users/modals/AdminCreationModal";
@@ -17,10 +16,9 @@ import ApartmentsModal from "@/components/Users/modals/ApartmentsModal";
 import ConfirmationModal from "@/components/Users/modals/ConfirmationModal";
 import NotificationModal from "@/components/Users/modals/NotificationModal";
 import Button from "@components/common/Button";
+import UsersTableSkeleton from "@components/skeletons/UsersTableSkeleton";
 import ReportsBadge from "@components/Users/ReportsBadge";
 import RoleBadge from "@components/Users/RoleBadge";
-import UsersTableSkeleton from "@components/skeletons/UsersTableSkeleton";
-
 
 // Set app element for react-modal
 Modal.setAppElement("#root");
@@ -45,12 +43,15 @@ export default function Users() {
     const usersPerPage = 5;
 
     useEffect(() => {
-        axiosClient.get("/admin/users").then((response) => {
-            setUsers(response.data.data);
-            setLoading(false);
-        }).catch((error) => {
-            console.error("Error fetching users:", error);
-        });
+        axiosClient
+            .get("/admin/users")
+            .then((response) => {
+                setUsers(response.data.data);
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.error("Error fetching users:", error);
+            });
     }, [loading]);
 
     // Role options for react-select
@@ -130,7 +131,7 @@ export default function Users() {
             })
             .catch((error) => {
                 console.error("Error deleting user:", error);
-            })
+            });
         closeModal("deleteUser");
     };
 
@@ -159,7 +160,7 @@ export default function Users() {
         <section className="my-15 px-4 lg:px-6">
             <div className="mx-auto max-w-screen-xl overflow-hidden rounded-lg bg-white shadow-sm">
                 {/* Header */}
-                <div className="bg-primary-700z from-primary-700 to-primary-500 bg-gradient-to-r px-6 py-4">
+                <div className="from-primary-600 to-primary-700 bg-gradient-to-br px-6 py-4">
                     <div className="flex flex-col items-center justify-between gap-5 md:flex-row md:gap-0">
                         <div>
                             <h1 className="text-2xl font-bold text-white">
@@ -174,7 +175,7 @@ export default function Users() {
                         {currentUser?.role === "super_admin" && (
                             <Button
                                 onClick={() => openModal("createAdmin")}
-                                className="bg-primary-700 hover:bg-primary-800 te inline-flex items-center text-white shadow-sm"
+                                className="bg-primary-800/45 hover:bg-primary-800 te inline-flex items-center text-white shadow-sm"
                             >
                                 <RiUserAddLine className="mr-2 h-4 w-4" />
                                 Add New Admin
@@ -250,7 +251,6 @@ export default function Users() {
                 {/* Users Table */}
                 <div className="overflow-x-auto">
                     {loading ? (
-                        // <div className="p-6 text-center">Loading users...</div>
                         <UsersTableSkeleton />
                     ) : (
                         <>
@@ -491,7 +491,9 @@ export default function Users() {
                 <ConfirmationModal
                     isOpen={modalState.deleteUser.isOpen}
                     onClose={() => closeModal("deleteUser")}
-                    onConfirm={() => handleDeleteUser(modalState.deleteUser.user)}
+                    onConfirm={() =>
+                        handleDeleteUser(modalState.deleteUser.user)
+                    }
                     title="Confirm User Deletion"
                     message={`Are you sure you want to delete ${modalState.deleteUser.user?.first_name} ${modalState.deleteUser.user?.last_name}?`}
                     confirmText="Delete"

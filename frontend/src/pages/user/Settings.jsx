@@ -15,11 +15,10 @@ export default function Settings() {
     };
 
     return (
-        <section className="my-15 px-4 lg:my-30 lg:px-6">
-            <div className="mx-auto max-w-4xl rounded-lg bg-white shadow-sm">
-                <div className="overflow-hidden rounded-lg bg-white shadow">
+        <section className="my-15 px-4 lg:px-6">
+            <div className="mx-auto max-w-4xl overflow-hidden rounded-lg bg-white shadow-lg">
                     {/* Settings Header */}
-                    <div className="from-primary-700 to-primary-500 bg-gradient-to-r px-6 py-6">
+                    <div className="from-primary-600 to-primary-700 bg-gradient-to-br px-6 py-6">
                         <h1 className="text-2xl font-bold text-white">
                             Account Settings
                         </h1>
@@ -65,7 +64,6 @@ export default function Settings() {
                             <NotificationsSettings />
                         )}
                     </div>
-                </div>
             </div>
         </section>
     );

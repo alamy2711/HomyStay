@@ -5,6 +5,7 @@ use App\Http\Controllers\ApartmentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\UserController;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,17 +22,15 @@ Route::post('/signup', [AuthController::class, 'signup']);
 Route::get('/apartments', [ApartmentController::class, 'index']);
 Route::get('/apartments/{apartment}', [ApartmentController::class, 'show']);
 
-
-// Route::post('/admin/create', [AdminController::class, 'createAdmin']);
-// Route::get('/admin/users', [AdminController::class, 'showUsers']);
-
 // Protected routes using sanctum authentication.
 Route::middleware('auth:sanctum')->group(function () {
     // Protected endpoints: User details and logout.
-    Route::get('/user', function (Request $request) {
-        return $request->user();
-    });
+    Route::get('/user', [UserController::class, 'getAuthenticatedUser']);
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    // User endpoints.
+    Route::post('/profile/update', [UserController::class, 'update']);
+    Route::delete('/profile/delete', [UserController::class, 'destroy']);
 
     // Routes for "host" role: managing apartment listings.
     // Route::middleware('role:host')->group(function () {

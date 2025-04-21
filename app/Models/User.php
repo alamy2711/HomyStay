@@ -43,6 +43,20 @@ class User extends Authenticatable
     ];
 
     /**
+     * Delete the user's profile picture when the user is deleted.
+     */
+    protected static function booted()
+    {
+        static::deleting(function ($user) {
+            $rawPath = $user->getRawOriginal('profile_picture');
+
+            if ($rawPath && Storage::disk('public')->exists($rawPath)) {
+                Storage::disk('public')->delete($rawPath);
+            }
+        });
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>

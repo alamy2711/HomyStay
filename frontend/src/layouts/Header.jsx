@@ -1,58 +1,9 @@
+import UserDrowpdownMenu from "@/components/Header/UserDrowpdownMenu";
+import NotificationsDropdownMenu from "@components/Header/NotificationsDropdownMenu";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router";
 import Button from "../components/common/Button";
 import { useAuth } from "../contexts/AuthContext";
-import UserDrowpdownMenu from "@/components/Header/UserDrowpdownMenu";
-
-function UserDropdown() {
-    const { user } = useAuth();
-
-    return (
-        <div
-            id="userDropdown"
-            className="z-10 hidden w-44 divide-y divide-gray-100 rounded-lg bg-white shadow-sm"
-        >
-            <div className="px-4 py-3 text-sm text-gray-900">
-                <div>{user.name}</div>
-                <div className="truncate font-medium">{user.email}</div>
-            </div>
-            <ul
-                className="py-2 text-sm text-gray-700"
-                aria-labelledby="avatarButton"
-            >
-                <li>
-                    <a
-                        href="/profile"
-                        className="block px-4 py-2 hover:bg-gray-100"
-                    >
-                        Profile
-                    </a>
-                </li>
-                <li>
-                    <a
-                        href="/settings"
-                        className="block px-4 py-2 hover:bg-gray-100"
-                    >
-                        Settings
-                    </a>
-                </li>
-                <li>
-                    <a href="#" className="block px-4 py-2 hover:bg-gray-100">
-                        Earnings
-                    </a>
-                </li>
-            </ul>
-            <div className="py-1">
-                <a
-                    href="#"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                >
-                    Sign out
-                </a>
-            </div>
-        </div>
-    );
-}
 
 export default function Header() {
     const [scrolled, setScrolled] = useState(false);
@@ -125,26 +76,10 @@ export default function Header() {
                     </a>
                     {/* Buttons */}
                     <div className="flex items-center lg:order-2">
-                        {/* If token exists => Show Avatar */}
+                        {/* If token exists => Show Notifications & Avatar */}
                         {token ? (
-                            // <div className="flex items-center gap-3 rounded-full bg-gray-200 px-2 py-1.5">
                             <div className="flex items-center gap-3">
-                                {/* Notification Bell */}
-                                <div className="hover:text-primary-700 bg-primary-100 text-primary-500 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full text-xl ring-0 duration-400 hover:ring-[1.5px] lg:h-10 lg:w-10">
-                                    <i className="fa-solid fa-bell"></i>
-                                </div>
-                                {/* User Avatar */}
-                                <div
-                                    data-dropdown-toggle="userDropdown"
-                                    data-dropdown-placement="bottom-start"
-                                    className="hover:ring-primary-700 ring-primary-500 h-8 w-8 cursor-pointer overflow-hidden rounded-full ring-0 duration-400 hover:ring-[1.5px] lg:h-10 lg:w-10"
-                                >
-                                    <img
-                                        className="h-full w-full object-cover"
-                                        src={user.profile_picture}
-                                        alt="User Profile Avatar"
-                                    />
-                                </div>
+                                <NotificationsDropdownMenu />
                                 <UserDrowpdownMenu />
                             </div>
                         ) : (

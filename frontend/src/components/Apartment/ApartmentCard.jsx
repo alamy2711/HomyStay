@@ -62,7 +62,7 @@ export default function ApartmentCard({ apartment }) {
                 </h3>
             </div>
             {/* Add-to-Favorites Buttons : Shown for Visitors and Clients only */}
-            {(!token || user.role == "client") && (
+            {(!token || user?.role == "client") && (
                 <button
                     className="absolute top-5 right-5 z-31"
                     onMouseEnter={() => setIsHovered(true)}

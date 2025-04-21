@@ -6,7 +6,7 @@ import Section from "@components/common/Section";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { useAuth } from "../../contexts/AuthContext";
 import { formatDate, parseDate } from "../../utils/dateFormatter";
@@ -65,6 +65,7 @@ const schema = z.object({
 
 export default function Signup() {
     const { setToken, setUser } = useAuth();
+    const navigate = useNavigate();
     const {
         register,
         handleSubmit,
@@ -97,6 +98,8 @@ export default function Signup() {
 
             setToken(token);
             setUser(user);
+
+            navigate("/settings");
         } catch (err) {
             if (err.response) {
                 console.error("Error:", err.response.data.message);

@@ -1,120 +1,89 @@
-import {
-    ArrowLeftOnRectangleIcon,
-    BellIcon,
-    ChevronDownIcon,
-    CogIcon,
-    UserCircleIcon,
-} from "@heroicons/react/24/outline";
-import React from "react";
-import Select, { components } from "react-select";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "@contexts/AuthContext";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
-const options = [
-    {
-        href: "/profile",
-        label: "My Profile",
-        icon: <UserCircleIcon className="h-5 w-5 text-gray-500" />,
-    },
-    {
-        href: "/settings",
-        label: "Settings",
-        icon: <CogIcon className="h-5 w-5 text-gray-500" />,
-    },
-    {
-        href: "/notifications",
-        label: "Notifications",
-        icon: <BellIcon className="h-5 w-5 text-gray-500" />,
-    },
-    {
-        href: "/logout",
-        label: "Log Out",
-        icon: <ArrowLeftOnRectangleIcon className="h-5 w-5 text-gray-500" />,
-    },
-];
+// Icons
+import { FaCog, FaSignOutAlt, FaTachometerAlt, FaUser } from "react-icons/fa";
+import { LuLayoutDashboard } from "react-icons/lu";
+import { HiOutlineUser } from "react-icons/hi2";
+import { HiOutlineCog6Tooth } from "react-icons/hi2";
+import { TbLogout } from "react-icons/tb";
 
-// Custom Option component with icon
-const Option = (props) => (
-    <components.Option {...props}>
-        <div className="flex items-center space-x-2">
-            {props.data.icon}
-            <Link to={props.data.href}>{props.data.label}</Link>
-        </div>
-    </components.Option>
-);
+const UserMenu = () => {
+    const { user, logout } = useAuth();
+    const [isOpen, setIsOpen] = useState(false);
+    const ref = useRef(null);
 
-// Custom ValueContainer to show user avatar and name
-const ValueContainer = ({ children, ...props }) => {
-  const { user } = useAuth();
+    const menuItems = [
+        {
+            label: "Dashboard",
+            icon: <LuLayoutDashboard className="h-5 w-5" />,
+            href: "/dashboard",
+        },
+        {
+            label: "Profile",
+            icon: <HiOutlineUser className="h-5 w-5" />,
+            href: "/profile",
+        },
+        {
+            label: "Settings",
+            icon: <HiOutlineCog6Tooth className="h-5 w-5" />,
+            href: "/settings",
+        },
+        {
+            label: "Logout",
+            icon: <TbLogout className="h-5 w-5" />,
+            onClick: () => logout(),
+        },
+    ];
 
-  return (
-    <components.ValueContainer {...props}>
-        <div className="flex items-center space-x-2">
-            <img
-                src={user.profile_picture}
-                alt="User"
-                className="h-8 w-8 rounded-full"
-            />
-            <span className="font-medium">{user?.first_name}</span>
-            <ChevronDownIcon className="h-4 w-4 text-gray-400" />
-        </div>
-    </components.ValueContainer>
-)};
+    // Handle click outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (ref.current && !ref.current.contains(event.target)) {
+                setIsOpen(false);
+            }
+        };
 
-// Hide the default dropdown indicator
-const DropdownIndicator = () => null;
-
-export default function UserDrowpdownMenu() {
-    
+        document.addEventListener("mousedown", handleClickOutside);
+        return () =>
+            document.removeEventListener("mousedown", handleClickOutside);
+    }, [ref]);
 
     return (
-        <Select
-            options={options}
-            components={{
-                Option,
-                // ValueContainer,
-                DropdownIndicator,
-                IndicatorSeparator: () => null,
-            }}
-            isSearchable={false}
-            placeholder=""
-            className="react-select-container"
-            classNamePrefix="react-select"
-            onChange={(selectedOption) => {
-                console.log("Selected:", selectedOption);
-                // Handle selection here
-            }}
-            styles={{
-                control: (provided) => ({
-                    ...provided,
-                    border: "none",
-                    boxShadow: "none",
-                    backgroundColor: "transparent",
-                    cursor: "pointer",
-                    minHeight: "auto",
-                }),
-                menu: (provided) => ({
-                    ...provided,
-                    width: "200px",
-                    marginTop: "8px",
-                    borderRadius: "0.5rem",
-                    boxShadow:
-                        "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
-                }),
-                option: (provided, state) => ({
-                    ...provided,
-                    padding: "0.5rem 1rem",
-                    backgroundColor: state.isSelected
-                        ? "#f3f4f6"
-                        : state.isFocused
-                          ? "#f9fafb"
-                          : "white",
-                    color: "#111827",
-                    ":active": {
-                        backgroundColor: "#f3f4f6",
-                    },
-                }),
-            }}
-        />
+        <div className="relative inline-flex" ref={ref}>
+            {/* Avatar Button */}
+            <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="hover:ring-primary-700 ring-primary-500 relative h-8 w-8 cursor-pointer overflow-hidden rounded-full ring-0 duration-400 hover:ring-[1.5px] lg:h-10 lg:w-10"
+            >
+                <img
+                    src={user.profile_picture}
+                    alt="User avatar"
+                    className="h-full w-full object-cover"
+                />
+            </button>
+
+            {/* Dropdown Menu */}
+            {isOpen && (
+                <div className="absolute top-10 right-0 z-50 mt-2 w-48 rounded-lg bg-white py-2 shadow-md shadow-gray-300">
+                    {menuItems.map((item, index) => (
+                        <Link
+                            key={index}
+                            to={item.href}
+                            onClick={item.onClick}
+                            className="hover:bg-primary-50 hover:text-primary-700 flex items-center px-4 py-2.5 text-sm text-gray-700 transition-colors"
+                        >
+                            <span className="text-primary-700 mr-3">
+                                {item.icon}
+                            </span>
+                            {item.label}
+                        </Link>
+                    ))}
+                </div>
+            )}
+        </div>
     );
-}
+};
+
+export default UserMenu;

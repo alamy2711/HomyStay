@@ -1,15 +1,21 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 import {
+    FaCalendarAlt,
     FaConciergeBell,
+    FaHome,
     FaHotTub,
+    FaImage,
     FaLuggageCart,
+    FaMapMarkerAlt,
+    FaMinus,
     FaParking,
     FaPaw,
+    FaPlus,
+    FaRulerCombined,
     FaSmokingBan,
     FaSnowflake,
     FaSwimmingPool,
+    FaTimes,
     FaTv,
     FaUtensils,
     FaWheelchair,
@@ -21,76 +27,6 @@ import {
     MdOutlineLocalLaundryService,
 } from "react-icons/md";
 import ReactModal from "react-modal";
-import { z } from "zod";
-
-const schema = z.object({
-    title: z
-        .string()
-        .nonempty("Title is required")
-        .min(5, "Title must be at least 5 characters"),
-    price: z.coerce
-        .number("Price must be a number")
-        .positive("Price must be a positive number")
-        .min(1, "Price must be at least $1"),
-    description: z
-        .string()
-        .nonempty("Description is required")
-        .min(10, "Description must be at least 10 characters"),
-    type: z.enum(["apartment", "house", "mansion", "hotel"], {
-        errorMap: () => ({ message: "Select a valid apartment type" }),
-    }),
-    rooms: z.coerce
-        .number({ invalid_type_error: "Rooms must be a number" })
-        .int("Rooms must be an integer")
-        .min(0, "Bathrooms can't be negative"),
-    bathrooms: z.coerce
-        .number({ invalid_type_error: "Bathrooms must be a number" })
-        .int("Bathrooms must be an integer")
-        .min(0, "Bathrooms can't be negative"),
-    beds: z.coerce
-        .number({ invalid_type_error: "Beds must be a number" })
-        .int("Beds must be an integer")
-        .min(0, "Bathrooms can't be negative"),
-    guests: z.coerce
-        .number({ invalid_type_error: "Guests must be a number" })
-        .int("Guests must be an integer")
-        .min(1, "At least 1 guest required"),
-    area: z.coerce
-        .number({ invalid_type_error: "Area must be a number" })
-        .positive("Area must be a positive number")
-        .int("Area must be an integer")
-        .min(1, "Area must be at least 1 sq ft"),
-    country: z.string().nonempty("Country is required"),
-    city: z.string().nonempty("City is required"),
-    address: z.string().nonempty("Address is required"),
-    check_in: z.string().nonempty("Check-in date is required"),
-    check_out: z.string().nonempty("Check-out date is required"),
-    amenities: z.array(z.number()).optional(), // You can make it required if needed
-    images: z
-        .array(z.any())
-        .max(10, "You can upload a maximum of 10 images")
-        .optional(),
-});
-
-const defaultValues = {
-    title: "",
-    price: null,
-    description: "",
-    type: "apartment",
-    rooms: 1,
-    bathrooms: 0,
-    beds: 0,
-    guests: 1,
-    area: null,
-    status: "available",
-    country: "",
-    city: "",
-    address: "",
-    check_in: "",
-    check_out: "",
-    amenities: [],
-    images: [],
-};
 
 // Modal styling
 const customStyles = {
@@ -101,13 +37,13 @@ const customStyles = {
         bottom: "auto",
         marginRight: "-50%",
         transform: "translate(-50%, -50%)",
-        maxWidth: "800px",
+        maxWidth: "900px",
         width: "90%",
+        maxHeight: "90vh",
         borderRadius: "12px",
         border: "none",
         boxShadow: "0 10px 25px rgba(0, 0, 0, 0.1)",
         padding: "0",
-        height: "90%",
         overflow: "hidden",
     },
     overlay: {
@@ -118,78 +54,24 @@ const customStyles = {
 
 // Amenities data
 const AMENITIES = [
-    { id: "wifi", name: "WiFi", icon: <FaWifi className="text-lg" /> },
-    { id: "parking", name: "Parking", icon: <FaParking className="text-lg" /> },
-    { id: "pool", name: "Pool", icon: <FaSwimmingPool className="text-lg" /> },
-    { id: "tv", name: "TV", icon: <FaTv className="text-lg" /> },
-    {
-        id: "kitchen",
-        name: "Kitchen",
-        icon: <MdOutlineKitchen className="text-lg" />,
-    },
-    {
-        id: "ac",
-        name: "Air Conditioning",
-        icon: <FaSnowflake className="text-lg" />,
-    },
-    {
-        id: "breakfast",
-        name: "Breakfast",
-        icon: <FaUtensils className="text-lg" />,
-    },
-    { id: "hot_tub", name: "Hot Tub", icon: <FaHotTub className="text-lg" /> },
-    { id: "pets", name: "Pets Allowed", icon: <FaPaw className="text-lg" /> },
-    {
-        id: "no_smoking",
-        name: "No Smoking",
-        icon: <FaSmokingBan className="text-lg" />,
-    },
-    {
-        id: "accessible",
-        name: "Wheelchair Accessible",
-        icon: <FaWheelchair className="text-lg" />,
-    },
-    {
-        id: "laundry",
-        name: "Laundry",
-        icon: <MdOutlineLocalLaundryService className="text-lg" />,
-    },
-    {
-        id: "concierge",
-        name: "Concierge",
-        icon: <FaConciergeBell className="text-lg" />,
-    },
-    {
-        id: "luggage",
-        name: "Luggage Storage",
-        icon: <FaLuggageCart className="text-lg" />,
-    },
-    {
-        id: "airport_shuttle",
-        name: "Airport Shuttle",
-        icon: <MdOutlineAir className="text-lg" />,
-    },
+    { id: "wifi", name: "WiFi", icon: <FaWifi /> },
+    { id: "parking", name: "Parking", icon: <FaParking /> },
+    { id: "pool", name: "Pool", icon: <FaSwimmingPool /> },
+    { id: "tv", name: "TV", icon: <FaTv /> },
+    { id: "kitchen", name: "Kitchen", icon: <MdOutlineKitchen /> },
+    { id: "ac", name: "Air Conditioning", icon: <FaSnowflake /> },
+    { id: "breakfast", name: "Breakfast", icon: <FaUtensils /> },
+    { id: "hot_tub", name: "Hot Tub", icon: <FaHotTub /> },
+    { id: "pets", name: "Pets Allowed", icon: <FaPaw /> },
+    { id: "no_smoking", name: "No Smoking", icon: <FaSmokingBan /> },
+    { id: "accessible", name: "Wheelchair Accessible", icon: <FaWheelchair /> },
+    { id: "laundry", name: "Laundry", icon: <MdOutlineLocalLaundryService /> },
+    { id: "concierge", name: "Concierge", icon: <FaConciergeBell /> },
+    { id: "luggage", name: "Luggage Storage", icon: <FaLuggageCart /> },
+    { id: "airport_shuttle", name: "Airport Shuttle", icon: <MdOutlineAir /> },
 ];
 
-export default function ApartmentModal({
-    isOpen,
-    onClose,
-    apartment = null,
-    // onSubmit,
-}) {
-    const {
-        register,
-        handleSubmit,
-        setValue,
-        getValues,
-        watch,
-        reset,
-        formState: { errors },
-    } = useForm({
-        resolver: zodResolver(schema),
-        defaultValues: apartment || defaultValues,
-    });
-
+const ApartmentModal = ({ isOpen, onClose, apartment = null, onSubmit }) => {
     // Form state
     const [formData, setFormData] = useState({
         title: "",
@@ -206,7 +88,6 @@ export default function ApartmentModal({
         address: "",
         check_in: "",
         check_out: "",
-        status: "available",
         amenities: [],
         images: [],
     });
@@ -214,7 +95,7 @@ export default function ApartmentModal({
     const [previewImages, setPreviewImages] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
-    // Initialize form with apartment data if editing
+    // Initialize form
     useEffect(() => {
         if (apartment) {
             setFormData({
@@ -232,11 +113,13 @@ export default function ApartmentModal({
                 address: apartment.address,
                 check_in: apartment.check_in,
                 check_out: apartment.check_out,
-                status: apartment.status,
                 amenities: apartment.amenities || [],
                 images: apartment.images || [],
             });
-            setPreviewImages(apartment.images || []);
+            setPreviewImages(
+                apartment.images?.map((img) => ({ url: img, isNew: false })) ||
+                    [],
+            );
         } else {
             // Reset form for new apartment
             setFormData({
@@ -254,7 +137,6 @@ export default function ApartmentModal({
                 address: "",
                 check_in: "",
                 check_out: "",
-                status: "available",
                 amenities: [],
                 images: [],
             });
@@ -267,9 +149,21 @@ export default function ApartmentModal({
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleNumberChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: parseInt(value) || 0 }));
+    const handleNumberChange = (name, value) => {
+        const numValue = parseInt(value) || 0;
+        if (numValue >= 1) {
+            setFormData((prev) => ({ ...prev, [name]: numValue }));
+        }
+    };
+
+    const incrementNumber = (name) => {
+        setFormData((prev) => ({ ...prev, [name]: (prev[name] || 0) + 1 }));
+    };
+
+    const decrementNumber = (name) => {
+        if (formData[name] > 1) {
+            setFormData((prev) => ({ ...prev, [name]: prev[name] - 1 }));
+        }
     };
 
     const handleAmenityChange = (amenityId) => {
@@ -293,7 +187,7 @@ export default function ApartmentModal({
         }
 
         const newPreviewImages = files.map((file) => ({
-            id: URL.createObjectURL(file),
+            url: URL.createObjectURL(file),
             file,
             isNew: true,
         }));
@@ -305,42 +199,24 @@ export default function ApartmentModal({
         setPreviewImages((prev) => prev.filter((_, i) => i !== index));
     };
 
-    const onSubmit = async (values) => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
         setIsLoading(true);
+
         try {
-            const formData = new FormData();
-            Object.entries(values).forEach(([key, value]) => {
-                if (key === "images" && Array.isArray(value)) {
-                    value.forEach((file, i) => {
-                        formData.append(`images[${i}]`, file);
-                    });
-                } else if (key === "amenities" && Array.isArray(value)) {
-                    value.forEach((amenity, i) => {
-                        formData.append(`amenities[${i}]`, amenity);
-                    });
-                } else {
-                    formData.append(key, value);
-                }
-            });
-
-            const endpoint = apartment
-                ? `/apartments/${apartment.id}` // Update
-                : `/apartments`; // Create
-
-            const method = apartment ? "put" : "post";
-
-            const response = await axiosClient[method](endpoint, formData, {
-                headers: { "Content-Type": "multipart/form-data" },
-            });
-
-            toast.success(
-                `Apartment ${apartment ? "updated" : "created"} successfully!`,
+            // Prepare images - keep existing URLs and add new files
+            const imagesToSubmit = previewImages.map((img) =>
+                img.isNew ? img.file : img.url,
             );
-            reset();
+
+            await onSubmit({
+                ...formData,
+                images: imagesToSubmit,
+            });
+
             onClose();
         } catch (error) {
-            console.error(error);
-            toast.error("Something went wrong. Please try again.");
+            console.error("Error submitting apartment:", error);
         } finally {
             setIsLoading(false);
         }
@@ -353,395 +229,513 @@ export default function ApartmentModal({
             style={customStyles}
             ariaHideApp={false}
         >
-            <div className="h-[100%] overflow-y-scroll p-6">
-                <div className="mb-6 flex items-center justify-between">
-                    <h2 className="text-2xl font-bold text-gray-800">
-                        {apartment ? "Edit Apartment" : "Add New Apartment"}
-                    </h2>
-                    <button
-                        onClick={onClose}
-                        className="text-3xl text-gray-500 hover:text-gray-700"
-                    >
-                        &times;
-                    </button>
-                </div>
+            {/* Fixed Header */}
+            <div className="sticky top-0 z-10 flex items-center justify-between border-b border-gray-200 bg-white px-6 py-4">
+                <h2 className="text-xl font-bold text-gray-800">
+                    {apartment ? "Update Apartment" : "Add New Apartment"}
+                </h2>
+                <button
+                    onClick={onClose}
+                    className="text-2xl text-gray-500 hover:text-gray-700"
+                >
+                    &times;
+                </button>
+            </div>
 
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <div className="space-y-6">
-                        {/* Basic Information */}
-                        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                            <div>
-                                <label className="mb-1 block text-sm font-medium text-gray-700">
-                                    Title*
-                                </label>
-                                <input
-                                    type="text"
-                                    name="title"
-                                    className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-md border border-gray-300 px-3 py-2"
-                                    {...register("title")}
-                                />
-                                {errors.title && (
-                                    <p className="mt-1 text-sm text-red-500">
-                                        {errors.title.message}
-                                    </p>
-                                )}
-                            </div>
+            {/* Scrollable Content */}
+            <div
+                className="overflow-y-auto p-6"
+                style={{ maxHeight: "calc(90vh - 120px)" }}
+            >
+                <form onSubmit={handleSubmit}>
+                    <div className="space-y-8">
+                        {/* Basic Information Section */}
+                        <div className="rounded-lg bg-gray-50 p-4">
+                            <h3 className="mb-4 flex items-center text-lg font-medium text-gray-900">
+                                <FaHome className="text-primary-600 mr-2" />
+                                Basic Information
+                            </h3>
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                <div>
+                                    <label className="mb-1 block text-sm font-medium text-gray-700">
+                                        Title*
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="title"
+                                        value={formData.title}
+                                        onChange={handleChange}
+                                        className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-md border border-gray-300 px-3 py-2"
+                                        required
+                                    />
+                                </div>
 
-                            <div>
-                                <label className="mb-1 block text-sm font-medium text-gray-700">
-                                    Price per night ($)*
-                                </label>
-                                <input
-                                    type="number"
-                                    name="price"
-                                    className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-md border border-gray-300 px-3 py-2"
-                                    {...register("price")}
-                                />
-                                {errors.price && (
-                                    <p className="mt-1 text-sm text-red-500">
-                                        {errors.price.message}
-                                    </p>
-                                )}
-                            </div>
-                        </div>
+                                <div>
+                                    <label className="mb-1 block text-sm font-medium text-gray-700">
+                                        Price per night ($)*
+                                    </label>
+                                    <div className="relative">
+                                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
+                                            $
+                                        </span>
+                                        <input
+                                            type="number"
+                                            name="price"
+                                            value={formData.price}
+                                            onChange={(e) =>
+                                                handleNumberChange(
+                                                    "price",
+                                                    e.target.value,
+                                                )
+                                            }
+                                            min="1"
+                                            className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-md border border-gray-300 py-2 pr-3 pl-8"
+                                            required
+                                        />
+                                    </div>
+                                </div>
 
-                        <div>
-                            <label className="mb-1 block text-sm font-medium text-gray-700">
-                                Description*
-                            </label>
-                            <textarea
-                                name="description"
-                                rows={4}
-                                className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-md border border-gray-300 px-3 py-2"
-                                {...register("description")}
-                            />
-                            {errors.description && (
-                                <p className="mt-1 text-sm text-red-500">
-                                    {errors.description.message}
-                                </p>
-                            )}
-                        </div>
-
-                        {/* Apartment Details */}
-                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-                            <div>
-                                <label className="mb-1 block text-sm font-medium text-gray-700">
-                                    Type*
-                                </label>
-                                <select
-                                    name="type"
-                                    className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-md border border-gray-300 px-3 py-2"
-                                    {...register("type")}
-                                >
-                                    <option value="apartment">Apartment</option>
-                                    <option value="house">House</option>
-                                    <option value="mansion">Mansion</option>
-                                    <option value="hotel">Hotel</option>
-                                </select>
-                                {errors.type && (
-                                    <p className="mt-1 text-sm text-red-500">
-                                        {errors.type.message}
-                                    </p>
-                                )}
-                            </div>
-
-                            <div>
-                                <label className="mb-1 block text-sm font-medium text-gray-700">
-                                    Rooms*
-                                </label>
-                                <input
-                                    type="number"
-                                    name="rooms"
-                                    className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-md border border-gray-300 px-3 py-2"
-                                    {...register("rooms")}
-                                />
-                                {errors.rooms && (
-                                    <p className="mt-1 text-sm text-red-500">
-                                        {errors.rooms.message}
-                                    </p>
-                                )}
-                            </div>
-
-                            <div>
-                                <label className="mb-1 block text-sm font-medium text-gray-700">
-                                    Bathrooms*
-                                </label>
-                                <input
-                                    type="number"
-                                    name="bathrooms"
-                                    className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-md border border-gray-300 px-3 py-2"
-                                    {...register("bathrooms")}
-                                />
-                                {errors.bathrooms && (
-                                    <p className="mt-1 text-sm text-red-500">
-                                        {errors.bathrooms.message}
-                                    </p>
-                                )}
-                            </div>
-
-                            <div>
-                                <label className="mb-1 block text-sm font-medium text-gray-700">
-                                    Beds*
-                                </label>
-                                <input
-                                    type="number"
-                                    name="beds"
-                                    className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-md border border-gray-300 px-3 py-2"
-                                    {...register("beds")}
-                                />
-                                {errors.beds && (
-                                    <p className="mt-1 text-sm text-red-500">
-                                        {errors.beds.message}
-                                    </p>
-                                )}
-                            </div>
-
-                            <div>
-                                <label className="mb-1 block text-sm font-medium text-gray-700">
-                                    Guests*
-                                </label>
-                                <input
-                                    type="number"
-                                    name="guests"
-                                    className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-md border border-gray-300 px-3 py-2"
-                                    {...register("guests")}
-                                />
-                                {errors.guests && (
-                                    <p className="mt-1 text-sm text-red-500">
-                                        {errors.guests.message}
-                                    </p>
-                                )}
-                            </div>
-
-                            <div>
-                                <label className="mb-1 block text-sm font-medium text-gray-700">
-                                    Area (sq ft)*
-                                </label>
-                                <input
-                                    type="number"
-                                    name="area"
-                                    className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-md border border-gray-300 px-3 py-2"
-                                    {...register("area")}
-                                />
-                                {errors.area && (
-                                    <p className="mt-1 text-sm text-red-500">
-                                        {errors.area.message}
-                                    </p>
-                                )}
-                            </div>
-
-                            <div>
-                                <label className="mb-1 block text-sm font-medium text-gray-700">
-                                    Status*
-                                </label>
-                                <select
-                                    name="status"
-                                    className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-md border border-gray-300 px-3 py-2"
-                                >
-                                    <option value="available">Available</option>
-                                    <option value="reserved">Reserved</option>
-                                    <option value="expired">Expired</option>
-                                </select>
+                                <div className="md:col-span-2">
+                                    <label className="mb-1 block text-sm font-medium text-gray-700">
+                                        Description*
+                                    </label>
+                                    <textarea
+                                        name="description"
+                                        value={formData.description}
+                                        onChange={handleChange}
+                                        rows={4}
+                                        className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-md border border-gray-300 px-3 py-2"
+                                        required
+                                    />
+                                </div>
                             </div>
                         </div>
 
-                        {/* Location */}
-                        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                            <div>
-                                <label className="mb-1 block text-sm font-medium text-gray-700">
-                                    Country*
-                                </label>
-                                <input
-                                    type="text"
-                                    name="country"
-                                    className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-md border border-gray-300 px-3 py-2"
-                                    {...register("country")}
-                                />
-                                {errors.country && (
-                                    <p className="mt-1 text-sm text-red-500">
-                                        {errors.country.message}
-                                    </p>
-                                )}
-                            </div>
+                        {/* Apartment Structure Section */}
+                        <div className="rounded-lg bg-gray-50 p-4">
+                            <h3 className="mb-4 flex items-center text-lg font-medium text-gray-900">
+                                <FaRulerCombined className="text-primary-600 mr-2" />
+                                Apartment Structure
+                            </h3>
+                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
+                                <div>
+                                    <label className="mb-1 block text-sm font-medium text-gray-700">
+                                        Type*
+                                    </label>
+                                    <select
+                                        name="type"
+                                        value={formData.type}
+                                        onChange={handleChange}
+                                        className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-md border border-gray-300 px-3 py-2"
+                                        required
+                                    >
+                                        <option value="apartment">
+                                            Apartment
+                                        </option>
+                                        <option value="house">House</option>
+                                        <option value="mansion">Mansion</option>
+                                        <option value="hotel">Hotel</option>
+                                    </select>
+                                </div>
 
-                            <div>
-                                <label className="mb-1 block text-sm font-medium text-gray-700">
-                                    City*
-                                </label>
-                                <input
-                                    type="text"
-                                    name="city"
-                                    className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-md border border-gray-300 px-3 py-2"
-                                    {...register("city")}
-                                />
-                                {errors.city && (
-                                    <p className="mt-1 text-sm text-red-500">
-                                        {errors.city.message}
-                                    </p>
-                                )}
-                            </div>
+                                <div>
+                                    <label className="mb-1 block text-sm font-medium text-gray-700">
+                                        Rooms*
+                                    </label>
+                                    <div className="flex items-center">
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                decrementNumber("rooms")
+                                            }
+                                            className="rounded-l-md border border-gray-300 bg-gray-100 p-2 hover:bg-gray-200"
+                                        >
+                                            <FaMinus className="h-3 w-3" />
+                                        </button>
+                                        <input
+                                            type="number"
+                                            name="rooms"
+                                            value={formData.rooms}
+                                            onChange={(e) =>
+                                                handleNumberChange(
+                                                    "rooms",
+                                                    e.target.value,
+                                                )
+                                            }
+                                            min="1"
+                                            className="w-full border-t border-b border-gray-300 px-3 py-2 text-center"
+                                            required
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                incrementNumber("rooms")
+                                            }
+                                            className="rounded-r-md border border-gray-300 bg-gray-100 p-2 hover:bg-gray-200"
+                                        >
+                                            <FaPlus className="h-3 w-3" />
+                                        </button>
+                                    </div>
+                                </div>
 
-                            <div>
-                                <label className="mb-1 block text-sm font-medium text-gray-700">
-                                    Address*
-                                </label>
-                                <input
-                                    type="text"
-                                    name="address"
-                                    className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-md border border-gray-300 px-3 py-2"
-                                    {...register("address")}
-                                />
-                                {errors.address && (
-                                    <p className="mt-1 text-sm text-red-500">
-                                        {errors.address.message}
-                                    </p>
-                                )}
+                                <div>
+                                    <label className="mb-1 block text-sm font-medium text-gray-700">
+                                        Bathrooms*
+                                    </label>
+                                    <div className="flex items-center">
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                decrementNumber("bathrooms")
+                                            }
+                                            className="rounded-l-md border border-gray-300 bg-gray-100 p-2 hover:bg-gray-200"
+                                        >
+                                            <FaMinus className="h-3 w-3" />
+                                        </button>
+                                        <input
+                                            type="number"
+                                            name="bathrooms"
+                                            value={formData.bathrooms}
+                                            onChange={(e) =>
+                                                handleNumberChange(
+                                                    "bathrooms",
+                                                    e.target.value,
+                                                )
+                                            }
+                                            min="1"
+                                            className="w-full border-t border-b border-gray-300 px-3 py-2 text-center"
+                                            required
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                incrementNumber("bathrooms")
+                                            }
+                                            className="rounded-r-md border border-gray-300 bg-gray-100 p-2 hover:bg-gray-200"
+                                        >
+                                            <FaPlus className="h-3 w-3" />
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label className="mb-1 block text-sm font-medium text-gray-700">
+                                        Beds*
+                                    </label>
+                                    <div className="flex items-center">
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                decrementNumber("beds")
+                                            }
+                                            className="rounded-l-md border border-gray-300 bg-gray-100 p-2 hover:bg-gray-200"
+                                        >
+                                            <FaMinus className="h-3 w-3" />
+                                        </button>
+                                        <input
+                                            type="number"
+                                            name="beds"
+                                            value={formData.beds}
+                                            onChange={(e) =>
+                                                handleNumberChange(
+                                                    "beds",
+                                                    e.target.value,
+                                                )
+                                            }
+                                            min="1"
+                                            className="w-full border-t border-b border-gray-300 px-3 py-2 text-center"
+                                            required
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                incrementNumber("beds")
+                                            }
+                                            className="rounded-r-md border border-gray-300 bg-gray-100 p-2 hover:bg-gray-200"
+                                        >
+                                            <FaPlus className="h-3 w-3" />
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label className="mb-1 block text-sm font-medium text-gray-700">
+                                        Guests*
+                                    </label>
+                                    <div className="flex items-center">
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                decrementNumber("guests")
+                                            }
+                                            className="rounded-l-md border border-gray-300 bg-gray-100 p-2 hover:bg-gray-200"
+                                        >
+                                            <FaMinus className="h-3 w-3" />
+                                        </button>
+                                        <input
+                                            type="number"
+                                            name="guests"
+                                            value={formData.guests}
+                                            onChange={(e) =>
+                                                handleNumberChange(
+                                                    "guests",
+                                                    e.target.value,
+                                                )
+                                            }
+                                            min="1"
+                                            className="w-full border-t border-b border-gray-300 px-3 py-2 text-center"
+                                            required
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                incrementNumber("guests")
+                                            }
+                                            className="rounded-r-md border border-gray-300 bg-gray-100 p-2 hover:bg-gray-200"
+                                        >
+                                            <FaPlus className="h-3 w-3" />
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label className="mb-1 block text-sm font-medium text-gray-700">
+                                        Area (sq ft)*
+                                    </label>
+                                    <div className="relative">
+                                        <input
+                                            type="number"
+                                            name="area"
+                                            value={formData.area}
+                                            onChange={handleChange}
+                                            min="1"
+                                            className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-md border border-gray-300 py-2 pr-3 pl-3"
+                                            required
+                                        />
+                                        <span className="absolute top-2 right-3 text-gray-500">
+                                            sq ft
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        {/* Availability */}
-                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                            <div>
-                                <label className="mb-1 block text-sm font-medium text-gray-700">
-                                    Check-in Date*
-                                </label>
-                                <input
-                                    type="date"
-                                    name="check_in"
-                                    className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-md border border-gray-300 px-3 py-2"
-                                    {...register("check_in")}
-                                />
-                                {errors.check_in && (
-                                    <p className="mt-1 text-sm text-red-500">
-                                        {errors.check_in.message}
-                                    </p>
-                                )}
-                            </div>
+                        {/* Location Section */}
+                        <div className="rounded-lg bg-gray-50 p-4">
+                            <h3 className="mb-4 flex items-center text-lg font-medium text-gray-900">
+                                <FaMapMarkerAlt className="text-primary-600 mr-2" />
+                                Location
+                            </h3>
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                                <div>
+                                    <label className="mb-1 block text-sm font-medium text-gray-700">
+                                        Country*
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="country"
+                                        value={formData.country}
+                                        onChange={handleChange}
+                                        className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-md border border-gray-300 px-3 py-2"
+                                        required
+                                    />
+                                </div>
 
-                            <div>
-                                <label className="mb-1 block text-sm font-medium text-gray-700">
-                                    Check-out Date*
-                                </label>
-                                <input
-                                    type="date"
-                                    name="check_out"
-                                    className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-md border border-gray-300 px-3 py-2"
-                                    {...register("check_out")}
-                                />
-                                {errors.check_out && (
-                                    <p className="mt-1 text-sm text-red-500">
-                                        {errors.check_out.message}
-                                    </p>
-                                )}
+                                <div>
+                                    <label className="mb-1 block text-sm font-medium text-gray-700">
+                                        City*
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="city"
+                                        value={formData.city}
+                                        onChange={handleChange}
+                                        className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-md border border-gray-300 px-3 py-2"
+                                        required
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="mb-1 block text-sm font-medium text-gray-700">
+                                        Address*
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="address"
+                                        value={formData.address}
+                                        onChange={handleChange}
+                                        className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-md border border-gray-300 px-3 py-2"
+                                        required
+                                    />
+                                </div>
                             </div>
                         </div>
 
-                        {/* Images */}
-                        <div>
-                            <label className="mb-2 block text-sm font-medium text-gray-700">
+                        {/* Availability Section */}
+                        <div className="rounded-lg bg-gray-50 p-4">
+                            <h3 className="mb-4 flex items-center text-lg font-medium text-gray-900">
+                                <FaCalendarAlt className="text-primary-600 mr-2" />
+                                Availability
+                            </h3>
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                <div>
+                                    <label className="mb-1 block text-sm font-medium text-gray-700">
+                                        Check-in Date*
+                                    </label>
+                                    <input
+                                        type="date"
+                                        name="check_in"
+                                        value={formData.check_in}
+                                        onChange={handleChange}
+                                        className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-md border border-gray-300 px-3 py-2"
+                                        required
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="mb-1 block text-sm font-medium text-gray-700">
+                                        Check-out Date*
+                                    </label>
+                                    <input
+                                        type="date"
+                                        name="check_out"
+                                        value={formData.check_out}
+                                        onChange={handleChange}
+                                        className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-md border border-gray-300 px-3 py-2"
+                                        required
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Images Section */}
+                        <div className="rounded-lg bg-gray-50 p-4">
+                            <h3 className="mb-4 flex items-center text-lg font-medium text-gray-900">
+                                <FaImage className="text-primary-600 mr-2" />
                                 Images (Max 10)
-                            </label>
+                            </h3>
                             <div className="mb-3 flex flex-wrap gap-3">
                                 {previewImages.map((img, index) => (
-                                    <div key={index} className="group relative">
+                                    <div
+                                        key={index}
+                                        className="group relative h-24 w-24"
+                                    >
                                         <img
-                                            src={img.isNew ? img.id : img}
+                                            src={img.url}
                                             alt={`Preview ${index}`}
-                                            className="h-24 w-24 rounded-md object-cover"
+                                            className="h-full w-full rounded-md object-cover"
                                         />
                                         <button
                                             type="button"
                                             onClick={() => removeImage(index)}
-                                            className="absolute top-1 right-1 rounded-full bg-red-500 p-1 text-white opacity-0 transition-opacity group-hover:opacity-100"
+                                            className="absolute -top-2 -right-2 rounded-full bg-red-500 p-1 text-white transition-colors hover:bg-red-600"
                                         >
-                                            &times;
+                                            <FaTimes className="h-3 w-3" />
                                         </button>
                                     </div>
                                 ))}
                             </div>
-                            <label className="inline-block cursor-pointer rounded-md border border-gray-300 bg-gray-100 px-4 py-2 hover:bg-gray-200">
-                                <span>Upload Images</span>
+                            <label className="inline-flex cursor-pointer items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50">
+                                <FaPlus className="mr-2 h-4 w-4" />
+                                Upload Images
                                 <input
                                     type="file"
                                     multiple
                                     accept="image/*"
                                     onChange={handleImageUpload}
                                     className="hidden"
-                                    {...register("images")}
                                 />
-                                {errors.images && (
-                                    <p className="mt-1 text-sm text-red-500">
-                                        {errors.images.message}
-                                    </p>
-                                )}
                             </label>
-                            <p className="mt-1 text-sm text-gray-500">
+                            <p className="mt-2 text-sm text-gray-500">
                                 Upload high-quality images of your property
                                 (JPEG, PNG)
                             </p>
                         </div>
 
-                        {/* Amenities */}
-                        <div>
-                            <label className="mb-2 block text-sm font-medium text-gray-700">
+                        {/* Amenities Section */}
+                        <div className="rounded-lg bg-gray-50 p-4">
+                            <h3 className="mb-4 flex items-center text-lg font-medium text-gray-900">
+                                <FaConciergeBell className="text-primary-600 mr-2" />
                                 Amenities
-                            </label>
+                            </h3>
                             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
                                 {AMENITIES.map((amenity) => (
-                                    <div
+                                    <button
                                         key={amenity.id}
-                                        className="flex items-center"
+                                        type="button"
+                                        onClick={() =>
+                                            handleAmenityChange(amenity.id)
+                                        }
+                                        className={`flex items-center justify-center rounded-lg border p-3 transition-colors ${
+                                            formData.amenities.includes(
+                                                amenity.id,
+                                            )
+                                                ? "border-primary-500 bg-primary-50 text-primary-700"
+                                                : "border-gray-300 hover:border-gray-400"
+                                        }`}
                                     >
-                                        <label className="inline-flex cursor-pointer items-center">
-                                            <input
-                                                type="checkbox"
-                                                checked={formData.amenities.includes(
-                                                    amenity.id,
-                                                )}
-                                                onChange={() =>
-                                                    handleAmenityChange(
-                                                        amenity.id,
-                                                    )
-                                                }
-                                                className="text-primary-600 focus:ring-primary-500 h-4 w-4 rounded border-gray-300"
-                                                {...register("amenities")}
-                                            />
-                                            <span className="ml-2 flex items-center">
-                                                {amenity.icon}
-                                                <span className="ml-1 text-sm text-gray-700">
-                                                    {amenity.name}
-                                                </span>
-                                            </span>
-                                        </label>
-                                    </div>
+                                        <span className="mr-2">
+                                            {amenity.icon}
+                                        </span>
+                                        <span className="text-sm">
+                                            {amenity.name}
+                                        </span>
+                                    </button>
                                 ))}
                             </div>
-                        </div>
-
-                        {/* Form Actions */}
-                        <div className="flex justify-end space-x-3 pt-4">
-                            <button
-                                type="button"
-                                onClick={onClose}
-                                className="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                type="submit"
-                                disabled={isLoading}
-                                className="bg-primary-600 hover:bg-primary-700 focus:ring-primary-500 rounded-md border border-transparent px-4 py-2 text-sm font-medium text-white shadow-sm focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:opacity-50"
-                            >
-                                {isLoading
-                                    ? "Saving..."
-                                    : apartment
-                                      ? "Update Apartment"
-                                      : "Add Apartment"}
-                            </button>
                         </div>
                     </div>
                 </form>
             </div>
+
+            {/* Fixed Footer */}
+            <div className="sticky bottom-0 flex justify-end space-x-3 border-t border-gray-200 bg-white px-6 py-4">
+                <button
+                    type="button"
+                    onClick={onClose}
+                    className="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                >
+                    Cancel
+                </button>
+                <button
+                    type="submit"
+                    form="apartment-form"
+                    disabled={isLoading}
+                    className="bg-primary-600 hover:bg-primary-700 focus:ring-primary-500 rounded-md border border-transparent px-4 py-2 text-sm font-medium text-white shadow-sm focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:opacity-50"
+                >
+                    {isLoading ? (
+                        <span className="flex items-center">
+                            <svg
+                                className="mr-2 -ml-1 h-4 w-4 animate-spin text-white"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                            >
+                                <circle
+                                    className="opacity-25"
+                                    cx="12"
+                                    cy="12"
+                                    r="10"
+                                    stroke="currentColor"
+                                    strokeWidth="4"
+                                ></circle>
+                                <path
+                                    className="opacity-75"
+                                    fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                ></path>
+                            </svg>
+                            {apartment ? "Updating..." : "Creating..."}
+                        </span>
+                    ) : apartment ? (
+                        "Update Apartment"
+                    ) : (
+                        "Create Apartment"
+                    )}
+                </button>
+            </div>
         </ReactModal>
     );
-}
+};
+
+export default ApartmentModal;

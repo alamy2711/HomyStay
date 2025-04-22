@@ -7,7 +7,6 @@ import {
     TrashIcon,
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import ApartmentModal from "../../components/Listings/ApartmentModal";
 
 const ListingsPage = () => {
@@ -16,32 +15,81 @@ const ListingsPage = () => {
         {
             id: 1,
             title: "Modern Downtown Loft",
+            description:
+                "Industrial-chic loft in Manhattan with skyline views.",
+            type: "apartment",
+            rooms: 2,
+            bathrooms: 1,
+            beds: 1,
+            guests: 4,
+            area: 1000,
+            country: "United States",
+            city: "New York",
             location: "New York, NY",
+            address: "123 Main St, New York, NY 10001",
             price: 150,
-            status: "active",
+            status: "available",
             rating: 4.8,
-            image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+            check_in: "2023-05-15",
+            check_out: "2023-05-20",
+            images: [
+                "images/apartments/0001.jpg",
+                "images/apartments/0002.jpg",
+            ],
             lastUpdated: "2023-05-15",
+            amenities: ["wifi", "kitchen", "tv", "parking", "laundry"],
         },
         {
             id: 2,
             title: "Beachfront Villa",
+            description: "Cozy beachfront villa with ocean views.",
+            type: "mansion",
+            rooms: 4,
+            bathrooms: 2,
+            beds: 2,
+            guests: 6,
+            area: 5000,
+            country: "United States",
+            city: "Miami",
             location: "Miami, FL",
+            address: "456 Ocean Blvd, Miami, FL 33101",
             price: 300,
-            status: "pending",
+            status: "reserved",
             rating: 4.9,
-            image: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688",
+            check_in: "2023-06-15",
+            check_out: "2023-06-20",
+            images: [
+                "images/apartments/0003.jpg",
+                "images/apartments/0002.jpg",
+            ],
             lastUpdated: "2023-06-20",
+            amenities: ["wifi", "kitchen", "tv", "pool"],
         },
         {
             id: 3,
             title: "Cozy Mountain Cabin",
+            description: "Rustic cabin with hot tub and mountain views.",
+            type: "house",
+            rooms: 3,
+            bathrooms: 2,
+            beds: 2,
+            guests: 4,
+            area: 2500,
+            country: "United States",
+            city: "Aspen",
             location: "Aspen, CO",
+            address: "789 Mountain Rd, Aspen, CO 81611",
             price: 200,
-            status: "inactive",
+            status: "expired",
             rating: 4.7,
-            image: "https://images.unsplash.com/photo-1475855581690-80accde3ae2b",
+            check_in: "2023-07-15",
+            check_out: "2023-07-20",
+            images: [
+                "images/apartments/ap0004.jpg",
+                "images/apartments/0001.jpg",
+            ],
             lastUpdated: "2023-04-10",
+            amenities: ["wifi", "kitchen", "tv", "pets", "ac"],
         },
     ]);
 
@@ -100,9 +148,9 @@ const ListingsPage = () => {
     // Status badge component
     const StatusBadge = ({ status }) => {
         const statusClasses = {
-            active: "bg-green-100 text-green-800",
-            pending: "bg-yellow-100 text-yellow-800",
-            inactive: "bg-gray-100 text-gray-800",
+            available: "bg-green-100 text-green-800",
+            reserved: "bg-yellow-100 text-yellow-800",
+            expired: "bg-red-100 text-red-800",
         };
 
         return (
@@ -132,7 +180,7 @@ const ListingsPage = () => {
 
     // Handle form submission
     const handleSubmit = async (apartmentData) => {
-        alert (JSON.stringify(apartmentData));
+        alert(JSON.stringify(apartmentData));
         // try {
         //     if (currentApartment) {
         //         // Update existing apartment
@@ -217,9 +265,9 @@ const ListingsPage = () => {
                                 }
                             >
                                 <option value="all">All Statuses</option>
-                                <option value="active">Active</option>
-                                <option value="pending">Pending</option>
-                                <option value="inactive">Inactive</option>
+                                <option value="available">Available</option>
+                                <option value="reserved">Reserved</option>
+                                <option value="expired">Expired</option>
                             </select>
                         </div>
                     </div>
@@ -309,7 +357,8 @@ const ListingsPage = () => {
                                                         <img
                                                             className="h-10 w-10 rounded-md object-cover"
                                                             src={
-                                                                apartment.image
+                                                                apartment
+                                                                    .images[0]
                                                             }
                                                             alt={
                                                                 apartment.title
@@ -350,20 +399,28 @@ const ListingsPage = () => {
                                             </td>
                                             <td className="px-6 py-4 text-right text-sm font-medium whitespace-nowrap">
                                                 <div className="flex justify-end space-x-2">
-                                                    <Link
-                                                        to={`/listings/${apartment.id}`}
+                                                    <a
+                                                        target="_blank"
+                                                        href="apartment-details"
                                                         className="text-primary-600 hover:text-primary-900"
                                                         title="View"
                                                     >
                                                         <EyeIcon className="h-5 w-5" />
-                                                    </Link>
-                                                    <Link
-                                                        to={`/listings/${apartment.id}/edit`}
+                                                    </a>
+                                                    <button
+                                                        onClick={() => {
+                                                            console.log(
+                                                                apartment,
+                                                            );
+                                                            handleEdit(
+                                                                apartment,
+                                                            );
+                                                        }}
                                                         className="text-yellow-600 hover:text-yellow-900"
                                                         title="Edit"
                                                     >
                                                         <PencilIcon className="h-5 w-5" />
-                                                    </Link>
+                                                    </button>
                                                     <button
                                                         onClick={() =>
                                                             handleDelete(

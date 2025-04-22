@@ -31,13 +31,14 @@ export default function ApartmentDescription() {
                             <div className="border-primary-700 h-13 w-13 overflow-hidden rounded-full border">
                                 <img
                                     className="h-full w-full object-cover object-center"
-                                    src={user.avatar}
+                                    src={user.profile_picture}
                                     alt="Host Profile Picture"
                                 />
                             </div>
                             <div>
                                 <h5 className="text-gray-600z text-lg !font-[700] text-(--secondary)">
-                                    {user.name}
+                                    {/* {user.first_name} {user.last_name} */}
+                                    John Doe
                                 </h5>
                                 <p className="text-[0.8rem] text-gray-500">Host owner</p>
                             </div>

@@ -40,7 +40,7 @@ class UpdateUserRequest extends FormRequest
             'phone' => [
                 'nullable',
                 'string',
-                'regex:/^\+?\d{10,15}$/',
+                'regex:/^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/',
             ],
             'birthday' => [
                 'nullable',
@@ -62,7 +62,7 @@ class UpdateUserRequest extends FormRequest
             $rules['phone']    = [
                 'required',
                 'string',
-                'regex:/^\+?\d{10,15}$/',
+                'regex:/^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/',
             ];
             $rules['birthday'] = ['required', 'string'];
             $rules['gender']   = ['required', 'in:male,female'];

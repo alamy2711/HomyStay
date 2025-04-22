@@ -71,7 +71,7 @@ export default function Users() {
     const filteredUsers = users
         .filter((user) => {
             const matchesSearch =
-                `${user.firstName} ${user.lastName} ${user.email}`
+                `${user.first_name} ${user.last_name} ${user.email}`
                     .toLowerCase()
                     .includes(searchTerm.toLowerCase());
             const matchesRole =
@@ -453,37 +453,42 @@ export default function Users() {
                                     )}
                                 </tbody>
                             </table>
-                            <div className="px-6 py-3 text-sm text-gray-500">
-                                Showing {offset + 1} to{" "}
-                                {Math.min(
-                                    offset + usersPerPage,
-                                    filteredUsers.length,
-                                )}{" "}
-                                of {filteredUsers.length} users
-                            </div>
                         </>
                     )}
                 </div>
 
                 {/* Pagination */}
-                {/* {pageCount > 1 && ( */}
                 {
-                    <div className="flex items-center justify-between border-t border-gray-200 px-6 py-4">
-                        <ReactPaginate
-                            previousLabel={"←"}
-                            nextLabel={"→"}
-                            breakLabel={"..."}
-                            pageCount={pageCount}
-                            marginPagesDisplayed={2}
-                            pageRangeDisplayed={5}
-                            onPageChange={handlePageClick}
-                            containerClassName={"flex items-center space-x-2"}
-                            pageLinkClassName="w-8 h-8 flex items-center justify-center  rounded-full text-sm cursor-pointer hover:bg-primary-200 bg-primary-50 transition"
-                            activeLinkClassName="bg-gray-800 text-white bg-primary-500 hover:bg-primary-700"
-                            previousLinkClassName="h-8 w-8 flex items-center justify-center rounded-full border border-gray-400 justify-center   text-sm cursor-pointer "
-                            nextLinkClassName="h-8 w-8 flex items-center justify-center  rounded-full border border-gray-400 text-sm cursor-pointer"
-                            disabledClassName={"opacity-50 cursor-not-allowed"}
-                        />
+                    <div className="flex w-full items-center justify-between border-t border-gray-200 px-6 py-4">
+                        {pageCount > 1 && (
+                            <ReactPaginate
+                                previousLabel={"←"}
+                                nextLabel={"→"}
+                                breakLabel={"..."}
+                                pageCount={pageCount}
+                                marginPagesDisplayed={2}
+                                pageRangeDisplayed={5}
+                                onPageChange={handlePageClick}
+                                containerClassName={
+                                    "flex items-center space-x-2"
+                                }
+                                pageLinkClassName="w-8 h-8 flex items-center justify-center  rounded-full text-sm cursor-pointer hover:bg-primary-200 bg-primary-50 transition"
+                                activeLinkClassName="bg-gray-800 text-white bg-primary-500 hover:bg-primary-700"
+                                previousLinkClassName="h-8 w-8 flex items-center justify-center rounded-full border border-gray-400 justify-center   text-sm cursor-pointer "
+                                nextLinkClassName="h-8 w-8 flex items-center justify-center  rounded-full border border-gray-400 text-sm cursor-pointer"
+                                disabledClassName={
+                                    "opacity-50 cursor-not-allowed"
+                                }
+                            />
+                        )}
+                        <div className="ml-auto text-sm text-gray-500">
+                            Showing {offset + 1} to{" "}
+                            {Math.min(
+                                offset + usersPerPage,
+                                filteredUsers.length,
+                            )}{" "}
+                            of {filteredUsers.length} users
+                        </div>
                     </div>
                 }
 
@@ -532,39 +537,6 @@ export default function Users() {
                         color: "white",
                     }}
                 />
-
-                {/* Global styles for react-select and react-modal */}
-                <style jsx="true" global="true">{`
-                    .react-select-container .react-select__control {
-                        border: 1px solid #d1d5db;
-                        min-height: 38px;
-                    }
-                    .react-select-container .react-select__control--is-focused {
-                        border-color: var(--color-primary-700);
-                        box-shadow: 0 0 0 1px var(--color-primary-700);
-                    }
-                    .react-select-container .react-select__option--is-selected {
-                        background-color: var(--color-primary-700);
-                    }
-                    .react-select-container .react-select__option--is-focused {
-                        background-color: var(--color-primary-00);
-                    }
-                    .modal-overlay {
-                        position: fixed;
-                        top: 0;
-                        left: 0;
-                        right: 0;
-                        bottom: 0;
-                        zbackground-color: rgba(0, 0, 0, 0.5);
-                        backdrop-filter: blur(8px);
-                        background-color: rgba(255, 255, 255, 0.1);
-                        transition: opacity 0.4s ease;
-                        z-index: 100;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                    }
-                `}</style>
             </div>
         </section>
     );

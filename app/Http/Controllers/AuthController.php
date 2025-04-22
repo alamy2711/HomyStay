@@ -37,27 +37,6 @@ class AuthController extends Controller
             'token' => $token,
         ], 201); // 201 : Created : The server acknowledged a newly created resource.
     }
-    // public function createAdmin(CreateAdminRequest $request)
-    // {
-    //     $data = $request->validated();
-
-    //     try {
-    //         $user = User::create([
-    //             'first_name' => $data['firstName'],
-    //             'last_name' => $data['lastName'],
-    //             'email' => $data['email'],
-    //             'password' => bcrypt($data['password']),
-    //             'role' => $data['role'],
-    //         ]);
-    //     } catch (\Exception $e) {
-    //         return $e->getMessage();
-    //     }
-
-    //     return response()->json([
-    //         'message' => 'User registered successfully',
-    //         'user' => $user,
-    //     ], 201); // 201 : Created : The server acknowledged a newly created resource.
-    // }
 
     public function login(LoginRequest $request)
     {

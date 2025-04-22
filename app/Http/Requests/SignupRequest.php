@@ -45,7 +45,7 @@ class SignupRequest extends FormRequest
             'phone' => [
                 'required',
                 'string',
-                'regex:/^\+?\d{10,15}$/',
+                'regex:/^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/',
             ],
             'birthday' => [
                 'required',

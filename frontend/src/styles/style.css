@@ -184,4 +184,19 @@
     background-color: var(--color-primary-100);
 }
 
-
+/* react-modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    zbackground-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: opacity 0.4s ease;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

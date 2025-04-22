@@ -36,7 +36,11 @@ export default function BasicInfoSettings() {
                 phone: z
                     .string()
                     .nonempty("Phone number is required")
-                    .regex(/^\+?\d{10,15}$/, "Invalid phone number"), // Supports international numbers
+                    // .regex(/^\+?\d{10,15}$/, "Invalid phone number"),
+                    .regex(
+                        /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/,
+                        "Invalid phone number",
+                    ),
                 birthday: z
                     .string()
                     .nonempty("Birthday is required")
@@ -115,9 +119,16 @@ export default function BasicInfoSettings() {
                 phone: z
                     .string()
                     .optional()
-                    .refine((val) => !val || /^\+?\d{10,15}$/.test(val), {
-                        message: "Invalid phone number",
-                    }),
+                    .refine(
+                        (val) =>
+                            !val ||
+                            /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/.test(
+                                val,
+                            ),
+                        {
+                            message: "Invalid phone number",
+                        },
+                    ),
                 birthday: z
                     .string()
                     .optional()
@@ -350,8 +361,6 @@ export default function BasicInfoSettings() {
                             accept="image/*"
                             id="profilePicture"
                             style={{ display: "none" }}
-                            // ref={fileInputRef}
-                            // {...register("profilePicture")}
                             {...register("profilePicture", {
                                 // hook form will handle the value
                             })}

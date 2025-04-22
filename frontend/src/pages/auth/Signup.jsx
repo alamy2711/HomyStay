@@ -30,7 +30,10 @@ const schema = z.object({
     phone: z
         .string()
         .nonempty("Phone number is required")
-        .regex(/^\+?\d{10,15}$/, "Invalid phone number"), // Supports international numbers
+        .regex(
+            /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/,
+            "Invalid phone number",
+        ), // Supports international numbers
     birthday: z
         .string()
         .nonempty("Birthday is required")

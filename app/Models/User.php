@@ -71,8 +71,18 @@ class User extends Authenticatable
 
     public function getProfilePictureAttribute($value)
     {
+        // if ($value) {
+        //     return asset('storage/' . $value); // If user uploaded one
+        // }
         if ($value) {
-            return asset('storage/' . $value); // If user uploaded one
+            // If it's a full URL (e.g., starts with http or https), return as is
+            if (filter_var($value, FILTER_VALIDATE_URL)) {
+                return $value;
+            }
+
+            // Otherwise, assume it's a local file in storage
+            // return asset('storage/' . $value);
+            return asset($value);
         }
 
         return env('FRONTEND_URL') . '/images/defaultPFP.png';

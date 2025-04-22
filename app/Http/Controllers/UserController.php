@@ -52,7 +52,7 @@ class UserController extends Controller
                 $file = $request->file('profilePicture');
                 $filename = time() . '_' . $file->getClientOriginalName(); // Create a unique file name.
                 $path = $file->storeAs('profile_pictures', $filename, 'public'); // Store the file in the "public/profile_pictures" directory.
-                $user->profile_picture = $path;
+                $user->profile_picture = "storage/" . $path;
             }
 
             $user->save();

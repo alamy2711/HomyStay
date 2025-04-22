@@ -20,7 +20,7 @@ const schema = z.object({
         .nonempty("Password is required")
         .min(8, "Password must be at least 8 characters")
         .max(100, "Password cannot exceed 100 characters"),
-    rememberMe: z.boolean().optional(),
+    // rememberMe: z.boolean().optional(),
 });
 
 export default function Login() {

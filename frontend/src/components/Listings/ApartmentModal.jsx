@@ -313,12 +313,7 @@ const ApartmentModal = ({
             const endpoint = apartment
                 ? `/apartments/${apartment.id}` // Update
                 : `/apartments`; // Create
-
             const method = apartment ? "post" : "post";
-
-            // for (const pair of formData.entries()) {
-            //     console.log(pair[0], pair[1]);
-            // }
 
             const response = await axiosClient[method](endpoint, formData, {
                 headers: { "Content-Type": "multipart/form-data" },

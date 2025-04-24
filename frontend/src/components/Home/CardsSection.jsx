@@ -3,9 +3,31 @@ import Button from "@components/common/Button";
 import LoadingSpinner from "@components/common/LoadingSpinner";
 import { useApartments } from "@contexts/ApartmentsContext";
 import React from "react";
+import axiosClient from "@/lib/axiosClient";
+import { useEffect, useState } from "react";
 
 export default function CardsSection() {
-    const { apartments, loading: apartmentsLoading } = useApartments();
+    // const { apartments, loading: apartmentsLoading } = useApartments();
+    const [apartments, setApartments] = useState([]);
+    const [apartmentsLoading, setApartmentsLoading] = useState(true);
+
+    useEffect(() => {
+        axiosClient
+            .get("/apartments")
+            .then((response) => {
+                console.log(response.data.data)
+                setApartments(response.data.data);
+                setApartmentsLoading(false);
+            })
+            .catch((error) => {
+                console.error("Error fetching apartments:", error);
+                setApartmentsLoading(false);
+            });
+    }, []);
+
+    if (apartmentsLoading) {
+        return <LoadingSpinner className="h-[80vh]" />;
+    }
 
     return (
         <section className="mb-10 px-4 lg:px-6">

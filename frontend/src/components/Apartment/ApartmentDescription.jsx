@@ -6,10 +6,10 @@ import React from "react";
 import { toast } from "react-toastify";
 import ReservationForm from "./ReservationForm";
 
-export default function ApartmentDescription() {
+export default function ApartmentDescription({apartment}) {
     const { user, token, loading: userLoading } = useAuth();
-    const { apartments, loading: apartmentsLoading } = useApartments();
-    const apartment = apartments[0]; // Extracting 1 dummy apartemnt data for testing purposes
+    // const { apartments, loading: apartmentsLoading } = useApartments();
+    // const apartment = apartments[0]; // Extracting 1 dummy apartemnt data for testing purposes
 
     const handleContactClick = () => {
         if (!token) {
@@ -31,7 +31,7 @@ export default function ApartmentDescription() {
                             <div className="border-primary-700 h-13 w-13 overflow-hidden rounded-full border">
                                 <img
                                     className="h-full w-full object-cover object-center"
-                                    src={user.profile_picture}
+                                    src={apartment.host.profile_picture}
                                     alt="Host Profile Picture"
                                 />
                             </div>
@@ -71,10 +71,10 @@ export default function ApartmentDescription() {
                             {apartment.amenities.map((amenity, i) => (
                                 <div key={i}>
                                     <div className="[&_i]:text-primary-700 inline-block w-10 [&_i]:text-2xl">
-                                        {iconMap[amenity].icon}
+                                        {iconMap[amenity]?.icon}
                                     </div>
                                     <span className="text-(--secondary)">
-                                        {iconMap[amenity].label}
+                                        {iconMap[amenity]?.label}
                                     </span>
                                 </div>
                             ))}

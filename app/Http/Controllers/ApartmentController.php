@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ApartmentRequest;
+use App\Http\Resources\ApartmentResource;
 use App\Models\Amenity;
 use App\Models\Apartment;
 use App\Models\Picture;
@@ -13,6 +14,20 @@ use Illuminate\Support\Str;
 
 class ApartmentController extends Controller
 {
+    public function index()
+    {
+        $apartments = Apartment::with(['pictures', 'amenities'])->get();
+
+        return ApartmentResource::collection($apartments);
+    }
+
+    public function show(Apartment $apartment)
+    {
+        $apartment->load(['pictures', 'amenities', 'host']);
+
+        return new ApartmentResource($apartment);
+    }
+
     public function store(ApartmentRequest $request)
     {
         $data = $request->validated();

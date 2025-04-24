@@ -52,7 +52,7 @@ export const router = createBrowserRouter([
                 element: <PrivacyPolicy />,
             },
             {
-                path: "/apartment-details",
+                path: "/apartments/:id",
                 element: <ApartmentDetails />,
             },
             {

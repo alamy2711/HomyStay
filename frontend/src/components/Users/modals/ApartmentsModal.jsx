@@ -50,7 +50,7 @@ const ApartmentsModal = ({
                                     className="flex items-center justify-between py-3"
                                 >
                                     <a
-                                        href={apartment.link}
+                                        href={`/apartments/${apartment.id}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="text-primary-600 hover:text-primary-800 flex items-center hover:underline gap-1"

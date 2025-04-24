@@ -1,30 +1,51 @@
 import { iconMap } from "@/constants/IconMap";
+import axiosClient from "@/lib/axiosClient";
 import ReviewsSection from "@components/Apartment/ReviewsSection";
 import Button from "@components/common/Button";
 import ImageSwiper from "@components/common/ImageSwiper";
 import LoadingSpinner from "@components/common/LoadingSpinner";
-import { useApartments } from "@contexts/ApartmentsContext";
 import { useAuth } from "@contexts/AuthContext";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import ApartmentDescription from "./ApartmentDescription";
+import {formatDate} from "@/utils/dateFormatter";
 
 export default function ApartmentDetails() {
     const { user, token, loading: userLoading } = useAuth();
-    const { apartments, loading: apartmentsLoading } = useApartments();
-    const apartment = apartments[0]; // Extracting 1 dummy apartemnt data for testing purposes
+    // const { apartments, loading: apartmentsLoading } = useApartments();
+    // const apartment = apartments[0]; // Extracting 1 dummy apartemnt data for testing purposes
+    const { id } = useParams();
+    const [apartment, setApartment] = useState(null);
+    const [apartmentLoading, setApartmentLoading] = useState(true);
+
+    useEffect(() => {
+        axiosClient
+            .get(`/apartments/${id}`)
+            .then((response) => {
+                console.log(response.data.data);
+                setApartment(response.data.data);
+                setApartmentLoading(false);
+            })
+            .catch((error) => {
+                console.error("Error fetching apartments:", error);
+                setApartmentLoading(false);
+            });
+    }, [id]);
 
     const [isFavorite, setIsFavorite] = useState(false); // Add-to-Favorites Button
 
-    const [formattedDateStart, formattedDateEnd] = useMemo(() => {
-        return [
-            `${apartment?.availability.start.getDate()} ${apartment?.availability.start.toLocaleString("default", { month: "short" })} ${apartment?.availability.start.getFullYear()}`,
-            `${apartment?.availability.end.getDate()} ${apartment?.availability.end.toLocaleString("default", { month: "short" })} ${apartment?.availability.end.getFullYear()}`,
-        ];
-    }, [apartment?.availability.start, apartment?.availability.end]);
+    const [apartmentImagesPaths, setApartmentImagesPaths] = useState([]);
+
+    useEffect(() => {
+        if (apartment?.pictures) {
+            const paths = apartment.pictures.map((img) => img.path);
+            setApartmentImagesPaths(paths);
+        }
+    }, [apartment]);
 
     // Spin while Loading
-    if (apartmentsLoading || userLoading) {
+    if (apartmentLoading || userLoading) {
         return <LoadingSpinner className="h-screen" />;
     }
 
@@ -36,7 +57,7 @@ export default function ApartmentDetails() {
                     {/* Apartment Gallery */}
                     <div className="h-90 overflow-hidden rounded-lg md:h-120 lg:col-span-6">
                         <ImageSwiper
-                            images={apartment.images}
+                            images={apartmentImagesPaths}
                             isGallery={true}
                         />
                     </div>
@@ -57,7 +78,7 @@ export default function ApartmentDetails() {
                                     href="#reviews"
                                     className="leading-none underline"
                                 >
-                                    (26 Reviews)
+                                    ({apartment?.reviews || "0"} Reviews)
                                 </a>
                             </span>
                         </div>
@@ -66,7 +87,7 @@ export default function ApartmentDetails() {
                         <div className="flex items-center gap-2 text-gray-600">
                             <i className="fa-solid fa-location-dot text-2xl"></i>
                             <h3 className="text-xl italic">
-                                {apartment.location}
+                                {apartment.country} - {apartment.city}
                             </h3>
                             {/* Add-to-Favorites Buttons : Shown for Visitors and Clients only */}
                             {(!token || user.role == "client") && (
@@ -91,7 +112,15 @@ export default function ApartmentDetails() {
                         </div>
                         {/* Date */}
                         <p className="text-lg font-[400]">
-                            {formattedDateStart} - {formattedDateEnd}
+                            {formatDate(
+                                new Date(apartment.check_in),
+                                "dd MMM yyyy",
+                            )}{" "}
+                            -{" "}
+                            {formatDate(
+                                new Date(apartment.check_out),
+                                "dd MMM yyyy",
+                            )}
                         </p>
                         <hr className="bg-transpart mx-auto my-3 border-0"></hr>
                         {/* General Infos */}
@@ -124,7 +153,7 @@ export default function ApartmentDetails() {
                                 <div className="inline-block w-6">
                                     <i className="fa-solid fa-object-group"></i>
                                 </div>
-                                85 m<sup>2</sup>
+                                {apartment.area} m<sup>2</sup>
                             </div>
                             <div>
                                 <div className="inline-block w-6">
@@ -156,8 +185,8 @@ export default function ApartmentDetails() {
             </section>
 
             {/* Description & Reservation */}
-            <ApartmentDescription />
-            
+            <ApartmentDescription apartment={apartment} />
+
             {/* Reviews */}
             <ReviewsSection />
         </>

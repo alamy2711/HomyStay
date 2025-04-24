@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('super_admin', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_admin')->unique(); // Clé étrangère reliée à la table users
+            $table->unsignedBigInteger('admin_id')->unique(); // Clé étrangère reliée à la table users
             $table->timestamps();
     
-            $table->foreign('id_admin')->references('id')->on('admin')->onDelete('cascade');
+            $table->foreign('admin_id')->references('id')->on('admin')->onDelete('cascade');
         });
     }
 

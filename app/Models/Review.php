@@ -17,7 +17,7 @@ class Review extends Model
     // Define the fillable attributes to enable mass assignment
     protected $fillable = [
         'client_id',
-        'apartement_id',
+        'apartment_id',
         'rating',
         'comment',
         'review_date',
@@ -34,6 +34,6 @@ class Review extends Model
     // A review belongs to an apartment
     public function apartment()
     {
-        return $this->belongsTo(Apartment::class, 'apartement_id');
+        return $this->belongsTo(Apartment::class, 'apartment_id');
     }
 }

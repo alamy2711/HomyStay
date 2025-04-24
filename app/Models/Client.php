@@ -16,7 +16,7 @@ class Client extends Model
      * @var array
      */
     protected $fillable = [
-        'id_user',
+        'user_id',
     ];
 
     /**
@@ -26,7 +26,7 @@ class Client extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class, 'id_user');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function reviews()

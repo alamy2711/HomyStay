@@ -13,12 +13,10 @@ return new class extends Migration
     {
         Schema::create('admin', function (Blueprint $table) {
             $table->id();
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('user_name');
-            $table->string('password');
-            $table->enum('type', ['Admin', 'superAdmin']);
+            $table->unsignedBigInteger('user_id')->unique(); // Clé étrangère reliée à la table users
             $table->timestamps();
+    
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

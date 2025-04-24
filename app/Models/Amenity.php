@@ -21,7 +21,7 @@ class Amenity extends Model
      */
     public function apartment()
     {
-        return $this->belongsTo(Apartment::class, 'apartement_id');
+        return $this->belongsTo(Apartment::class, 'apartment_id');
     }
 }
 

@@ -15,13 +15,13 @@ class Photo extends Model
 
     // Specify the fields that can be mass-assigned
     protected $fillable = [
-        'apartement_id',
+        'apartment_id',
         'title',
     ];
 
     // Define the relationship with the Apartement model
-    public function apartement()
+    public function apartment()
     {
-        return $this->belongsTo(Apartement::class);
+        return $this->belongsTo(Apartment::class);
     }
 }

@@ -14,11 +14,7 @@ class Admin extends Model
      * @var array
      */
     protected $fillable = [
-        'first_name',
-        'last_name',
-        'user_name',
-        'password',
-        'type',
+        'user_id',
     ];
 
     /**
@@ -30,6 +26,11 @@ class Admin extends Model
         'password',
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+    
     public function notifications()
     {
         return $this->hasMany(Notification::class, 'admin_id');

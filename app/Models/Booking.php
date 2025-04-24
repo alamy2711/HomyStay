@@ -16,11 +16,12 @@ class Booking extends Model
     // Define fillable attributes for mass assignment
     protected $fillable = [
         'client_id',
-        'apartement_id',
+        'apartment_id',
+        'host_id',
         'check_in_date',
         'check_out_date',
         'price',
-        'booking_status',
+        'status',
     ];
 
     // Relationships
@@ -34,6 +35,12 @@ class Booking extends Model
     // A booking belongs to an apartment
     public function apartment()
     {
-        return $this->belongsTo(Apartment::class, 'apartement_id');
+        return $this->belongsTo(Apartment::class, 'apartment_id');
+    }
+
+    // A booking belongs to a host
+    public function host()
+    {
+        return $this->belongsTo(Host::class, 'host_id');
     }
 }

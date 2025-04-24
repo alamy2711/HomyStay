@@ -16,7 +16,7 @@ class Favorite extends Model
     // Define fillable attributes for mass assignment
     protected $fillable = [
         'client_id',
-        'apartement_id',
+        'apartment_id',
     ];
 
     // Relationships
@@ -30,6 +30,6 @@ class Favorite extends Model
     // A favorite belongs to an apartment
     public function apartment()
     {
-        return $this->belongsTo(Apartment::class, 'apartement_id');
+        return $this->belongsTo(Apartment::class, 'apartment_id');
     }
 }

@@ -15,7 +15,7 @@ class Host extends Model
      * @var array
      */
     protected $fillable = [
-        'id_user',
+        'user_id',
     ];
 
     /**
@@ -25,12 +25,12 @@ class Host extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class, 'id_user');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function apartement()
+    public function apartment()
     {
-        return $this->hasMany(Apartement::class);
+        return $this->hasMany(Apartment::class, 'apartment_id');
     }
 
     public function chats()

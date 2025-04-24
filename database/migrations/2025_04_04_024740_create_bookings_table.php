@@ -14,16 +14,18 @@ return new class extends Migration
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('client_id'); // Clé étrangère vers la table des clients
-            $table->unsignedBigInteger('apartement_id'); // Clé étrangère vers la table des apartements
+            $table->unsignedBigInteger('apartment_id'); // Clé étrangère vers la table des apartements
+            $table->unsignedBigInteger('host_id');
             $table->date('check_in_date');
             $table->date('check_out_date');
             $table->decimal('price');
-            $table->string('booking_status');
+            $table->enum('status', ['waiting', 'accepted', 'rejected']);
             $table->timestamps();
 
             // Ajout des relations de clé étrangère
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
-            $table->foreign('apartement_id')->references('id')->on('apartements')->onDelete('cascade');
+            $table->foreign('apartment_id')->references('id')->on('apartments')->onDelete('cascade');
+            $table->foreign('host_id')->references('id')->on('hosts')->onDelete('cascade');
         });
     }
 

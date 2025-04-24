@@ -11,16 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('apartements', function (Blueprint $table) {
+        Schema::create('apartments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('host_id')->constrained('hosts')->onDelete('cascade');
             $table->string('title');
-            $table->enum('type',['apartment', 'house', 'mansion', 'hotel']);
+            $table->enum('type', ['apartment', 'house', 'mansion', 'hotel']);
             $table->string('description');
             $table->decimal('price');
-            $table->integer('room_nbr');
-            $table->integer('nbr_guests');
-            $table->json('availability_calendar');
+            $table->string('address');
+            $table->integer('nbr_room');
+            $table->integer('nbr_bed');
+            $table->integer('nbr_bathroom');
+            $table->integer('nbr_guest');
+            $table->date('check-in');
+            $table->date('check-out');
+            $table->boolean('status');
             $table->double('rating', 1, 1);
             $table->timestamps();
         });
@@ -31,6 +36,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('apartements');
+        Schema::dropIfExists('apartments');
     }
 };

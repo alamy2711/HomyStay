@@ -13,20 +13,12 @@ use Illuminate\Support\Facades\Validator;
 class RegisterController extends Controller
 {
     //REGISTER
-    public function register(Request $request){
+    public function register(RegisterUserRequest $request){
 
-        $validator = Validator::make($request->all(),[
-            'first_name' => 'required | string | min:3 | max:255',
-            'last_name' => 'required | string | min:3 | max:255',
-            'phone' => 'required | string | min:10 | max:15',
-            'birthday' => 'required | date | date_format:DD/MM/YYYY',
-            'email' => 'required | email | unique:users',
-            'password' => 'required | string | min:6 | max:20 | confirmed',
-            'role' => 'required | in:client, host',
-        ]);
+        $validated = $request->validated();
 
-        if($validator->fails()){
-            return response()->json($validator->errors(), 422);
+        if($validated->fails()){
+            return response()->json($validated->errors(), 422);
         }
 
         $user = User::create([
@@ -62,20 +54,17 @@ class RegisterController extends Controller
     }    
 
     //LOGIN
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $request->validate([
-            'email' => 'required | email',
-            'password' => 'required | string',
-        ]);
+        $validated = $request->validated();
 
         $user = User::where('email', $request->email)->first();
 
-        if(!$user || !Hash::check($request->password, $user->password)){
-            return response()->json([
-                'message' => 'Identifiants invalides'
-            ], 401);
-        }
+        //if(!$user || !Hash::check($request->password, $user->password)){
+        //    return response()->json([
+        //        'message' => 'Identifiants invalides'
+        //    ], 401);
+        //}
 
         $token = $user->createToken('auth_token')->plainTextToken;
 

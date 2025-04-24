@@ -15,7 +15,7 @@ class SuperAdmin extends Model
      * @var array
      */
     protected $fillable = [
-        'id_admin',
+        'admin_id',
     ];
 
     /**
@@ -25,6 +25,6 @@ class SuperAdmin extends Model
      */
     public function admin()
     {
-        return $this->belongsTo(Admin::class, 'id_admin');
+        return $this->belongsTo(Admin::class, 'admin_id');
     }
 }

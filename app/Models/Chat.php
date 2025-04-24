@@ -23,7 +23,7 @@ class Chat extends Model
      */
     public function client()
     {
-        return $this->belongsTo(Client::class);
+        return $this->belongsTo(Client::class, 'client_id');
     }
 
     /**
@@ -31,7 +31,7 @@ class Chat extends Model
      */
     public function host()
     {
-        return $this->belongsTo(Host::class);
+        return $this->belongsTo(Host::class, 'host_id');
     }
 
     public function messages()

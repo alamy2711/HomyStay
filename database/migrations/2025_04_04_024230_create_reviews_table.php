@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('client_id'); // Clé étrangère vers la table des clients
-            $table->unsignedBigInteger('apartement_id'); // Clé étrangère vers la table des apartements
+            $table->unsignedBigInteger('apartment_id'); // Clé étrangère vers la table des apartements
             $table->integer('rating');
             $table->string('comment');
             $table->date('review_date');
@@ -22,7 +22,7 @@ return new class extends Migration
 
             // Ajout des relations de clé étrangère
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
-            $table->foreign('apartement_id')->references('id')->on('apartements')->onDelete('cascade');
+            $table->foreign('apartment_id')->references('id')->on('apartments')->onDelete('cascade');
 
         });
     }

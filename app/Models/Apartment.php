@@ -6,12 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations;
 
-class Apartement extends Model
+class Apartment extends Model
 {
     use HasFactory;
 
     // Define the table associated with the model
-    protected $table = 'apartements';
+    protected $table = 'apartments';
 
     // Define the fillable properties to allow mass assignment
     protected $fillable = [
@@ -20,15 +20,15 @@ class Apartement extends Model
         'type',
         'description',
         'price',
-        'room_nbr',
-        'nbr_guests',
-        'availability_calendar',
+        'address',
+        'nbr_room',
+        'nbr_bed',
+        'nbr_bathroom',
+        'nbr_guest',
+        'check-in',
+        'check-out',
+        'status',
         'rating',
-    ];
-
-    // Specify that 'availability_calendar' should be cast as a JSON array
-    protected $casts = [
-        'availability_calendar' => 'array',
     ];
 
     // Relationships (for example, with the Host model)
@@ -37,39 +37,29 @@ class Apartement extends Model
         return $this->belongsTo(Host::class, 'host_id');
     }
 
-    public function location()
-    {
-        return $this->hasOne(Location::class);
-    }
-
-    public function rooms()
-    {
-        return $this->hasMany(Room::class, 'apartement_id');
-    }
-
     public function amenities()
     {
-        return $this->hasMany(Amenity::class, 'apartement_id');
+        return $this->hasMany(Amenity::class, 'apartment_id');
     }
 
     public function reviews()
     {
-        return $this->hasMany(Review::class, 'apartement_id');
+        return $this->hasMany(Review::class, 'apartment_id');
     }
 
     public function bookings()
     {
-        return $this->hasMany(Booking::class, 'apartement_id');
+        return $this->hasMany(Booking::class, 'apartment_id');
     }
 
     public function favorites()
     {
-        return $this->hasMany(Favorite::class, 'apartement_id');
+        return $this->hasMany(Favorite::class, 'apartment_id');
     }
 
     public function photos()
     {
-        return $this->hasMany(Photo::class, 'apartement_id');
+        return $this->hasMany(Photo::class, 'apartment_id');
     }
 
 }

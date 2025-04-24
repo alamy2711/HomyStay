@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('amenities', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('apartement_id')->constrained('apartements')->onDelete('cascade');
+            $table->foreignId('apartment_id')->constrained('apartments')->onDelete('cascade');
             $table->enum('type',['WiFi', 'TV', 'Air_Conditioner', 'Kitchen']);
             $table->timestamps();
         });

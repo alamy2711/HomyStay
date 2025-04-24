@@ -76,13 +76,7 @@ export default function Signup() {
         formState: { errors, isSubmitting },
     } = useForm({
         defaultValues: {
-            firstName: "Rachid",
-            lastName: "Raiss",
-            birthday: "25/11/1988",
-            phone: "0606984716",
-            email: "rachidraiss@email.com",
             password: "123456789",
-            role: "client",
         },
         resolver: zodResolver(schema),
     });

@@ -18,7 +18,7 @@ class UserController extends Controller
         if ($user->role === 'client') {
             $user->load(['reports']);
         } elseif ($user->role === 'host') {
-            $user->load(['apartments', 'reports']);
+            $user->load(['apartments.pictures', 'apartments.amenities', 'reports']);
         }
 
         return new UserResource($user);

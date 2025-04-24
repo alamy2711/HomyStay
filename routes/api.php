@@ -35,9 +35,9 @@ Route::middleware('auth:sanctum')->group(function () {
     // Routes for "host" role: managing apartment listings.
     // Route::middleware('role:host')->group(function () {
     //     Route::get('/listings', [ApartmentController::class, 'index']);
-    //     Route::post('/listings', [ApartmentController::class, 'store']);
-    //     Route::put('/listings/{apartment}', [ApartmentController::class, 'update']);
-    //     Route::delete('/listings/{apartment}', [ApartmentController::class, 'destroy']);
+        Route::post('/apartments', [ApartmentController::class, 'store']);
+        Route::post('/apartments/{apartment}', [ApartmentController::class, 'update']);
+        Route::delete('/apartments/{apartment}', [ApartmentController::class, 'destroy']);
     // });
 
     // Reservation endpoints.

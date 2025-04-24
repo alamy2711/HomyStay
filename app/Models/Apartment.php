@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class Apartment extends Model
 {
@@ -52,5 +54,32 @@ class Apartment extends Model
     public function favorites()
     {
         return $this->hasMany(Favorite::class);
+    }
+
+    public function amenities()
+    {
+        return $this->hasMany(Amenity::class);
+    }
+
+    public function pictures()
+    {
+        return $this->hasMany(Picture::class);
+    }
+
+    /**
+     * Delete the apartment's images when the apartment is deleted.
+     */
+    protected static function booted()
+    {
+        static::deleted(function ($apartment) {
+            // Delete the images from the storage
+            $apartment->pictures->each(function ($picture) {
+                // Delete the image file from storage
+                $relativePath = Str::after($picture->path, 'storage/');
+                Storage::disk('public')->delete($relativePath);
+                // Delete the image record from the database
+                $picture->delete();
+            });
+        });
     }
 }

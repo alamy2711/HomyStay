@@ -1,4 +1,6 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import {
     FaCalendarAlt,
     FaConciergeBell,
@@ -27,6 +29,84 @@ import {
     MdOutlineLocalLaundryService,
 } from "react-icons/md";
 import ReactModal from "react-modal";
+import { toast } from "react-toastify";
+import { z } from "zod";
+import axiosClient from "@/lib/axiosClient";
+
+const schema = z.object({
+    title: z
+        .string()
+        .nonempty("Title is required")
+        .min(5, "Title must be at least 5 characters"),
+    price: z.coerce
+        .number("Price must be a number")
+        .positive("Price must be a positive number")
+        .min(1, "Price must be at least $1"),
+    description: z
+        .string()
+        .nonempty("Description is required")
+        .min(10, "Description must be at least 10 characters"),
+    type: z.enum(["apartment", "house", "mansion", "hotel"], {
+        errorMap: () => ({ message: "Select a valid apartment type" }),
+    }),
+    rooms: z.coerce
+        .number({ invalid_type_error: "Rooms must be a number" })
+        .int("Rooms must be an integer")
+        .min(0, "Bathrooms can't be negative"),
+    bathrooms: z.coerce
+        .number({ invalid_type_error: "Bathrooms must be a number" })
+        .int("Bathrooms must be an integer")
+        .min(0, "Bathrooms can't be negative"),
+    beds: z.coerce
+        .number({ invalid_type_error: "Beds must be a number" })
+        .int("Beds must be an integer")
+        .min(0, "Bathrooms can't be negative"),
+    guests: z.coerce
+        .number({ invalid_type_error: "Guests must be a number" })
+        .int("Guests must be an integer")
+        .min(1, "At least 1 guest required"),
+    area: z.coerce
+        .number({ invalid_type_error: "Area must be a number" })
+        .positive("Area must be a positive number")
+        .int("Area must be an integer")
+        .min(1, "Area must be at least 1 sq ft"),
+    country: z.string().nonempty("Country is required"),
+    city: z.string().nonempty("City is required"),
+    address: z.string().nonempty("Address is required"),
+    check_in: z.string().nonempty("Check-in date is required"),
+    check_out: z.string().nonempty("Check-out date is required"),
+    amenities: z.any(),
+    images: z
+        .any()
+        .refine(
+            (files) => files?.length >= 1,
+            "You must upload at least 3 images",
+        )
+        .refine(
+            (files) => files?.length <= 5,
+            "You can upload up to 10 images",
+        ),
+});
+
+const mydefaultValues = {
+    title: "",
+    price: null,
+    description: "lorem ipsum dolor sit amet consectetur adipiscing elit",
+    type: "apartment",
+    rooms: 1,
+    bathrooms: 0,
+    beds: 0,
+    guests: 1,
+    area: null,
+    status: "available",
+    country: "",
+    city: "",
+    address: "",
+    check_in: "2025-01-01",
+    check_out: "2025-05-05",
+    amenities: [],
+    images: [],
+};
 
 // Modal styling
 const customStyles = {
@@ -71,7 +151,53 @@ const AMENITIES = [
     { id: "airport_shuttle", name: "Airport Shuttle", icon: <MdOutlineAir /> },
 ];
 
-const ApartmentModal = ({ isOpen, onClose, apartment = null, onSubmit }) => {
+const ApartmentModal = ({
+    isOpen,
+    onClose,
+    apartment = null,
+    setListingsLoading,
+}) => {
+    const {
+        register,
+        handleSubmit,
+        setValue,
+        getValues,
+        watch,
+        reset,
+        formState: { errors, isSubmitting },
+    } = useForm({
+        resolver: zodResolver(schema),
+        defaultValues: apartment || mydefaultValues,
+    });
+    // register("amenities");
+
+    const [previewImages, setPreviewImages] = useState([]);
+
+    useEffect(() => {
+        if (apartment) {
+            // Prepare the existing images for preview
+            const existingImages =
+                apartment.pictures?.map((img) => ({
+                    url: img.path,
+                    path: img.path,
+                    file: null, // Mark as existing image
+                    isNew: false,
+                })) || [];
+
+            const formatted = {
+                ...apartment,
+                amenities: apartment.amenities?.map((am) => am.name) || [],
+                images: existingImages,
+            };
+
+            reset(formatted);
+            setPreviewImages(existingImages);
+        } else {
+            reset(mydefaultValues);
+            setPreviewImages([]);
+        }
+    }, [apartment, reset, isOpen]);
+
     // Form state
     const [formData, setFormData] = useState({
         title: "",
@@ -92,63 +218,6 @@ const ApartmentModal = ({ isOpen, onClose, apartment = null, onSubmit }) => {
         images: [],
     });
 
-    const [previewImages, setPreviewImages] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-
-    // Initialize form
-    useEffect(() => {
-        if (apartment) {
-            setFormData({
-                title: apartment.title,
-                description: apartment.description,
-                price: apartment.price,
-                type: apartment.type,
-                rooms: apartment.rooms,
-                bathrooms: apartment.bathrooms,
-                beds: apartment.beds,
-                guests: apartment.guests,
-                area: apartment.area,
-                country: apartment.country,
-                city: apartment.city,
-                address: apartment.address,
-                check_in: apartment.check_in,
-                check_out: apartment.check_out,
-                amenities: apartment.amenities || [],
-                images: apartment.images || [],
-            });
-            setPreviewImages(
-                apartment.images?.map((img) => ({ url: img, isNew: false })) ||
-                    [],
-            );
-        } else {
-            // Reset form for new apartment
-            setFormData({
-                title: "",
-                description: "",
-                price: "",
-                type: "apartment",
-                rooms: 1,
-                bathrooms: 1,
-                beds: 1,
-                guests: 1,
-                area: "",
-                country: "",
-                city: "",
-                address: "",
-                check_in: "",
-                check_out: "",
-                amenities: [],
-                images: [],
-            });
-            setPreviewImages([]);
-        }
-    }, [apartment, isOpen]);
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
-    };
-
     const handleNumberChange = (name, value) => {
         const numValue = parseInt(value) || 0;
         if (numValue >= 1) {
@@ -167,60 +236,112 @@ const ApartmentModal = ({ isOpen, onClose, apartment = null, onSubmit }) => {
     };
 
     const handleAmenityChange = (amenityId) => {
-        setFormData((prev) => {
-            if (prev.amenities.includes(amenityId)) {
-                return {
-                    ...prev,
-                    amenities: prev.amenities.filter((id) => id !== amenityId),
-                };
+        try {
+            const current = getValues("amenities") || [];
+            let updated;
+
+            if (current.includes(amenityId)) {
+                updated = current.filter((id) => id !== amenityId);
             } else {
-                return { ...prev, amenities: [...prev.amenities, amenityId] };
+                updated = [...current, amenityId];
             }
-        });
+            setValue("amenities", updated, { shouldValidate: true });
+        } catch (error) {
+            console.error("Error updating amenities:", error);
+        }
     };
 
+    const watchImages = watch("images", []);
+
+    // Handle Image Uplaod
     const handleImageUpload = (e) => {
-        const files = Array.from(e.target.files);
-        if (files.length + previewImages.length > 10) {
-            alert("You can upload a maximum of 10 images");
+        const newFiles = Array.from(e.target.files);
+
+        // Combine old and new files (if not already included)
+        const allFiles = [...watch("images"), ...newFiles];
+
+        if (allFiles.length > 5) {
+            toast.error("You can upload a maximum of 10 images");
+            e.target.value = null;
             return;
         }
 
-        const newPreviewImages = files.map((file) => ({
+        console.log(allFiles);
+        setValue("images", allFiles, { shouldValidate: true });
+
+        const newPreviewImages = newFiles.map((file) => ({
             url: URL.createObjectURL(file),
             file,
             isNew: true,
         }));
 
         setPreviewImages((prev) => [...prev, ...newPreviewImages]);
+
+        e.target.value = null;
     };
 
-    const removeImage = (index) => {
+    const handleImageRemove = (index) => {
+        const newFiles = watchImages.filter((_, i) => i !== index);
+        setValue("images", newFiles, { shouldValidate: true });
+
         setPreviewImages((prev) => prev.filter((_, i) => i !== index));
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setIsLoading(true);
-
+    const onSubmit = async (values) => {
+        setListingsLoading(true);
         try {
-            // Prepare images - keep existing URLs and add new files
-            const imagesToSubmit = previewImages.map((img) =>
-                img.isNew ? img.file : img.url,
-            );
-
-            await onSubmit({
-                ...formData,
-                images: imagesToSubmit,
+            const formData = new FormData();
+            Object.entries(values).forEach(([key, value]) => {
+                if (key === "images" && Array.isArray(value)) {
+                    value.forEach((image) => {
+                        // formData.append(`images[]`, file);
+                        if (image instanceof File) {
+                            formData.append("images[]", image);
+                        } else {
+                            formData.append("existingImages[]", image.path);
+                        }
+                    });
+                } else if (key === "amenities" && Array.isArray(value)) {
+                    value.forEach((amenity, i) => {
+                        formData.append("amenities[]", amenity);
+                    });
+                } else {
+                    formData.append(key, value);
+                }
             });
 
+            const endpoint = apartment
+                ? `/apartments/${apartment.id}` // Update
+                : `/apartments`; // Create
+
+            const method = apartment ? "post" : "post";
+
+            // for (const pair of formData.entries()) {
+            //     console.log(pair[0], pair[1]);
+            // }
+
+            const response = await axiosClient[method](endpoint, formData, {
+                headers: { "Content-Type": "multipart/form-data" },
+            });
+
+            reset();
             onClose();
+            toast.success(
+                `Apartment ${apartment ? "updated" : "created"} successfully!`,
+            );
+            setListingsLoading(false);
         } catch (error) {
-            console.error("Error submitting apartment:", error);
-        } finally {
-            setIsLoading(false);
+            console.error(error);
+            toast.error("Something went wrong. Please try again.");
         }
     };
+
+    useEffect(() => {
+        if (!isOpen) {
+            setPreviewImages([]);
+            reset();
+        }
+    }, [isOpen, reset]);
 
     return (
         <ReactModal
@@ -236,7 +357,7 @@ const ApartmentModal = ({ isOpen, onClose, apartment = null, onSubmit }) => {
                 </h2>
                 <button
                     onClick={onClose}
-                    className="text-2xl text-gray-500 hover:text-gray-700"
+                    className="text-3xl text-gray-500 hover:text-gray-700"
                 >
                     &times;
                 </button>
@@ -247,7 +368,7 @@ const ApartmentModal = ({ isOpen, onClose, apartment = null, onSubmit }) => {
                 className="overflow-y-auto p-6"
                 style={{ maxHeight: "calc(90vh - 120px)" }}
             >
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit(onSubmit)} id="apartment-form">
                     <div className="space-y-8">
                         {/* Basic Information Section */}
                         <div className="rounded-lg bg-gray-50 p-4">
@@ -263,11 +384,14 @@ const ApartmentModal = ({ isOpen, onClose, apartment = null, onSubmit }) => {
                                     <input
                                         type="text"
                                         name="title"
-                                        value={formData.title}
-                                        onChange={handleChange}
                                         className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-md border border-gray-300 px-3 py-2"
-                                        required
+                                        {...register("title")}
                                     />
+                                    {errors.title && (
+                                        <p className="mt-1 text-sm text-red-500">
+                                            {errors.title.message}
+                                        </p>
+                                    )}
                                 </div>
 
                                 <div>
@@ -281,18 +405,21 @@ const ApartmentModal = ({ isOpen, onClose, apartment = null, onSubmit }) => {
                                         <input
                                             type="number"
                                             name="price"
-                                            value={formData.price}
                                             onChange={(e) =>
                                                 handleNumberChange(
                                                     "price",
                                                     e.target.value,
                                                 )
                                             }
-                                            min="1"
                                             className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-md border border-gray-300 py-2 pr-3 pl-8"
-                                            required
+                                            {...register("price")}
                                         />
                                     </div>
+                                    {errors.price && (
+                                        <p className="mt-1 text-sm text-red-500">
+                                            {errors.price.message}
+                                        </p>
+                                    )}
                                 </div>
 
                                 <div className="md:col-span-2">
@@ -301,12 +428,15 @@ const ApartmentModal = ({ isOpen, onClose, apartment = null, onSubmit }) => {
                                     </label>
                                     <textarea
                                         name="description"
-                                        value={formData.description}
-                                        onChange={handleChange}
                                         rows={4}
                                         className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-md border border-gray-300 px-3 py-2"
-                                        required
+                                        {...register("description")}
                                     />
+                                    {errors.description && (
+                                        <p className="mt-1 text-sm text-red-500">
+                                            {errors.description.message}
+                                        </p>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -324,10 +454,8 @@ const ApartmentModal = ({ isOpen, onClose, apartment = null, onSubmit }) => {
                                     </label>
                                     <select
                                         name="type"
-                                        value={formData.type}
-                                        onChange={handleChange}
                                         className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-md border border-gray-300 px-3 py-2"
-                                        required
+                                        {...register("type")}
                                     >
                                         <option value="apartment">
                                             Apartment
@@ -336,6 +464,11 @@ const ApartmentModal = ({ isOpen, onClose, apartment = null, onSubmit }) => {
                                         <option value="mansion">Mansion</option>
                                         <option value="hotel">Hotel</option>
                                     </select>
+                                    {errors.type && (
+                                        <p className="mt-1 text-sm text-red-500">
+                                            {errors.type.message}
+                                        </p>
+                                    )}
                                 </div>
 
                                 <div>
@@ -355,17 +488,16 @@ const ApartmentModal = ({ isOpen, onClose, apartment = null, onSubmit }) => {
                                         <input
                                             type="number"
                                             name="rooms"
-                                            value={formData.rooms}
                                             onChange={(e) =>
                                                 handleNumberChange(
                                                     "rooms",
                                                     e.target.value,
                                                 )
                                             }
-                                            min="1"
                                             className="w-full border-t border-b border-gray-300 px-3 py-2 text-center"
-                                            required
+                                            {...register("rooms")}
                                         />
+
                                         <button
                                             type="button"
                                             onClick={() =>
@@ -376,6 +508,11 @@ const ApartmentModal = ({ isOpen, onClose, apartment = null, onSubmit }) => {
                                             <FaPlus className="h-3 w-3" />
                                         </button>
                                     </div>
+                                    {errors.rooms && (
+                                        <p className="mt-1 text-sm text-red-500">
+                                            {errors.rooms.message}
+                                        </p>
+                                    )}
                                 </div>
 
                                 <div>
@@ -395,17 +532,16 @@ const ApartmentModal = ({ isOpen, onClose, apartment = null, onSubmit }) => {
                                         <input
                                             type="number"
                                             name="bathrooms"
-                                            value={formData.bathrooms}
                                             onChange={(e) =>
                                                 handleNumberChange(
                                                     "bathrooms",
                                                     e.target.value,
                                                 )
                                             }
-                                            min="1"
                                             className="w-full border-t border-b border-gray-300 px-3 py-2 text-center"
-                                            required
+                                            {...register("bathrooms")}
                                         />
+
                                         <button
                                             type="button"
                                             onClick={() =>
@@ -416,6 +552,11 @@ const ApartmentModal = ({ isOpen, onClose, apartment = null, onSubmit }) => {
                                             <FaPlus className="h-3 w-3" />
                                         </button>
                                     </div>
+                                    {errors.bathrooms && (
+                                        <p className="mt-1 text-sm text-red-500">
+                                            {errors.bathrooms.message}
+                                        </p>
+                                    )}
                                 </div>
 
                                 <div>
@@ -435,17 +576,16 @@ const ApartmentModal = ({ isOpen, onClose, apartment = null, onSubmit }) => {
                                         <input
                                             type="number"
                                             name="beds"
-                                            value={formData.beds}
                                             onChange={(e) =>
                                                 handleNumberChange(
                                                     "beds",
                                                     e.target.value,
                                                 )
                                             }
-                                            min="1"
                                             className="w-full border-t border-b border-gray-300 px-3 py-2 text-center"
-                                            required
+                                            {...register("beds")}
                                         />
+
                                         <button
                                             type="button"
                                             onClick={() =>
@@ -456,6 +596,11 @@ const ApartmentModal = ({ isOpen, onClose, apartment = null, onSubmit }) => {
                                             <FaPlus className="h-3 w-3" />
                                         </button>
                                     </div>
+                                    {errors.beds && (
+                                        <p className="mt-1 text-sm text-red-500">
+                                            {errors.beds.message}
+                                        </p>
+                                    )}
                                 </div>
 
                                 <div>
@@ -475,7 +620,6 @@ const ApartmentModal = ({ isOpen, onClose, apartment = null, onSubmit }) => {
                                         <input
                                             type="number"
                                             name="guests"
-                                            value={formData.guests}
                                             onChange={(e) =>
                                                 handleNumberChange(
                                                     "guests",
@@ -484,7 +628,7 @@ const ApartmentModal = ({ isOpen, onClose, apartment = null, onSubmit }) => {
                                             }
                                             min="1"
                                             className="w-full border-t border-b border-gray-300 px-3 py-2 text-center"
-                                            required
+                                            {...register("guests")}
                                         />
                                         <button
                                             type="button"
@@ -496,6 +640,11 @@ const ApartmentModal = ({ isOpen, onClose, apartment = null, onSubmit }) => {
                                             <FaPlus className="h-3 w-3" />
                                         </button>
                                     </div>
+                                    {errors.guests && (
+                                        <p className="mt-1 text-sm text-red-500">
+                                            {errors.guests.message}
+                                        </p>
+                                    )}
                                 </div>
 
                                 <div>
@@ -506,16 +655,18 @@ const ApartmentModal = ({ isOpen, onClose, apartment = null, onSubmit }) => {
                                         <input
                                             type="number"
                                             name="area"
-                                            value={formData.area}
-                                            onChange={handleChange}
-                                            min="1"
                                             className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-md border border-gray-300 py-2 pr-3 pl-3"
-                                            required
+                                            {...register("area")}
                                         />
                                         <span className="absolute top-2 right-3 text-gray-500">
                                             sq ft
                                         </span>
                                     </div>
+                                    {errors.area && (
+                                        <p className="mt-1 text-sm text-red-500">
+                                            {errors.area.message}
+                                        </p>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -534,11 +685,14 @@ const ApartmentModal = ({ isOpen, onClose, apartment = null, onSubmit }) => {
                                     <input
                                         type="text"
                                         name="country"
-                                        value={formData.country}
-                                        onChange={handleChange}
                                         className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-md border border-gray-300 px-3 py-2"
-                                        required
+                                        {...register("country")}
                                     />
+                                    {errors.country && (
+                                        <p className="mt-1 text-sm text-red-500">
+                                            {errors.country.message}
+                                        </p>
+                                    )}
                                 </div>
 
                                 <div>
@@ -548,11 +702,14 @@ const ApartmentModal = ({ isOpen, onClose, apartment = null, onSubmit }) => {
                                     <input
                                         type="text"
                                         name="city"
-                                        value={formData.city}
-                                        onChange={handleChange}
                                         className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-md border border-gray-300 px-3 py-2"
-                                        required
+                                        {...register("city")}
                                     />
+                                    {errors.city && (
+                                        <p className="mt-1 text-sm text-red-500">
+                                            {errors.city.message}
+                                        </p>
+                                    )}
                                 </div>
 
                                 <div>
@@ -562,11 +719,14 @@ const ApartmentModal = ({ isOpen, onClose, apartment = null, onSubmit }) => {
                                     <input
                                         type="text"
                                         name="address"
-                                        value={formData.address}
-                                        onChange={handleChange}
                                         className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-md border border-gray-300 px-3 py-2"
-                                        required
+                                        {...register("address")}
                                     />
+                                    {errors.address && (
+                                        <p className="mt-1 text-sm text-red-500">
+                                            {errors.address.message}
+                                        </p>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -585,11 +745,14 @@ const ApartmentModal = ({ isOpen, onClose, apartment = null, onSubmit }) => {
                                     <input
                                         type="date"
                                         name="check_in"
-                                        value={formData.check_in}
-                                        onChange={handleChange}
                                         className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-md border border-gray-300 px-3 py-2"
-                                        required
+                                        {...register("check_in")}
                                     />
+                                    {errors.check_in && (
+                                        <p className="mt-1 text-sm text-red-500">
+                                            {errors.check_in.message}
+                                        </p>
+                                    )}
                                 </div>
 
                                 <div>
@@ -599,11 +762,14 @@ const ApartmentModal = ({ isOpen, onClose, apartment = null, onSubmit }) => {
                                     <input
                                         type="date"
                                         name="check_out"
-                                        value={formData.check_out}
-                                        onChange={handleChange}
                                         className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-md border border-gray-300 px-3 py-2"
-                                        required
+                                        {...register("check_out")}
                                     />
+                                    {errors.check_out && (
+                                        <p className="mt-1 text-sm text-red-500">
+                                            {errors.check_out.message}
+                                        </p>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -627,7 +793,9 @@ const ApartmentModal = ({ isOpen, onClose, apartment = null, onSubmit }) => {
                                         />
                                         <button
                                             type="button"
-                                            onClick={() => removeImage(index)}
+                                            onClick={() =>
+                                                handleImageRemove(index)
+                                            }
                                             className="absolute -top-2 -right-2 rounded-full bg-red-500 p-1 text-white transition-colors hover:bg-red-600"
                                         >
                                             <FaTimes className="h-3 w-3" />
@@ -635,6 +803,11 @@ const ApartmentModal = ({ isOpen, onClose, apartment = null, onSubmit }) => {
                                     </div>
                                 ))}
                             </div>
+                            {errors.images && (
+                                <p className="my-1 text-sm text-red-500">
+                                    {errors.images.message}
+                                </p>
+                            )}
                             <label className="inline-flex cursor-pointer items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50">
                                 <FaPlus className="mr-2 h-4 w-4" />
                                 Upload Images
@@ -663,11 +836,12 @@ const ApartmentModal = ({ isOpen, onClose, apartment = null, onSubmit }) => {
                                     <button
                                         key={amenity.id}
                                         type="button"
-                                        onClick={() =>
-                                            handleAmenityChange(amenity.id)
-                                        }
+                                        onClick={() => {
+                                            handleAmenityChange(amenity.id);
+                                        }}
                                         className={`flex items-center justify-center rounded-lg border p-3 transition-colors ${
-                                            formData.amenities.includes(
+                                            // formData.amenities.includes(
+                                            getValues("amenities").includes(
                                                 amenity.id,
                                             )
                                                 ? "border-primary-500 bg-primary-50 text-primary-700"
@@ -683,6 +857,11 @@ const ApartmentModal = ({ isOpen, onClose, apartment = null, onSubmit }) => {
                                     </button>
                                 ))}
                             </div>
+                            {errors.amenities && (
+                                <p className="mt-1 text-sm text-red-500">
+                                    {errors.amenities.message}
+                                </p>
+                            )}
                         </div>
                     </div>
                 </form>
@@ -700,10 +879,10 @@ const ApartmentModal = ({ isOpen, onClose, apartment = null, onSubmit }) => {
                 <button
                     type="submit"
                     form="apartment-form"
-                    disabled={isLoading}
+                    disabled={isSubmitting}
                     className="bg-primary-600 hover:bg-primary-700 focus:ring-primary-500 rounded-md border border-transparent px-4 py-2 text-sm font-medium text-white shadow-sm focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:opacity-50"
                 >
-                    {isLoading ? (
+                    {isSubmitting ? (
                         <span className="flex items-center">
                             <svg
                                 className="mr-2 -ml-1 h-4 w-4 animate-spin text-white"

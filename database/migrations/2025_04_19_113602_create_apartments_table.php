@@ -20,8 +20,7 @@ return new class extends Migration
             $table->decimal('price', 8, 2);
             $table->decimal('rating', 1, 1)->default(0);
             $table->enum('status', ['available', 'reserved', 'expired'])->default('available');
-            
-            
+
             // Apartment Structure
             $table->enum('type', ['apartment', 'house', 'mansion', 'hotel']);
             $table->integer('rooms');

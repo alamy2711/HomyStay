@@ -1,131 +1,49 @@
+import axiosClient from "@/lib/axiosClient";
+import ListingsTableSkeleton from "@components/skeletons/ListingsTableSkeleton";
 import {
     ArrowsUpDownIcon,
     EyeIcon,
-    FunnelIcon,
     PencilIcon,
-    PlusIcon,
     TrashIcon,
 } from "@heroicons/react/24/outline";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import ReactPaginate from "react-paginate";
+import { toast } from "react-toastify";
 import ApartmentModal from "../../components/Listings/ApartmentModal";
+import { formatDate } from "../../utils/dateFormatter";
+
+// Components
+import Button from "@components/common/Button";
+import { BsHouseAdd } from "react-icons/bs";
+import { IoSearchOutline } from "react-icons/io5";
+import Select from "react-select";
+
 
 const ListingsPage = () => {
-    // Sample apartment data
-    const [apartments, setApartments] = useState([
-        {
-            id: 1,
-            title: "Modern Downtown Loft",
-            description:
-                "Industrial-chic loft in Manhattan with skyline views.",
-            type: "apartment",
-            rooms: 2,
-            bathrooms: 1,
-            beds: 1,
-            guests: 4,
-            area: 1000,
-            country: "United States",
-            city: "New York",
-            location: "New York, NY",
-            address: "123 Main St, New York, NY 10001",
-            price: 150,
-            status: "available",
-            rating: 4.8,
-            check_in: "2023-05-15",
-            check_out: "2023-05-20",
-            images: [
-                "images/apartments/0001.jpg",
-                "images/apartments/0002.jpg",
-            ],
-            lastUpdated: "2023-05-15",
-            amenities: ["wifi", "kitchen", "tv", "parking", "laundry"],
-        },
-        {
-            id: 2,
-            title: "Beachfront Villa",
-            description: "Cozy beachfront villa with ocean views.",
-            type: "mansion",
-            rooms: 4,
-            bathrooms: 2,
-            beds: 2,
-            guests: 6,
-            area: 5000,
-            country: "United States",
-            city: "Miami",
-            location: "Miami, FL",
-            address: "456 Ocean Blvd, Miami, FL 33101",
-            price: 300,
-            status: "reserved",
-            rating: 4.9,
-            check_in: "2023-06-15",
-            check_out: "2023-06-20",
-            images: [
-                "images/apartments/0003.jpg",
-                "images/apartments/0002.jpg",
-            ],
-            lastUpdated: "2023-06-20",
-            amenities: ["wifi", "kitchen", "tv", "pool"],
-        },
-        {
-            id: 3,
-            title: "Cozy Mountain Cabin",
-            description: "Rustic cabin with hot tub and mountain views.",
-            type: "house",
-            rooms: 3,
-            bathrooms: 2,
-            beds: 2,
-            guests: 4,
-            area: 2500,
-            country: "United States",
-            city: "Aspen",
-            location: "Aspen, CO",
-            address: "789 Mountain Rd, Aspen, CO 81611",
-            price: 200,
-            status: "expired",
-            rating: 4.7,
-            check_in: "2023-07-15",
-            check_out: "2023-07-20",
-            images: [
-                "images/apartments/ap0004.jpg",
-                "images/apartments/0001.jpg",
-            ],
-            lastUpdated: "2023-04-10",
-            amenities: ["wifi", "kitchen", "tv", "pets", "ac"],
-        },
-    ]);
+    const [currentHostUser, setCurrentHostUser] = useState({});
+    const [apartments, setApartments] = useState([]);
+    const [listingsLoading, setListingsLoading] = useState(true);
 
-    // State for filters and sorting
-    const [filters, setFilters] = useState({
-        status: "all",
-        search: "",
-    });
+    useEffect(() => {
+        axiosClient
+            .get("/user")
+            .then((response) => {
+                const user = response.data.data;
+                setCurrentHostUser(user);
+                setApartments(user.apartments);
+            })
+            .catch((error) => {
+                console.error("Error fetching user:", error);
+            })
+            .finally(() => {
+                setListingsLoading(false);
+            });
+    }, [listingsLoading]);
+
     const [sortConfig, setSortConfig] = useState({
         key: "lastUpdated",
         direction: "desc",
     });
-
-    // Filter and sort apartments
-    const filteredApartments = apartments
-        .filter((apartment) => {
-            const matchesStatus =
-                filters.status === "all" || apartment.status === filters.status;
-            const matchesSearch =
-                apartment.title
-                    .toLowerCase()
-                    .includes(filters.search.toLowerCase()) ||
-                apartment.location
-                    .toLowerCase()
-                    .includes(filters.search.toLowerCase());
-            return matchesStatus && matchesSearch;
-        })
-        .sort((a, b) => {
-            if (a[sortConfig.key] < b[sortConfig.key]) {
-                return sortConfig.direction === "asc" ? -1 : 1;
-            }
-            if (a[sortConfig.key] > b[sortConfig.key]) {
-                return sortConfig.direction === "asc" ? 1 : -1;
-            }
-            return 0;
-        });
 
     // Handle sorting
     const requestSort = (key) => {
@@ -138,11 +56,16 @@ const ListingsPage = () => {
 
     // Handle delete
     const handleDelete = (id) => {
-        if (window.confirm("Are you sure you want to delete this listing?")) {
-            setApartments(
-                apartments.filter((apartment) => apartment.id !== id),
-            );
-        }
+        console.log("id: ", id);
+        axiosClient
+            .delete(`/apartments/${id}`)
+            .then((response) => {
+                setListingsLoading(true);
+                toast.success("Apartment deleted successfully!");
+            })
+            .catch((error) => {
+                console.error("Error deleting apartment:", error);
+            });
     };
 
     // Status badge component
@@ -178,299 +101,391 @@ const ListingsPage = () => {
         setModalOpen(true);
     };
 
-    // Handle form submission
-    const handleSubmit = async (apartmentData) => {
-        alert(JSON.stringify(apartmentData));
-        // try {
-        //     if (currentApartment) {
-        //         // Update existing apartment
-        //         await updateApartment(currentApartment.id, apartmentData);
-        //     } else {
-        //         // Create new apartment
-        //         await createApartment(apartmentData);
-        //     }
-        //     // Refresh listings
-        //     fetchApartments();
-        // } catch (error) {
-        //     console.error("Error:", error);
-        // }
+    // Filter & Sort logic
+    const [searchTerm, setSearchTerm] = useState("");
+    const [selectedStatus, setSelectedStatus] = useState({
+        value: "all",
+        label: "All Statuses",
+    });
+    const filteredApartments = apartments
+        .filter((apartment) => {
+            const matchesSearch =
+                `${apartment.title} ${apartment.country} ${apartment.city}`
+                    .toLowerCase()
+                    .includes(searchTerm.toLowerCase());
+            const matchesStatus =
+                selectedStatus.value === "all" ||
+                apartment.status === selectedStatus.value;
+            return matchesStatus && matchesSearch;
+        })
+        .sort((a, b) => {
+            if (a[sortConfig.key] < b[sortConfig.key]) {
+                return sortConfig.direction === "asc" ? -1 : 1;
+            }
+            if (a[sortConfig.key] > b[sortConfig.key]) {
+                return sortConfig.direction === "asc" ? 1 : -1;
+            }
+            return 0;
+        });
+
+    // Pagination logic
+    const [currentPage, setCurrentPage] = useState(0);
+    const apartmentPerPage = 5;
+    const pageCount = Math.ceil(filteredApartments.length / apartmentPerPage);
+    const offset = currentPage * apartmentPerPage;
+    const currentApartments = filteredApartments.slice(
+        offset,
+        offset + apartmentPerPage,
+    );
+    const handlePageClick = ({ selected }) => {
+        setCurrentPage(selected);
     };
 
     return (
         <section className="my-15 px-4 lg:px-6">
-            <div className="mx-auto max-w-screen-xl overflow-hidden rounded-lg bg-white p-6 shadow-sm">
+            <div className="mx-auto max-w-screen-xl overflow-hidden rounded-lg bg-white shadow-sm">
                 {/* Header */}
-                <div className="mb-8 flex flex-col items-start justify-between md:flex-row md:items-center">
-                    <div>
-                        <h1 className="text-3xl font-bold text-gray-900">
-                            Your Listings
-                        </h1>
-                        <p className="mt-2 text-gray-600">
-                            Manage your properties and view their performance
-                        </p>
+                <div className="from-primary-600 to-primary-700 bg-gradient-to-br px-6 py-4">
+                    <div className="flex flex-col items-center justify-between gap-5 text-center md:flex-row md:gap-0 md:text-left">
+                        <div>
+                            <h1 className="text-2xl font-bold text-white">
+                                Your Listings
+                            </h1>
+                            <p className="text-primary-100 mt-1">
+                                Manage your properties and view their
+                                performance
+                            </p>
+                        </div>
+                        <Button
+                            onClick={handleNewApartment}
+                            className="bg-primary-800/45 hover:bg-primary-800 te inline-flex items-center text-white shadow-sm"
+                        >
+                            <BsHouseAdd className="mr-2 h-4.5 w-4.5" />
+                            Add New Property
+                        </Button>
                     </div>
-                    <button
-                        onClick={handleNewApartment}
-                        className="bg-primary-700 hover:bg-primary-800 mt-4 flex items-center rounded-lg px-4 py-2 text-white transition-colors md:mt-0"
-                    >
-                        <PlusIcon className="mr-2 h-5 w-5" />
-                        Add New Listing
-                    </button>
                 </div>
+
                 {/* Filters */}
-                <div className="mb-6 rounded-xl border border-gray-100 bg-white p-4 shadow-sm">
-                    <div className="flex flex-col gap-4 md:flex-row">
-                        <div className="flex-1">
-                            <label
-                                htmlFor="search"
-                                className="mb-1 block text-sm font-medium text-gray-700"
-                            >
-                                Search
-                            </label>
-                            <div className="relative">
+                <div className="border-b border-gray-200 p-6">
+                    <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                        {/* Search */}
+                        <div className="w-full md:w-1/3">
+                            <div className="relative rounded-md shadow-sm">
+                                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                    <IoSearchOutline className="h-5 w-5 text-gray-400" />
+                                </div>
                                 <input
                                     type="text"
-                                    id="search"
-                                    placeholder="Search by title or location..."
-                                    className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-lg border border-gray-300 py-2 pr-4 pl-10"
-                                    value={filters.search}
+                                    className="focus:ring-primary-500 focus:border-primary-500 block w-full rounded-md border-gray-300 pl-10 sm:text-sm"
+                                    placeholder="Search by name or email..."
+                                    value={searchTerm}
                                     onChange={(e) =>
-                                        setFilters({
-                                            ...filters,
-                                            search: e.target.value,
-                                        })
+                                        setSearchTerm(e.target.value)
                                     }
                                 />
-                                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                    <FunnelIcon className="h-5 w-5 text-gray-400" />
-                                </div>
                             </div>
                         </div>
-                        <div className="w-full md:w-48">
-                            <label
-                                htmlFor="status"
-                                className="mb-1 block text-sm font-medium text-gray-700"
-                            >
-                                Status
-                            </label>
-                            <select
-                                id="status"
-                                className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-lg border border-gray-300 px-4 py-2"
-                                value={filters.status}
-                                onChange={(e) =>
-                                    setFilters({
-                                        ...filters,
-                                        status: e.target.value,
-                                    })
-                                }
-                            >
-                                <option value="all">All Statuses</option>
-                                <option value="available">Available</option>
-                                <option value="reserved">Reserved</option>
-                                <option value="expired">Expired</option>
-                            </select>
+
+                        {/* Role Filter */}
+                        <div className="w-full md:w-1/4">
+                            <Select
+                                options={[
+                                    { value: "all", label: "All Statuses" },
+                                    { value: "available", label: "Available" },
+                                    { value: "reserved", label: "Reserved" },
+                                    { value: "expired", label: "Expired" },
+                                ]}
+                                value={selectedStatus}
+                                onChange={setSelectedStatus}
+                                isSearchable={false}
+                                styles={{
+                                    control: (base, state) => ({
+                                        ...base,
+                                        borderColor: state.isFocused
+                                            ? "var(--color-primary-700)"
+                                            : base.borderColor,
+                                        boxShadow: state.isFocused
+                                            ? "0 0 0 1px var(--color-primary-700)"
+                                            : base.boxShadow,
+                                        "&:hover": {
+                                            borderColor:
+                                                "var(--color-primary-700)",
+                                        },
+                                    }),
+                                    option: (base, state) => ({
+                                        ...base,
+                                        backgroundColor: state.isSelected
+                                            ? "var(--color-primary-700)" // selected
+                                            : state.isFocused
+                                              ? "var(--color-primary-100)" // hover
+                                              : "white",
+                                        color: state.isSelected
+                                            ? "white"
+                                            : "#000",
+                                        ":active": {
+                                            backgroundColor:
+                                                "var(--color-primary-700)",
+                                            color: "white",
+                                        },
+                                    }),
+                                }}
+                            />
                         </div>
                     </div>
                 </div>
+
                 {/* Apartments Table */}
-                <div className="overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm">
-                    <div className="overflow-x-auto">
-                        <table className="min-w-full divide-y divide-gray-200">
-                            <thead className="bg-gray-50">
-                                <tr>
-                                    <th
-                                        scope="col"
-                                        className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
-                                    >
-                                        Property
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        className="cursor-pointer px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
-                                        onClick={() => requestSort("location")}
-                                    >
-                                        <div className="flex items-center">
-                                            Location
-                                            <ArrowsUpDownIcon className="ml-1 h-4 w-4" />
-                                        </div>
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        className="cursor-pointer px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
-                                        onClick={() => requestSort("price")}
-                                    >
-                                        <div className="flex items-center">
-                                            Price
-                                            <ArrowsUpDownIcon className="ml-1 h-4 w-4" />
-                                        </div>
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        className="cursor-pointer px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
-                                        onClick={() => requestSort("rating")}
-                                    >
-                                        <div className="flex items-center">
-                                            Rating
-                                            <ArrowsUpDownIcon className="ml-1 h-4 w-4" />
-                                        </div>
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        className="cursor-pointer px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
-                                        onClick={() => requestSort("status")}
-                                    >
-                                        <div className="flex items-center">
-                                            Status
-                                            <ArrowsUpDownIcon className="ml-1 h-4 w-4" />
-                                        </div>
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        className="cursor-pointer px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
-                                        onClick={() =>
-                                            requestSort("lastUpdated")
-                                        }
-                                    >
-                                        <div className="flex items-center">
-                                            Last Updated
-                                            <ArrowsUpDownIcon className="ml-1 h-4 w-4" />
-                                        </div>
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        className="px-6 py-3 text-right text-xs font-medium tracking-wider text-gray-500 uppercase"
-                                    >
-                                        Actions
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-gray-200 bg-white">
-                                {filteredApartments.length > 0 ? (
-                                    filteredApartments.map((apartment) => (
-                                        <tr
-                                            key={apartment.id}
-                                            className="hover:bg-gray-50"
+                {listingsLoading ? (
+                    <ListingsTableSkeleton />
+                ) : (
+                    <div className="overflow-hidden border-b border-gray-200 bg-white">
+                        <div className="min-h-100 overflow-x-auto">
+                            <table className="min-w-full divide-y divide-gray-200">
+                                <thead className="bg-gray-50">
+                                    <tr>
+                                        <th
+                                            scope="col"
+                                            className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
                                         >
-                                            <td className="px-6 py-4 whitespace-nowrap">
+                                            Property
+                                        </th>
+                                        {/* <th
+                                                scope="col"
+                                                className="cursor-pointer px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
+                                                onClick={() =>
+                                                    requestSort("location")
+                                                }
+                                            >
                                                 <div className="flex items-center">
-                                                    <div className="h-10 w-10 flex-shrink-0">
-                                                        <img
-                                                            className="h-10 w-10 rounded-md object-cover"
-                                                            src={
-                                                                apartment
-                                                                    .images[0]
-                                                            }
-                                                            alt={
-                                                                apartment.title
-                                                            }
-                                                        />
-                                                    </div>
-                                                    <div className="ml-4">
-                                                        <div className="text-sm font-medium text-gray-900">
-                                                            {apartment.title}
+                                                    Location
+                                                    <ArrowsUpDownIcon className="ml-1 h-4 w-4" />
+                                                </div>
+                                            </th> */}
+                                        <th
+                                            scope="col"
+                                            className="cursor-pointer px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
+                                            onClick={() => requestSort("price")}
+                                        >
+                                            <div className="flex items-center">
+                                                Price
+                                                <ArrowsUpDownIcon className="ml-1 h-4 w-4" />
+                                            </div>
+                                        </th>
+                                        <th
+                                            scope="col"
+                                            className="cursor-pointer px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
+                                            onClick={() =>
+                                                requestSort("rating")
+                                            }
+                                        >
+                                            <div className="flex items-center">
+                                                Rating
+                                                <ArrowsUpDownIcon className="ml-1 h-4 w-4" />
+                                            </div>
+                                        </th>
+                                        <th
+                                            scope="col"
+                                            className="cursor-pointer px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
+                                            onClick={() =>
+                                                requestSort("status")
+                                            }
+                                        >
+                                            <div className="flex items-center">
+                                                Status
+                                                <ArrowsUpDownIcon className="ml-1 h-4 w-4" />
+                                            </div>
+                                        </th>
+                                        <th
+                                            scope="col"
+                                            className="cursor-pointer px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
+                                            onClick={() =>
+                                                requestSort("lastUpdated")
+                                            }
+                                        >
+                                            <div className="flex items-center">
+                                                Last Updated
+                                                <ArrowsUpDownIcon className="ml-1 h-4 w-4" />
+                                            </div>
+                                        </th>
+                                        <th
+                                            scope="col"
+                                            className="px-6 py-3 text-right text-xs font-medium tracking-wider text-gray-500 uppercase"
+                                        >
+                                            Actions
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-gray-200 bg-white">
+                                    {currentApartments.length > 0 ? (
+                                        currentApartments.map((apartment) => (
+                                            <tr
+                                                key={apartment.id}
+                                                className="duration-300 hover:bg-gray-100"
+                                            >
+                                                <td className="max-w-80 overflow-hidden px-6 py-4 whitespace-nowrap">
+                                                    <div className="flex items-center">
+                                                        <div className="h-10 w-10 flex-shrink-0">
+                                                            <img
+                                                                className="h-10 w-10 rounded-md object-cover"
+                                                                src={
+                                                                    apartment
+                                                                        .pictures[0]
+                                                                        .path
+                                                                }
+                                                                alt={
+                                                                    apartment.title
+                                                                }
+                                                            />
+                                                        </div>
+                                                        <div className="ml-4 overflow-hidden">
+                                                            <div className="truncate text-sm font-medium text-gray-900">
+                                                                {
+                                                                    apartment.title
+                                                                }
+                                                            </div>
+                                                            <div className="truncate text-sm font-medium text-gray-500">
+                                                                {
+                                                                    // apartment.location
+                                                                    apartment.country
+                                                                }
+                                                                ,{" "}
+                                                                {apartment.city}
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <div className="text-sm text-gray-900">
-                                                    {apartment.location}
-                                                </div>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <div className="text-sm text-gray-900">
-                                                    ${apartment.price}/night
-                                                </div>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <div className="text-sm text-gray-900">
-                                                    {apartment.rating}
-                                                </div>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <StatusBadge
-                                                    status={apartment.status}
-                                                />
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <div className="text-sm text-gray-500">
-                                                    {apartment.lastUpdated}
-                                                </div>
-                                            </td>
-                                            <td className="px-6 py-4 text-right text-sm font-medium whitespace-nowrap">
-                                                <div className="flex justify-end space-x-2">
-                                                    <a
-                                                        target="_blank"
-                                                        href="apartment-details"
-                                                        className="text-primary-600 hover:text-primary-900"
-                                                        title="View"
-                                                    >
-                                                        <EyeIcon className="h-5 w-5" />
-                                                    </a>
-                                                    <button
-                                                        onClick={() => {
-                                                            console.log(
-                                                                apartment,
-                                                            );
-                                                            handleEdit(
-                                                                apartment,
-                                                            );
-                                                        }}
-                                                        className="text-yellow-600 hover:text-yellow-900"
-                                                        title="Edit"
-                                                    >
-                                                        <PencilIcon className="h-5 w-5" />
-                                                    </button>
-                                                    <button
-                                                        onClick={() =>
-                                                            handleDelete(
-                                                                apartment.id,
-                                                            )
+                                                </td>
+                                                {/* Location */}
+                                                {/* <td className="px-6 py-4 whitespace-nowrap">
+                                                            <div className="text-sm text-gray-900">
+                                                                {
+                                                                    // apartment.location
+                                                                    apartment.country
+                                                                }
+                                                                ,{" "}
+                                                                {apartment.city}
+                                                            </div>
+                                                        </td> */}
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="text-sm text-gray-900">
+                                                        ${apartment.price}
+                                                        /night
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="text-sm text-gray-900">
+                                                        {apartment.rating}
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <StatusBadge
+                                                        status={
+                                                            apartment.status
                                                         }
-                                                        className="text-red-600 hover:text-red-900"
-                                                        title="Delete"
-                                                    >
-                                                        <TrashIcon className="h-5 w-5" />
-                                                    </button>
-                                                </div>
+                                                    />
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="text-sm text-gray-500">
+                                                        {formatDate(
+                                                            new Date(
+                                                                apartment.check_in,
+                                                            ),
+                                                            "dd MMM",
+                                                        )}{" "}
+                                                        -{" "}
+                                                        {formatDate(
+                                                            new Date(
+                                                                apartment.check_out,
+                                                            ),
+                                                            "dd MMM",
+                                                        )}
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-4 text-right text-sm font-medium whitespace-nowrap">
+                                                    <div className="flex justify-end space-x-2">
+                                                        <a
+                                                            target="_blank"
+                                                            href="apartment-details"
+                                                            className="text-primary-600 hover:text-primary-900"
+                                                            title="View"
+                                                        >
+                                                            <EyeIcon className="h-5 w-5" />
+                                                        </a>
+                                                        <button
+                                                            onClick={() => {
+                                                                handleEdit(
+                                                                    apartment,
+                                                                );
+                                                            }}
+                                                            className="text-yellow-600 hover:text-yellow-900"
+                                                            title="Edit"
+                                                        >
+                                                            <PencilIcon className="h-5 w-5" />
+                                                        </button>
+                                                        <button
+                                                            onClick={() =>
+                                                                handleDelete(
+                                                                    apartment.id,
+                                                                )
+                                                            }
+                                                            className="text-red-600 hover:text-red-900"
+                                                            title="Delete"
+                                                        >
+                                                            <TrashIcon className="h-5 w-5" />
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    ) : (
+                                        <tr>
+                                            <td
+                                                colSpan="7"
+                                                className="px-6 py-4 text-center text-sm text-gray-500"
+                                            >
+                                                No listings found matching your
+                                                criteria
                                             </td>
                                         </tr>
-                                    ))
-                                ) : (
-                                    <tr>
-                                        <td
-                                            colSpan="7"
-                                            className="px-6 py-4 text-center text-sm text-gray-500"
-                                        >
-                                            No listings found matching your
-                                            criteria
-                                        </td>
-                                    </tr>
-                                )}
-                            </tbody>
-                        </table>
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-                {/* Pagination (would be implemented with real API) */}
-                <div className="mt-6 flex items-center justify-between">
+                )}
+
+                {/* Pagination */}
+                <div className="flex items-center justify-between px-6 py-4">
                     <div className="text-sm text-gray-700">
-                        Showing <span className="font-medium">1</span> to{" "}
-                        <span className="font-medium">3</span> of{" "}
-                        <span className="font-medium">3</span> results
+                        Showing {offset + 1} -{" "}
+                        {Math.min(
+                            offset + apartmentPerPage,
+                            filteredApartments.length,
+                        )}{" "}
+                        of {filteredApartments.length} apartments
                     </div>
                     <div className="flex space-x-2">
-                        <button
-                            disabled
-                            className="cursor-not-allowed rounded-md border border-gray-300 bg-gray-100 px-3 py-1 text-sm font-medium text-gray-500"
-                        >
-                            Previous
-                        </button>
-                        <button
-                            disabled
-                            className="cursor-not-allowed rounded-md border border-gray-300 bg-gray-100 px-3 py-1 text-sm font-medium text-gray-500"
-                        >
-                            Next
-                        </button>
+                        {pageCount > 1 && (
+                            <ReactPaginate
+                                previousLabel={"←"}
+                                nextLabel={"→"}
+                                breakLabel={"..."}
+                                pageCount={pageCount}
+                                marginPagesDisplayed={2}
+                                pageRangeDisplayed={5}
+                                onPageChange={handlePageClick}
+                                containerClassName={
+                                    "flex items-center space-x-2"
+                                }
+                                pageLinkClassName="w-8 h-8 flex items-center justify-center  rounded-full text-sm cursor-pointer hover:bg-primary-200 bg-primary-50 transition"
+                                activeLinkClassName="bg-gray-800 text-white bg-primary-500 hover:bg-primary-700"
+                                previousLinkClassName="h-8 w-8 flex items-center justify-center rounded-full border border-gray-400 justify-center   text-sm cursor-pointer "
+                                nextLinkClassName="h-8 w-8 flex items-center justify-center  rounded-full border border-gray-400 text-sm cursor-pointer"
+                                disabledClassName={
+                                    "opacity-50 cursor-not-allowed"
+                                }
+                            />
+                        )}
                     </div>
                 </div>
 
@@ -479,7 +494,7 @@ const ListingsPage = () => {
                     isOpen={modalOpen}
                     onClose={() => setModalOpen(false)}
                     apartment={currentApartment}
-                    onSubmit={handleSubmit}
+                    setListingsLoading={setListingsLoading}
                 />
             </div>
         </section>

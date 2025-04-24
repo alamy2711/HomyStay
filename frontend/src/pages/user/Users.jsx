@@ -161,7 +161,7 @@ export default function Users() {
             <div className="mx-auto max-w-screen-xl overflow-hidden rounded-lg bg-white shadow-sm">
                 {/* Header */}
                 <div className="from-primary-600 to-primary-700 bg-gradient-to-br px-6 py-4">
-                    <div className="flex flex-col items-center justify-between gap-5 md:flex-row md:gap-0">
+                    <div className="flex flex-col text-center md:text-left items-center justify-between gap-5 md:flex-row md:gap-0">
                         <div>
                             <h1 className="text-2xl font-bold text-white">
                                 Users Management
@@ -482,7 +482,7 @@ export default function Users() {
                             />
                         )}
                         <div className="ml-auto text-sm text-gray-500">
-                            Showing {offset + 1} to{" "}
+                            Showing {offset + 1} -{" "}
                             {Math.min(
                                 offset + usersPerPage,
                                 filteredUsers.length,

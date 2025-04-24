@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pictures', function (Blueprint $table) {
+        Schema::create('amenities', function (Blueprint $table) {
             $table->id();
-            $table->string('path');
-            $table->unsignedBigInteger('apartment_id');
+            $table->unsignedBigInteger('apartment_id'); // Foreign key referencing the apartment
+            $table->string('name');
             $table->timestamps();
 
             $table->foreign('apartment_id')->references('id')->on('apartments')->onDelete('cascade');
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pictures');
+        Schema::dropIfExists('amenities');
     }
 };

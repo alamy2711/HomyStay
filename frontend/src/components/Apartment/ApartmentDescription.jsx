@@ -1,12 +1,11 @@
-import { iconMap } from "@/constants/IconMap";
+import AMENITIES from "@/constants/Amenities";
 import Button from "@components/common/Button";
-import { useApartments } from "@contexts/ApartmentsContext";
 import { useAuth } from "@contexts/AuthContext";
 import React from "react";
 import { toast } from "react-toastify";
 import ReservationForm from "./ReservationForm";
 
-export default function ApartmentDescription({apartment}) {
+export default function ApartmentDescription({ apartment }) {
     const { user, token, loading: userLoading } = useAuth();
     // const { apartments, loading: apartmentsLoading } = useApartments();
     // const apartment = apartments[0]; // Extracting 1 dummy apartemnt data for testing purposes
@@ -21,7 +20,7 @@ export default function ApartmentDescription({apartment}) {
     };
 
     return (
-        <section className="relative my-10 mb-10 px-4 lg:px-6 z-1">
+        <section className="relative z-1 my-10 mb-10 px-4 lg:px-6">
             <div className="mx-auto grid max-w-screen-xl grid-cols-1 gap-5 gap-y-10 rounded-lg bg-white px-4 py-10 shadow-sm lg:grid-cols-12">
                 {/* Full Info */}
                 <div className="col-span-12 lg:col-span-8 lg:px-5">
@@ -40,7 +39,9 @@ export default function ApartmentDescription({apartment}) {
                                     {/* {user.first_name} {user.last_name} */}
                                     John Doe
                                 </h5>
-                                <p className="text-[0.8rem] text-gray-500">Host owner</p>
+                                <p className="text-[0.8rem] text-gray-500">
+                                    Host owner
+                                </p>
                             </div>
                         </div>
                         <Button
@@ -68,16 +69,22 @@ export default function ApartmentDescription({apartment}) {
                             Amenities
                         </h3>
                         <div className="grid grid-cols-1 gap-5 text-lg font-[500] text-gray-500 md:grid-cols-2">
-                            {apartment.amenities.map((amenity, i) => (
-                                <div key={i}>
-                                    <div className="[&_i]:text-primary-700 inline-block w-10 [&_i]:text-2xl">
-                                        {iconMap[amenity]?.icon}
+                            {apartment.amenities.map((amenity, i) => {
+                                const amenityInfo = AMENITIES.find(
+                                    (item) => item.id === amenity.name,
+                                );
+                                console.log(amenityInfo);
+                                return amenityInfo ? (
+                                    <div key={i}>
+                                        <div className="text-primary-700 inline-block w-10 text-2xl">
+                                            {amenityInfo.icon}
+                                        </div>
+                                        <span className="text-(--secondary)">
+                                            {amenityInfo.name}
+                                        </span>
                                     </div>
-                                    <span className="text-(--secondary)">
-                                        {iconMap[amenity]?.label}
-                                    </span>
-                                </div>
-                            ))}
+                                ) : null;
+                            })}
                         </div>
                     </div>
                 </div>

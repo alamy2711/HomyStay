@@ -36,8 +36,8 @@ export default function ApartmentDescription({ apartment }) {
                             </div>
                             <div>
                                 <h5 className="text-gray-600z text-lg !font-[700] text-(--secondary)">
-                                    {/* {user.first_name} {user.last_name} */}
-                                    John Doe
+                                    {apartment.host.first_name}{" "}
+                                    {apartment.host.last_name}
                                 </h5>
                                 <p className="text-[0.8rem] text-gray-500">
                                     Host owner
@@ -73,9 +73,8 @@ export default function ApartmentDescription({ apartment }) {
                                 const amenityInfo = AMENITIES.find(
                                     (item) => item.id === amenity.name,
                                 );
-                                console.log(amenityInfo);
                                 return amenityInfo ? (
-                                    <div key={i}>
+                                    <div key={i} className="flex items-center">
                                         <div className="text-primary-700 inline-block w-10 text-2xl">
                                             {amenityInfo.icon}
                                         </div>
@@ -89,7 +88,7 @@ export default function ApartmentDescription({ apartment }) {
                     </div>
                 </div>
                 {/* Reservation Form */}
-                <ReservationForm />
+                <ReservationForm apartment={apartment} />
             </div>
         </section>
     );

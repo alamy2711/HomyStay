@@ -35,7 +35,6 @@ class ApartmentController extends Controller
         // 1. Create Apartment
         $apartment = Apartment::create([
             ...$data,
-            // 'user_id' => auth()->id(), // or pass user manually
             'host_id' => $request->user()->id,
         ]);
 

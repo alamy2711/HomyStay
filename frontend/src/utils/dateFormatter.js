@@ -107,7 +107,6 @@ export function formatDate(date, formatStr) {
     return formatStr.replace(tokenRegex, (match) => replacements[match]);
 }
 
-
 /**
  * Parses a date string using a format string and returns a JavaScript Date object.
  *
@@ -258,3 +257,56 @@ export function parseDate(dateStr, formatStr) {
     return new Date(year, month, day, hour, minute, second);
 }
 
+export function formatTimeAgo(date) {
+    const seconds = Math.floor((new Date() - date) / 1000);
+
+    const intervals = {
+        year: 31536000,
+        month: 2592000,
+        week: 604800,
+        day: 86400,
+        hour: 3600,
+        minute: 60,
+    };
+
+    for (const [unit, secondsInUnit] of Object.entries(intervals)) {
+        const interval = Math.floor(seconds / secondsInUnit);
+        if (interval >= 1) {
+            return `${interval} ${unit}${interval === 1 ? "" : "s"} ago`;
+        }
+    }
+
+    // return "Just now";
+    if (seconds > 0 && seconds < 60) {
+        return `${seconds} seconds ago`;
+    } else {
+        return "Just now";
+    }
+}
+
+export function formatTimeAgoz(date) {
+    var seconds = Math.floor((new Date() - date) / 1000);
+
+    var interval = seconds / 31536000;
+
+    if (interval > 1) {
+        return Math.floor(interval) + " years";
+    }
+    interval = seconds / 2592000;
+    if (interval > 1) {
+        return Math.floor(interval) + " months";
+    }
+    interval = seconds / 86400;
+    if (interval > 1) {
+        return Math.floor(interval) + " days";
+    }
+    interval = seconds / 3600;
+    if (interval > 1) {
+        return Math.floor(interval) + " hours";
+    }
+    interval = seconds / 60;
+    if (interval > 1) {
+        return Math.floor(interval) + " minutes";
+    }
+    return Math.floor(seconds) + " seconds";
+}

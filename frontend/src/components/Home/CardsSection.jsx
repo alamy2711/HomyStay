@@ -15,7 +15,6 @@ export default function CardsSection() {
         axiosClient
             .get("/apartments")
             .then((response) => {
-                console.log(response.data.data)
                 setApartments(response.data.data);
                 setApartmentsLoading(false);
             })

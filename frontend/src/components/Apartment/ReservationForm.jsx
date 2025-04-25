@@ -1,16 +1,15 @@
+import axios from "@/lib/axiosClient";
 import Button from "@components/common/Button";
 import DatePickerInput from "@components/common/DatePickerInput";
-import { useApartments } from "@contexts/ApartmentsContext";
 import { useAuth } from "@contexts/AuthContext";
 import { addDays, subDays } from "date-fns";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { formatDate } from "../../utils/dateFormatter";
 
-export default function ReservationForm() {
+export default function ReservationForm({ apartment }) {
     const { user, token, loading: userLoading } = useAuth();
-    const { apartments, loading: apartmentsLoading } = useApartments();
-    const apartment = apartments[0]; // Extracting 1 dummy apartemnt data for testing purposes
 
     const [startDate, setStartDate] = useState(null); // Date Picker (Check-in)
     const [endDate, setEndDate] = useState(null); // Date Picker (Check-out)
@@ -27,8 +26,16 @@ export default function ReservationForm() {
         return 0;
     };
 
-    const handleSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
+        if (apartment.status === "reserved") {
+            toast.warning("Apartment is already reserved.");
+            return;
+        }
+        if (apartment.status === "expired") {
+            toast.warning("Apartment is expired.");
+            return;
+        }
         if (!startDate || !endDate) {
             toast.warning("Please select a check-in and check-out date.");
             return;
@@ -37,16 +44,37 @@ export default function ReservationForm() {
             toast.warning("Please log in to make a reservation.");
             navigate("/login");
         } else if (user.role == "client") {
-            toast.success("Reservation submitted.");
-            // Proceed with reservation logic
-            // Calling  API or navigate somewhere
+            // Prepare form data
+            const formData = {
+                check_in: formatDate(startDate, "yyyy-MM-dd"),
+                check_out: formatDate(endDate, "yyyy-MM-dd"),
+                apartment_id: apartment.id,
+                // userId: user.id,
+                total_price: calculateTotalPrice(),
+            };
+
+            try {
+                // Send to backend
+                const response = await axios.post("/reservations", formData);
+                toast.success("Reservation successful!");
+                console.log("Server response:", response.data);
+            } catch (error) {
+                // check error status code from backend and log the error message
+                if (error.response.status === 403) {
+                    toast.error(error.response.data.error);
+                } else {
+                    toast.error("Reservation failed!");
+                    console.error("Error:", error.response?.data || error.message);
+                }
+            }
         } else {
             toast.error("Only clients can reserve.");
         }
     };
+
     return (
         <form
-            onSubmit={handleSubmit}
+            onSubmit={onSubmit}
             className="sticky bottom-0 col-span-12 flex max-h-max flex-col gap-5 rounded-lg border border-gray-200 bg-white p-3 shadow-sm shadow-gray-400 lg:top-30 lg:col-span-4 lg:p-5"
         >
             {/* Price & Rating */}
@@ -64,16 +92,19 @@ export default function ReservationForm() {
             <div className="flex items-center justify-between gap-5">
                 <DatePickerInput
                     selected={startDate}
-                    onChange={(date) => setStartDate(date)}
+                    onChange={(date) => {
+                        setStartDate(date);
+                        setValue("startDate", date, { shouldValidate: true });
+                    }}
                     selectsStart
                     startDate={startDate}
                     endDate={endDate}
                     maxDate={endDate && subDays(endDate, 1)}
-                    openToDate={apartment.availability.start}
+                    openToDate={new Date(apartment.check_in)}
                     includeDateIntervals={[
                         {
-                            start: subDays(apartment.availability.start, 1),
-                            end: apartment.availability.end,
+                            start: subDays(new Date(apartment.check_in), 1),
+                            end: new Date(apartment.check_out),
                         },
                     ]}
                     // Structure
@@ -81,19 +112,23 @@ export default function ReservationForm() {
                     // Input
                     id="startDate"
                     label="Check in"
+                    name="startDate"
                 />
                 <DatePickerInput
                     selected={endDate}
-                    onChange={(date) => setEndDate(date)}
+                    onChange={(date) => {
+                        setEndDate(date);
+                        setValue("endDate", date, { shouldValidate: true });
+                    }}
                     selectsEnd
                     startDate={startDate}
                     endDate={endDate}
-                    openToDate={apartment.availability.end}
+                    openToDate={new Date(apartment.check_out)}
                     minDate={addDays(startDate, 1)}
                     includeDateIntervals={[
                         {
-                            start: subDays(apartment.availability.start, 1),
-                            end: apartment.availability.end,
+                            start: subDays(new Date(apartment.check_in), 1),
+                            end: new Date(apartment.check_out),
                         },
                     ]}
                     // Structure
@@ -101,16 +136,19 @@ export default function ReservationForm() {
                     // Input
                     id="endDate"
                     label="Check out"
-                    // {...register("endDate")}
+                    name="endDate"
                 />
             </div>
             {/* Reserve Button */}
             <div className="flex items-center justify-between">
                 <Button
+                    disabled={apartment.status === "reserved"}
                     className="bg-primary-700 hover:bg-primary-800 zlg:w-auto w-full text-white"
                     type="submit"
                 >
-                    Reserve
+                    {apartment.status === "reserved"
+                        ? "Already Reserved"
+                        : "Reserve"}
                 </Button>
             </div>
             {/* Total Price */}

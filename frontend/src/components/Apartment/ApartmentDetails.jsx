@@ -23,7 +23,6 @@ export default function ApartmentDetails() {
         axiosClient
             .get(`/apartments/${id}`)
             .then((response) => {
-                console.log(response.data.data);
                 setApartment(response.data.data);
                 setApartmentLoading(false);
             })

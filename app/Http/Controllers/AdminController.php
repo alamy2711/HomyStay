@@ -16,7 +16,7 @@ class AdminController extends Controller
      */
     public function showUsers()
     {
-        $users = User::with(['apartments', 'reports'])->get();
+        $users = User::with(['apartments.pictures', 'reports'])->get();
 
         return UserResource::collection($users);
     }

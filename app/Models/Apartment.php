@@ -37,7 +37,8 @@ class Apartment extends Model
      */
     public function host()
     {
-        return $this->belongsTo(User::class, 'host_id');
+        return $this->belongsTo(User::class, 'host_id')
+            ->select(['id', 'first_name', 'last_name', 'profile_picture']);
     }
 
     /**
@@ -58,12 +59,14 @@ class Apartment extends Model
 
     public function amenities()
     {
-        return $this->hasMany(Amenity::class);
+        return $this->hasMany(Amenity::class)
+            ->select(['id', 'apartment_id', 'name']);
     }
 
     public function pictures()
     {
-        return $this->hasMany(Picture::class);
+        return $this->hasMany(Picture::class)
+            ->select(['id', 'apartment_id', 'path']);
     }
 
     /**

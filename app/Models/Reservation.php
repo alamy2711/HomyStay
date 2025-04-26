@@ -12,7 +12,9 @@ class Reservation extends Model
         'status',
         'check_in',
         'check_out',
-        'total_price'
+        'total_price',
+        'visible_to_host',
+        'visible_to_client'
     ];
 
     /**

@@ -21,6 +21,17 @@ class ApartmentController extends Controller
         return ApartmentResource::collection($apartments);
     }
 
+    // Fetch listings for a specific host
+    public function hostIndex(Request $request)
+    {
+        $user = $request->user();
+        $apartments = Apartment::where('host_id', $user->id)
+            ->with(['pictures', 'amenities'])
+            ->get();
+
+        return ApartmentResource::collection($apartments);
+    }
+
     public function show(Apartment $apartment)
     {
         $apartment->load(['pictures', 'amenities', 'host']);
@@ -65,6 +76,11 @@ class ApartmentController extends Controller
 
     public function update(ApartmentRequest $request, Apartment $apartment)
     {
+        // Cannot update if apartment status is reserved
+        if ($apartment->status === 'reserved') {
+            return response()->json(['message' => 'Cannot update reserved apartment'], 403);
+        }
+
         $data = $request->validated();
 
         // Update basic info

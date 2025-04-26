@@ -1,3 +1,5 @@
+import AMENITIES from "@/constants/amenities";
+import axiosClient from "@/lib/axiosClient";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -5,33 +7,16 @@ import {
     FaCalendarAlt,
     FaConciergeBell,
     FaHome,
-    FaHotTub,
     FaImage,
-    FaLuggageCart,
     FaMapMarkerAlt,
     FaMinus,
-    FaParking,
-    FaPaw,
     FaPlus,
     FaRulerCombined,
-    FaSmokingBan,
-    FaSnowflake,
-    FaSwimmingPool,
     FaTimes,
-    FaTv,
-    FaUtensils,
-    FaWheelchair,
-    FaWifi,
 } from "react-icons/fa";
-import {
-    MdOutlineAir,
-    MdOutlineKitchen,
-    MdOutlineLocalLaundryService,
-} from "react-icons/md";
 import ReactModal from "react-modal";
 import { toast } from "react-toastify";
 import { z } from "zod";
-import axiosClient from "@/lib/axiosClient";
 
 const schema = z.object({
     title: z
@@ -131,25 +116,6 @@ const customStyles = {
         zIndex: 1000,
     },
 };
-
-// Amenities data
-const AMENITIES = [
-    { id: "wifi", name: "WiFi", icon: <FaWifi /> },
-    { id: "parking", name: "Parking", icon: <FaParking /> },
-    { id: "pool", name: "Pool", icon: <FaSwimmingPool /> },
-    { id: "tv", name: "TV", icon: <FaTv /> },
-    { id: "kitchen", name: "Kitchen", icon: <MdOutlineKitchen /> },
-    { id: "ac", name: "Air Conditioning", icon: <FaSnowflake /> },
-    { id: "breakfast", name: "Breakfast", icon: <FaUtensils /> },
-    { id: "hot_tub", name: "Hot Tub", icon: <FaHotTub /> },
-    { id: "pets", name: "Pets Allowed", icon: <FaPaw /> },
-    { id: "no_smoking", name: "No Smoking", icon: <FaSmokingBan /> },
-    { id: "accessible", name: "Wheelchair Accessible", icon: <FaWheelchair /> },
-    { id: "laundry", name: "Laundry", icon: <MdOutlineLocalLaundryService /> },
-    { id: "concierge", name: "Concierge", icon: <FaConciergeBell /> },
-    { id: "luggage", name: "Luggage Storage", icon: <FaLuggageCart /> },
-    { id: "airport_shuttle", name: "Airport Shuttle", icon: <MdOutlineAir /> },
-];
 
 const ApartmentModal = ({
     isOpen,
@@ -266,7 +232,6 @@ const ApartmentModal = ({
             return;
         }
 
-        console.log(allFiles);
         setValue("images", allFiles, { shouldValidate: true });
 
         const newPreviewImages = newFiles.map((file) => ({
@@ -327,7 +292,11 @@ const ApartmentModal = ({
             setListingsLoading(false);
         } catch (error) {
             console.error(error);
-            toast.error("Something went wrong. Please try again.");
+            if (error.response.status === 403) {
+                toast.error(error.response.data.message);
+            } else {
+                toast.error("Something went wrong. Please try again.");
+            }
         }
     };
 

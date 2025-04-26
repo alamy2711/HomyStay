@@ -37,6 +37,12 @@ class ReservationController extends Controller
                 'error' => 'Apartment is already reserved.'
             ], 403);
         }
+        // Check if the apartment is expired
+        if ($apartment->status === 'expired') {
+            return response()->json([
+                'error' => 'Apartment is expired.'
+            ]);
+        }
 
 
         // $data['client_id'] = $request->user()->id;
@@ -65,6 +71,12 @@ class ReservationController extends Controller
         if ($request->user()->id !== $reservation->client_id) {
             return response()->json(['error' => 'Unauthorized.'], 403);
         }
+
+        // Can only cancel reservations that are still pending
+        if ($reservation->status !== 'pending') {
+            return response()->json(['error' => 'You can only cancel a reservation that is still pending.'], 400);
+        }
+
         $reservation->update(['status' => 'canceled']);
         return response()->json(['message' => 'Reservation canceled successfully.']);
     }
@@ -83,9 +95,15 @@ class ReservationController extends Controller
             // Fetch reservations for apartments owned by the host.
             $reservations = Reservation::whereHas('apartment', function ($query) use ($user) {
                 $query->where('host_id', $user->id);
-            })->with('apartment.pictures', 'client')->get();
+            })->where('visible_to_host', true)
+                ->with('apartment.pictures', 'client')
+                ->get();
         } elseif ($user->role == 'client') {
-            $reservations = Reservation::where('client_id', $user->id)->with('apartment.pictures')->get();
+            $reservations = Reservation::where('client_id', $user->id)
+                ->where('visible_to_client', true)
+                // ->with('apartment.pictures', 'apartment.host:id,first_name,last_name,profile_picture')
+                ->with('apartment.pictures', 'apartment.host')
+                ->get();
         } else {
             $reservations = Reservation::with('apartment.pictures')->get();
         }
@@ -97,21 +115,6 @@ class ReservationController extends Controller
     /**
      * For a host to update the reservation status (accept or reject a reservation).
      */
-    // public function updateStatus(Request $request, Reservation $reservation)
-    // {
-    //     $request->validate([
-    //         'status' => 'required|in:accepted,rejected'
-    //     ]);
-
-    //     if ($request->user()->id !== $reservation->apartment->host_id) {
-    //         return response()->json(['error' => 'Unauthorized.'], 403);
-    //     }
-    //     $reservation->update(['status' => $request->status]);
-    //     return response()->json([
-    //         'message'     => 'Reservation status updated successfully.',
-    //         'reservation' => $reservation
-    //     ]);
-    // }
     public function updateStatus(Request $request, Reservation $reservation)
     {
         $request->validate([
@@ -126,6 +129,15 @@ class ReservationController extends Controller
         // Accept canceled status only when the reservation status is accepted
         if ($request->status === 'canceled' && $reservation->status !== 'accepted') {
             return response()->json(['error' => 'You cannot cancel a reservation that is not accepted.'], 400);
+        }
+
+        // Accept and Reject only when the reservation status is pending
+        if ($request->status === 'accepted' && $reservation->status !== 'pending') {
+            return response()->json(['error' => 'You cannot accept a reservation that is not pending.'], 400);
+        }
+
+        if ($request->status === 'rejected' && $reservation->status !== 'pending') {
+            return response()->json(['error' => 'You cannot reject a reservation that is not pending.'], 400);
         }
 
         // Update the reservation status
@@ -150,6 +162,28 @@ class ReservationController extends Controller
             'reservation' => $reservation
         ]);
     }
+
+
+    public function destroy(Request $request, Reservation $reservation)
+    {
+        $user = $request->user();
+
+        if ($user->role == 'host') {
+            // Hide reservation for host
+            $reservation->update(['visible_to_host' => false]);
+        } elseif ($user->role == 'client') {
+            // Hide reservation for client
+            $reservation->update(['visible_to_client' => false]);
+        } else {
+            return response()->json(['error' => 'Unauthorized.'], 403);
+        }
+
+        // After hiding, check if both host and client hid it
+        if (!$reservation->visible_to_host && !$reservation->visible_to_client) {
+            $reservation->delete();
+            return response()->json(['message' => 'Reservation deleted successfully.']);
+        }
+
+        return response()->json(['message' => 'Reservation hidden successfully.']);
+    }
 }
-
-

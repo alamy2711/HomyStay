@@ -24,6 +24,10 @@ return new class extends Migration
             $table->date('check_out');
             $table->decimal('total_price', 8, 2);
 
+            // Visibility
+            $table->boolean('visible_to_host')->default(true);
+            $table->boolean('visible_to_client')->default(true);
+
             $table->timestamps();
 
             // Set up foreign keys

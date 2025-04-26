@@ -1,12 +1,12 @@
 import axiosClient from "@/lib/axiosClient";
 import ListingsTableSkeleton from "@components/skeletons/ListingsTableSkeleton";
-import {
-    ArrowsUpDownIcon,
-    EyeIcon,
-    PencilIcon,
-    TrashIcon,
-} from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
+import {
+    HiOutlineArrowsUpDown,
+    HiOutlineEye,
+    HiOutlinePencil,
+    HiOutlineTrash,
+} from "react-icons/hi2";
 import ReactPaginate from "react-paginate";
 import { toast } from "react-toastify";
 import ApartmentModal from "../../components/Listings/ApartmentModal";
@@ -18,19 +18,15 @@ import { BsHouseAdd } from "react-icons/bs";
 import { IoSearchOutline } from "react-icons/io5";
 import Select from "react-select";
 
-
 const ListingsPage = () => {
-    const [currentHostUser, setCurrentHostUser] = useState({});
     const [apartments, setApartments] = useState([]);
     const [listingsLoading, setListingsLoading] = useState(true);
 
     useEffect(() => {
         axiosClient
-            .get("/user")
+            .get("/listings")
             .then((response) => {
-                const user = response.data.data;
-                setCurrentHostUser(user);
-                setApartments(user.apartments);
+                setApartments(response.data.data);
             })
             .catch((error) => {
                 console.error("Error fetching user:", error);
@@ -199,6 +195,8 @@ const ListingsPage = () => {
                                 value={selectedStatus}
                                 onChange={setSelectedStatus}
                                 isSearchable={false}
+                                menuPortalTarget={document.body}
+                                menuPosition="fixed"
                                 styles={{
                                     control: (base, state) => ({
                                         ...base,
@@ -269,7 +267,7 @@ const ListingsPage = () => {
                                         >
                                             <div className="flex items-center">
                                                 Price
-                                                <ArrowsUpDownIcon className="ml-1 h-4 w-4" />
+                                                <HiOutlineArrowsUpDown className="ml-1 h-4 w-4" />
                                             </div>
                                         </th>
                                         <th
@@ -281,7 +279,7 @@ const ListingsPage = () => {
                                         >
                                             <div className="flex items-center">
                                                 Rating
-                                                <ArrowsUpDownIcon className="ml-1 h-4 w-4" />
+                                                <HiOutlineArrowsUpDown className="ml-1 h-4 w-4" />
                                             </div>
                                         </th>
                                         <th
@@ -293,7 +291,7 @@ const ListingsPage = () => {
                                         >
                                             <div className="flex items-center">
                                                 Status
-                                                <ArrowsUpDownIcon className="ml-1 h-4 w-4" />
+                                                <HiOutlineArrowsUpDown className="ml-1 h-4 w-4" />
                                             </div>
                                         </th>
                                         <th
@@ -305,7 +303,7 @@ const ListingsPage = () => {
                                         >
                                             <div className="flex items-center">
                                                 Last Updated
-                                                <ArrowsUpDownIcon className="ml-1 h-4 w-4" />
+                                                <HiOutlineArrowsUpDown className="ml-1 h-4 w-4" />
                                             </div>
                                         </th>
                                         <th
@@ -409,18 +407,22 @@ const ListingsPage = () => {
                                                             className="text-primary-600 hover:text-primary-900"
                                                             title="View"
                                                         >
-                                                            <EyeIcon className="h-5 w-5" />
+                                                            <HiOutlineEye className="h-5 w-5" />
                                                         </a>
                                                         <button
+                                                            disabled={
+                                                                apartment.status ===
+                                                                "reserved"
+                                                            }
                                                             onClick={() => {
                                                                 handleEdit(
                                                                     apartment,
                                                                 );
                                                             }}
-                                                            className="text-yellow-600 hover:text-yellow-900"
+                                                            className="text-yellow-600 hover:text-yellow-900 disabled:opacity-50"
                                                             title="Edit"
                                                         >
-                                                            <PencilIcon className="h-5 w-5" />
+                                                            <HiOutlinePencil className="h-5 w-5" />
                                                         </button>
                                                         <button
                                                             onClick={() =>
@@ -431,7 +433,7 @@ const ListingsPage = () => {
                                                             className="text-red-600 hover:text-red-900"
                                                             title="Delete"
                                                         >
-                                                            <TrashIcon className="h-5 w-5" />
+                                                            <HiOutlineTrash className="h-5 w-5" />
                                                         </button>
                                                     </div>
                                                 </td>

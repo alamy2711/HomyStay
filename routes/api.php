@@ -34,7 +34,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Routes for "host" role: managing apartment listings.
     Route::middleware('role:host')->group(function () {
-        //Route::get('/listings', [ApartmentController::class, 'index']);
+        Route::get('/listings', [ApartmentController::class, 'hostIndex']);
         Route::post('/apartments', [ApartmentController::class, 'store']);
         Route::post('/apartments/{apartment}', [ApartmentController::class, 'update']);
         Route::delete('/apartments/{apartment}', [ApartmentController::class, 'destroy']);
@@ -43,14 +43,17 @@ Route::middleware('auth:sanctum')->group(function () {
     // Reservation endpoints.
     // Only clients and hosts roles can list reservations.
     Route::middleware('role:client,host')->group(function () {
-        Route::get('/reservations', [ReservationController::class, 'index']);
-        Route::get('/requests', [ReservationController::class, 'index']);
+        Route::middleware('role:client')->get('/reservations', [ReservationController::class, 'index']);
+        Route::middleware('role:host')->get('/requests', [ReservationController::class, 'index']);
         // Only clients can create a reservation.
         Route::middleware('role:client')->post('/reservations', [ReservationController::class, 'store']);
         // Only clients can cancel their reservations.
-        Route::middleware('role:client')->delete('/reservations/{reservation}/cancel', [ReservationController::class, 'cancel']);
-        // Hosts update reservation status (accept/reject).
+        Route::middleware('role:client')->put('/reservations/{reservation}/cancel', [ReservationController::class, 'cancel']);
+        // Hosts update reservation status (accept/reject/cancel after accepting).
         Route::middleware('role:host')->put('/requests/{reservation}/status', [ReservationController::class, 'updateStatus']);
+
+        Route::middleware('role:client')->delete('/reservations/{reservation}', [ReservationController::class, 'destroy']);
+        Route::middleware('role:host')->delete('/requests/{reservation}', [ReservationController::class, 'destroy']);
     });
 
     // Admin endpoints.

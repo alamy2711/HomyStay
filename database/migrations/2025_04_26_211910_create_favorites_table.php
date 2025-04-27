@@ -13,7 +13,16 @@ return new class extends Migration
     {
         Schema::create('favorites', function (Blueprint $table) {
             $table->id();
+
+            // References to apartment and client (user)
+            $table->unsignedBigInteger('apartment_id');
+            $table->unsignedBigInteger('client_id');
+
             $table->timestamps();
+
+            // Set up foreign keys
+            $table->foreign('apartment_id')->references('id')->on('apartments')->onDelete('cascade');
+            $table->foreign('client_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

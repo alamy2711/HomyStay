@@ -3,10 +3,9 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 // Icons
-import { FaCog, FaSignOutAlt, FaTachometerAlt, FaUser } from "react-icons/fa";
+import { HiOutlineCog6Tooth, HiOutlineUser } from "react-icons/hi2";
+import { HiOutlineHeart } from "react-icons/hi2";
 import { LuLayoutDashboard } from "react-icons/lu";
-import { HiOutlineUser } from "react-icons/hi2";
-import { HiOutlineCog6Tooth } from "react-icons/hi2";
 import { TbLogout } from "react-icons/tb";
 
 const UserMenu = () => {
@@ -24,6 +23,11 @@ const UserMenu = () => {
             label: "Profile",
             icon: <HiOutlineUser className="h-5 w-5" />,
             href: "/profile",
+        },
+        {
+            label: "Favorites",
+            icon: <HiOutlineHeart className="h-5 w-5" />,
+            href: "/favorites",
         },
         {
             label: "Settings",
@@ -67,7 +71,30 @@ const UserMenu = () => {
             {/* Dropdown Menu */}
             {isOpen && (
                 <div className="absolute top-10 right-0 z-50 mt-2 w-48 rounded-lg bg-white py-2 shadow-md shadow-gray-300">
-                    {menuItems.map((item, index) => (
+                    {/* Loop over menu items, render favorites for user.role === "client" */}
+                    {menuItems.map((item, index) => {
+                        if (user.role !== "client" && item.label === "Favorites") {
+                        return null;
+
+                        } else {
+
+                            return (
+                                <Link
+                                    key={index}
+                                    to={item.href}
+                                    onClick={item.onClick}
+                                    className="hover:bg-primary-50 hover:text-primary-700 flex items-center px-4 py-2.5 text-sm text-gray-700 transition-colors"
+                                >
+                                    <span className="text-primary-700 mr-3">
+                                        {item.icon}
+                                    </span>
+                                    {item.label}
+                                </Link>
+                            );
+                        }
+                    })}
+                    
+                    {/* {menuItems.map((item, index) => (
                         <Link
                             key={index}
                             to={item.href}
@@ -79,7 +106,7 @@ const UserMenu = () => {
                             </span>
                             {item.label}
                         </Link>
-                    ))}
+                    ))} */}
                 </div>
             )}
         </div>

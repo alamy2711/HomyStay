@@ -101,7 +101,6 @@ class ReservationController extends Controller
         } elseif ($user->role == 'client') {
             $reservations = Reservation::where('client_id', $user->id)
                 ->where('visible_to_client', true)
-                // ->with('apartment.pictures', 'apartment.host:id,first_name,last_name,profile_picture')
                 ->with('apartment.pictures', 'apartment.host')
                 ->get();
         } else {

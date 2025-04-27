@@ -26,6 +26,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // Custom middleware
         $middleware->alias([
             'role' => \App\Http\Middleware\RoleMiddleware::class,
+            'auth.optional' => \App\Http\Middleware\OptionalAuth::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

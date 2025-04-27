@@ -1,12 +1,28 @@
 import ApartmentCard from "@components/Apartment/ApartmentCard";
-import Button from "@components/common/Button";
 import LoadingSpinner from "@components/common/LoadingSpinner";
 import { useApartments } from "@contexts/ApartmentsContext";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axiosClient from "@/lib/axiosClient";
 
 export default function Favorites() {
-    const { apartments, loading: apartmentsLoading } = useApartments();
-    apartments.splice(3);
+    // const { apartments, loading: apartmentsLoading } = useApartments();
+    // apartments.splice(3);
+
+    const [apartments, setApartments] = useState([]);
+    const [apartmentsLoading, setApartmentsLoading] = useState(true);
+
+    useEffect(() => {
+        axiosClient
+            .get("/favorites")
+            .then((response) => {
+                setApartments(response.data.data);
+                setApartmentsLoading(false);
+            })
+            .catch((error) => {
+                console.error("Error fetching apartments:", error);
+                setApartmentsLoading(false);
+            });
+    }, []);
 
     return (
         <section className="my-15 px-4 lg:my-30 lg:px-6">
@@ -16,7 +32,7 @@ export default function Favorites() {
                     <h1 className="text-2xl text-nowrap text-(--secondary) lg:text-3xl">
                         Favorites
                     </h1>
-                    <p className="lg:text-base text-sm text-gray-500">
+                    <p className="text-sm text-gray-500 lg:text-base">
                         Discover your favorite apartments.
                     </p>
                 </div>
@@ -28,6 +44,7 @@ export default function Favorites() {
                         <ApartmentCard
                             key={apartment.id}
                             apartment={apartment}
+                            setApartments={setApartments}
                         />
                     ))
                 )}

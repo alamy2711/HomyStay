@@ -2,19 +2,91 @@ import { formatDate } from "@/utils/dateFormatter";
 import ImageSwiper from "@components/common/ImageSwiper";
 import { useAuth } from "@contexts/AuthContext";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { toast } from "react-toastify";
+import axiosClient from "../../lib/axiosClient";
 
-export default function ApartmentCard({ apartment }) {
+export default function ApartmentCard({ apartment, setApartments }) {
     const { user, token } = useAuth();
+    const navigate = useNavigate();
     const [isHovered, setIsHovered] = useState(false); // Add-to-Favorites Button
     const [apartmentImagesPaths, setApartmentImagesPaths] = useState([]);
+    const [isFavorite, setIsFavorite] = useState({
+        value: false,
+        loading: true,
+    });
 
     useEffect(() => {
         if (apartment?.pictures) {
             const paths = apartment.pictures.map((img) => img.path);
             setApartmentImagesPaths(paths);
+            setIsFavorite({
+                value: apartment.isFavorite,
+                loading: false,
+            });
         }
     }, [apartment]);
+
+    // Handle Toggle Favorites Button
+
+    const toggleFavorite = () => {
+        if (!token) {
+            navigate("/login");
+            toast.warning("Please log in to add to favorites.");
+            return;
+        }
+
+        if (isFavorite.loading) return; // Prevent multiple clicks
+
+        isFavorite.loading = true;
+
+        if (isFavorite.value) {
+            axiosClient
+                .delete(`/favorites/${apartment.id}`)
+                .then((response) => {
+                    setIsFavorite({
+                        value: false,
+                    });
+                    toast.success("Apartment removed from favorites!");
+                    setApartments((prevApartments) => {
+                        return prevApartments.filter(
+                            (apartment) => apartment.id !== apartment.id,
+                        );
+                    });
+                })
+                .catch((error) => {
+                    console.error(
+                        "Error removing apartment from favorites:",
+                        error,
+                    );
+                    toast.error("Failed to remove apartment from favorites.");
+                })
+                .finally(() => {
+                    isFavorite.loading = false;
+                });
+        } else {
+            axiosClient
+                .post("/favorites", {
+                    apartmentId: apartment.id,
+                })
+                .then((response) => {
+                    setIsFavorite({
+                        value: true,
+                    });
+                    toast.success("Apartment added to favorites!");
+                })
+                .catch((error) => {
+                    console.error(
+                        "Error adding apartment to favorites:",
+                        error,
+                    );
+                    toast.error("Failed to add apartment to favorites.");
+                })
+                .finally(() => {
+                    isFavorite.loading = false;
+                });
+        }
+    };
 
     return (
         <div className="hover:bg-primary-50 relative grid w-full max-w-sm grid-cols-2 gap-2 rounded-lg border border-gray-200 bg-white p-3 shadow-sm shadow-gray-400 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-md">
@@ -66,7 +138,27 @@ export default function ApartmentCard({ apartment }) {
                 </h3>
             </div>
             {/* Add-to-Favorites Buttons : Shown for Visitors and Clients only */}
-            {(!token || user?.role == "client") && (
+            {(!token || user.role == "client") && (
+                <button
+                    className="absolute top-5 right-5 z-31"
+                    disabled={isFavorite.loading}
+                    onClick={toggleFavorite}
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="1 1 22 22"
+                        className={`h-8 w-8 stroke-gray-600 transition-all duration-300 hover:scale-115 lg:hover:stroke-red-500 ${isFavorite.value ? "fill-red-500 stroke-red-500" : "fill-transparent stroke-white"} `}
+                        strokeWidth="2"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M12 21l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09A6.23 6.23 0 0 1 16.5 3 5.5 5.5 0 0 1 22 8.5c0 3.78-3.4 6.86-8.55 11.18L12 21z"
+                        />
+                    </svg>
+                </button>
+            )}
+            {false && (!token || user?.role == "client") && (
                 <button
                     className="absolute top-5 right-5 z-31"
                     onMouseEnter={() => setIsHovered(true)}

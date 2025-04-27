@@ -1,38 +1,48 @@
 import { iconMap } from "@/constants/IconMap";
 import axiosClient from "@/lib/axiosClient";
+import { formatDate } from "@/utils/dateFormatter";
 import ReviewsSection from "@components/Apartment/ReviewsSection";
 import Button from "@components/common/Button";
 import ImageSwiper from "@components/common/ImageSwiper";
 import LoadingSpinner from "@components/common/LoadingSpinner";
 import { useAuth } from "@contexts/AuthContext";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ApartmentDescription from "./ApartmentDescription";
-import {formatDate} from "@/utils/dateFormatter";
 
 export default function ApartmentDetails() {
     const { user, token, loading: userLoading } = useAuth();
-    // const { apartments, loading: apartmentsLoading } = useApartments();
-    // const apartment = apartments[0]; // Extracting 1 dummy apartemnt data for testing purposes
     const { id } = useParams();
     const [apartment, setApartment] = useState(null);
     const [apartmentLoading, setApartmentLoading] = useState(true);
+    const navigate = useNavigate();
+    const [isFavorite, setIsFavorite] = useState({
+        value: false,
+        loading: true,
+    });
 
     useEffect(() => {
         axiosClient
             .get(`/apartments/${id}`)
             .then((response) => {
                 setApartment(response.data.data);
+                setIsFavorite({
+                    value: response.data.data.isFavorite,
+                    loading: false,
+                });
                 setApartmentLoading(false);
             })
             .catch((error) => {
                 console.error("Error fetching apartments:", error);
                 setApartmentLoading(false);
+                // Check error code 404
+                if (error.response.status === 404) {
+                    navigate("/NotFound");
+                }
             });
     }, [id]);
-
-    const [isFavorite, setIsFavorite] = useState(false); // Add-to-Favorites Button
 
     const [apartmentImagesPaths, setApartmentImagesPaths] = useState([]);
 
@@ -42,6 +52,61 @@ export default function ApartmentDetails() {
             setApartmentImagesPaths(paths);
         }
     }, [apartment]);
+
+    // Handle Toggle Favorites Button
+    const toggleFavorite = () => {
+        if (!token) {
+            navigate("/login");
+            toast.warning("Please log in to add to favorites.");
+            return;
+        }
+
+        if (isFavorite.loading) return; // Prevent multiple clicks
+
+        isFavorite.loading = true;
+
+        if (isFavorite.value) {
+            axiosClient
+                .delete(`/favorites/${apartment.id}`)
+                .then((response) => {
+                    setIsFavorite({
+                        value: false,
+                    });
+                    toast.success("Apartment removed from favorites!");
+                })
+                .catch((error) => {
+                    console.error(
+                        "Error removing apartment from favorites:",
+                        error,
+                    );
+                    toast.error("Failed to remove apartment from favorites.");
+                })
+                .finally(() => {
+                    isFavorite.loading = false;
+                });
+        } else {
+            axiosClient
+                .post("/favorites", {
+                    apartmentId: apartment.id,
+                })
+                .then((response) => {
+                    setIsFavorite({
+                        value: true,
+                    });
+                    toast.success("Apartment added to favorites!");
+                })
+                .catch((error) => {
+                    console.error(
+                        "Error adding apartment to favorites:",
+                        error,
+                    );
+                    toast.error("Failed to add apartment to favorites.");
+                })
+                .finally(() => {
+                    isFavorite.loading = false;
+                });
+        }
+    };
 
     // Spin while Loading
     if (apartmentLoading || userLoading) {
@@ -92,12 +157,13 @@ export default function ApartmentDetails() {
                             {(!token || user.role == "client") && (
                                 <button
                                     className="ml-auto"
-                                    onClick={() => setIsFavorite(!isFavorite)}
+                                    disabled={isFavorite.loading}
+                                    onClick={toggleFavorite}
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         viewBox="1 1 22 22"
-                                        className={`zlg:hover:fill-red-500 h-8 w-8 stroke-gray-600 transition-all duration-300 hover:scale-115 lg:hover:stroke-red-500 ${isFavorite ? "fill-red-500 stroke-red-500" : "fill-white"} `}
+                                        className={` h-8 w-8 stroke-gray-600 transition-all duration-300 hover:scale-115 lg:hover:stroke-red-500 ${isFavorite.value ? "fill-red-500 stroke-red-500" : "fill-white"} `}
                                         strokeWidth="2"
                                     >
                                         <path

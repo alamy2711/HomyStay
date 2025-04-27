@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ApartmentController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\UserController;
 use App\Http\Resources\UserResource;
@@ -19,8 +20,12 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/signup', [AuthController::class, 'signup']);
 
 // Apartment endpoints: viewing available apartments.
-Route::get('/apartments', [ApartmentController::class, 'index']);
-Route::get('/apartments/{apartment}', [ApartmentController::class, 'show']);
+Route::middleware('auth.optional:sanctum')->group(function () {
+    // Publicly accessible endpoints with optional authentication
+    Route::get('/apartments', [ApartmentController::class, 'index']);
+    Route::get('/apartments/{apartment}', [ApartmentController::class, 'show']);
+});
+
 
 // Protected routes using sanctum authentication.
 Route::middleware('auth:sanctum')->group(function () {
@@ -54,6 +59,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::middleware('role:client')->delete('/reservations/{reservation}', [ReservationController::class, 'destroy']);
         Route::middleware('role:host')->delete('/requests/{reservation}', [ReservationController::class, 'destroy']);
+    });
+
+    // Favorite endpoints.
+    Route::middleware('role:client')->group(function () {
+        Route::get('/favorites', [FavoriteController::class, 'index']);
+        Route::post('/favorites', [FavoriteController::class, 'store']);
+        Route::delete('/favorites/{favorite}', [FavoriteController::class, 'destroy']);
     });
 
     // Admin endpoints.

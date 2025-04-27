@@ -16,7 +16,7 @@ class ApartmentController extends Controller
 {
     public function index()
     {
-        $apartments = Apartment::with(['pictures', 'amenities'])->get();
+        $apartments = Apartment::with(['pictures', 'amenities', 'favorites'])->get();
 
         return ApartmentResource::collection($apartments);
     }
@@ -26,7 +26,7 @@ class ApartmentController extends Controller
     {
         $user = $request->user();
         $apartments = Apartment::where('host_id', $user->id)
-            ->with(['pictures', 'amenities'])
+            ->with(['pictures', 'amenities', 'favorites'])
             ->get();
 
         return ApartmentResource::collection($apartments);
@@ -34,7 +34,7 @@ class ApartmentController extends Controller
 
     public function show(Apartment $apartment)
     {
-        $apartment->load(['pictures', 'amenities', 'host']);
+        $apartment->load(['pictures', 'amenities', 'host', 'favorites']);
 
         return new ApartmentResource($apartment);
     }

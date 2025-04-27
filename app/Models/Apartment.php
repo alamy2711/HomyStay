@@ -54,7 +54,8 @@ class Apartment extends Model
      */
     public function favorites()
     {
-        return $this->hasMany(Favorite::class);
+        return $this->hasMany(Favorite::class)
+            ->select(['id', 'client_id', 'apartment_id']);
     }
 
     public function amenities()

@@ -69,7 +69,7 @@ export default function Header() {
                     {/* Logo */}
                     <a href="/" className="flex items-center">
                         <img
-                            src="images/HomyStay.png"
+                            src="/images/HomyStay.png"
                             className="h-6 sm:h-8"
                             alt="HomyStay Logo"
                         />

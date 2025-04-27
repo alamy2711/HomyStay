@@ -2,19 +2,23 @@ import axios from "@/lib/axiosClient";
 import Button from "@components/common/Button";
 import DatePickerInput from "@components/common/DatePickerInput";
 import { useAuth } from "@contexts/AuthContext";
-import { addDays, subDays } from "date-fns";
+import { addDays, set, subDays } from "date-fns";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { data, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { formatDate } from "../../utils/dateFormatter";
 
 export default function ReservationForm({ apartment }) {
-    const { user, token, loading: userLoading } = useAuth();
+    const { user, token } = useAuth();
+    const navigate = useNavigate(); // Navigation
 
     const [startDate, setStartDate] = useState(null); // Date Picker (Check-in)
     const [endDate, setEndDate] = useState(null); // Date Picker (Check-out)
 
-    const navigate = useNavigate(); // Navigation
+    const [formData, setFormData] = useState({
+        data: {},
+        loading: false,
+    });
 
     // Function to calculate total price
     const calculateTotalPrice = () => {
@@ -44,18 +48,22 @@ export default function ReservationForm({ apartment }) {
             toast.warning("Please log in to make a reservation.");
             navigate("/login");
         } else if (user.role == "client") {
+            setFormData({
+                ...formData,
+                loading: true,
+            });
+
             // Prepare form data
-            const formData = {
+            formData.data = {
                 check_in: formatDate(startDate, "yyyy-MM-dd"),
                 check_out: formatDate(endDate, "yyyy-MM-dd"),
                 apartment_id: apartment.id,
-                // userId: user.id,
                 total_price: calculateTotalPrice(),
             };
 
             try {
                 // Send to backend
-                const response = await axios.post("/reservations", formData);
+                const response = await axios.post("/reservations", formData.data);
                 toast.success("Reservation successful!");
                 console.log("Server response:", response.data);
             } catch (error) {
@@ -66,6 +74,11 @@ export default function ReservationForm({ apartment }) {
                     toast.error("Reservation failed!");
                     console.error("Error:", error.response?.data || error.message);
                 }
+            } finally {
+                setFormData({
+                    ...formData,
+                    loading: false,
+                });
             }
         } else {
             toast.error("Only clients can reserve.");
@@ -142,13 +155,17 @@ export default function ReservationForm({ apartment }) {
             {/* Reserve Button */}
             <div className="flex items-center justify-between">
                 <Button
-                    disabled={apartment.status === "reserved"}
+                    disabled={apartment.status !== "available" || formData.loading}
                     className="bg-primary-700 hover:bg-primary-800 zlg:w-auto w-full text-white"
                     type="submit"
                 >
-                    {apartment.status === "reserved"
-                        ? "Already Reserved"
-                        : "Reserve"}
+                    {/* Spinner in button */}
+                    {formData.loading ? (
+                        <div className="flex items-center justify-center">
+                            <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-white"></div>
+                            <span className="ml-2">Reserving...</span>
+                        </div>
+                    ): apartment.status === "reserved" ? "Already Reserved" : "Reserve"}
                 </Button>
             </div>
             {/* Total Price */}

@@ -16,7 +16,7 @@ import {
 import ReservationsTableSkeleton from "@components/skeletons/ReservationsTableSkeleton";
 import Select from "react-select";
 
-const RequestsPage = () => {
+export default function Requests() {
     const [reservations, setReservations] = useState([]);
     const [reservationLoading, setReservationLoading] = useState(true);
     const [filters, setFilters] = useState({
@@ -443,6 +443,4 @@ const RequestsPage = () => {
             </div>
         </section>
     );
-};
-
-export default RequestsPage;
+}

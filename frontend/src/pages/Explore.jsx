@@ -7,14 +7,14 @@ import Header from "../layouts/Header";
 export default function Home() {
     return (
         <>
-            <PageHeading
+            {/* <PageHeading
                 title={"Explore Apartments"}
                 description={
                     "Browse through a wide variety of apartments and find the perfect one for you!"
                 }
-            />
+            /> */}
             <AdvancedSearch />
-            <CardsSection />
+            {/* <CardsSection /> */}
         </>
     );
 }

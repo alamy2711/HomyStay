@@ -28,7 +28,6 @@ export default function ApartmentCard({ apartment, setApartments }) {
     }, [apartment]);
 
     // Handle Toggle Favorites Button
-
     const toggleFavorite = () => {
         if (!token) {
             navigate("/login");

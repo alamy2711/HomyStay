@@ -1,14 +1,16 @@
 import AMENITIES from "@/constants/Amenities";
 import Button from "@components/common/Button";
 import { useAuth } from "@contexts/AuthContext";
-import React from "react";
+import React, { useEffect } from "react";
 import { toast } from "react-toastify";
 import ReservationForm from "./ReservationForm";
 
 export default function ApartmentDescription({ apartment }) {
     const { user, token, loading: userLoading } = useAuth();
-    // const { apartments, loading: apartmentsLoading } = useApartments();
-    // const apartment = apartments[0]; // Extracting 1 dummy apartemnt data for testing purposes
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     const handleContactClick = () => {
         if (!token) {

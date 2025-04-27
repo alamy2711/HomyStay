@@ -1,10 +1,8 @@
+import axiosClient from "@/lib/axiosClient";
 import ApartmentCard from "@components/Apartment/ApartmentCard";
 import Button from "@components/common/Button";
 import LoadingSpinner from "@components/common/LoadingSpinner";
-import { useApartments } from "@contexts/ApartmentsContext";
-import React from "react";
-import axiosClient from "@/lib/axiosClient";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function CardsSection() {
     // const { apartments, loading: apartmentsLoading } = useApartments();
@@ -37,7 +35,7 @@ export default function CardsSection() {
                         Find Your Perfect
                         <span className="text-primary-700"> Apartment</span>
                     </h1>
-                    <p className="lg:text-base text-sm text-gray-500">
+                    <p className="text-sm text-gray-500 lg:text-base">
                         Discover the best apartments available for your next
                         stay.
                     </p>

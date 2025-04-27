@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 // Icons
-import { HiCheck, HiOutlineBan, HiOutlineSearch, HiX } from "react-icons/hi";
+import { HiOutlineBan, HiOutlineSearch } from "react-icons/hi";
 import {
     HiOutlineCalendar,
     HiOutlineClock,
@@ -16,7 +16,7 @@ import {
 import ReservationsTableSkeleton from "@components/skeletons/ReservationsTableSkeleton";
 import Select from "react-select";
 
-const RequestsPage = () => {
+export default function Reservations() {
     const [reservations, setReservations] = useState([]);
     const [reservationLoading, setReservationLoading] = useState(true);
     const [filters, setFilters] = useState({
@@ -396,7 +396,6 @@ const RequestsPage = () => {
                                                         <HiOutlineTrash className="h-5 w-5" />
                                                     </button>
                                                 )}
-                                                
                                             </div>
                                         </div>
                                     </div>
@@ -408,6 +407,4 @@ const RequestsPage = () => {
             </div>
         </section>
     );
-};
-
-export default RequestsPage;
+}

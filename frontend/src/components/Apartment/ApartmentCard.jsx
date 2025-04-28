@@ -94,6 +94,7 @@ export default function ApartmentCard({ apartment, setApartments }) {
                 to={`/apartments/${apartment.id}`}
                 // onClick={() => window.scrollTo(0, 0)}
                 className="absolute inset-0 z-0"
+                title={apartment.country + ", " + apartment.city}
             ></Link>
             {/* <!-- Image --> */}
             <div className="col-span-2 h-70 overflow-hidden rounded-lg">
@@ -103,8 +104,11 @@ export default function ApartmentCard({ apartment, setApartments }) {
             {/* <!-- Locatin --> */}
             <div className="text-primary-700 col-span-2 flex flex-row items-center gap-2">
                 <i className="fa-solid fa-location-dot text-xl"></i>
-                <h3 className="text-xl italic">
-                    {apartment.country} - {apartment.city}
+                <h3
+                    className="truncate text-xl text-nowrap italic"
+                    title={"sad"}
+                >
+                    {apartment.country}, {apartment.city}
                 </h3>
             </div>
             {/* <!-- Date --> */}
@@ -133,7 +137,8 @@ export default function ApartmentCard({ apartment, setApartments }) {
             {/* <!-- Price --> */}
             <div className="flex flex-row items-center justify-end gap-1">
                 <h3 className="text-primary-700 text-right text-[1.65rem]">
-                    {apartment.price} USD
+                    {/* {apartment.price} USD */}
+                    ${apartment.price}
                 </h3>
             </div>
             {/* Add-to-Favorites Buttons : Shown for Visitors and Clients only */}

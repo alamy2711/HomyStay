@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class Apartment extends Model
 {
+    use HasFactory;
     /// Allow mass assignment for these fields
     protected $fillable = [
         'host_id',

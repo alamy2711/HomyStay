@@ -1,8 +1,7 @@
+import axiosClient from "@/lib/axiosClient";
 import ApartmentCard from "@components/Apartment/ApartmentCard";
 import LoadingSpinner from "@components/common/LoadingSpinner";
-import { useApartments } from "@contexts/ApartmentsContext";
 import React, { useEffect, useState } from "react";
-import axiosClient from "@/lib/axiosClient";
 
 export default function Favorites() {
     // const { apartments, loading: apartmentsLoading } = useApartments();
@@ -24,6 +23,10 @@ export default function Favorites() {
             });
     }, []);
 
+    if (apartmentsLoading) {
+        return <LoadingSpinner className="h-[80vh]" />;
+    }
+
     return (
         <section className="my-15 px-4 lg:my-30 lg:px-6">
             <div className="mx-auto grid max-w-screen-xl grid-cols-1 place-items-center gap-2 gap-y-5 rounded-lg bg-white px-4 py-10 shadow-sm md:grid-cols-2 lg:grid-cols-3">
@@ -37,17 +40,13 @@ export default function Favorites() {
                     </p>
                 </div>
                 {/* <!-- Card --> */}
-                {apartmentsLoading ? (
-                    <LoadingSpinner />
-                ) : (
-                    apartments.map((apartment) => (
-                        <ApartmentCard
-                            key={apartment.id}
-                            apartment={apartment}
-                            setApartments={setApartments}
-                        />
-                    ))
-                )}
+                {apartments.map((apartment) => (
+                    <ApartmentCard
+                        key={apartment.id}
+                        apartment={apartment}
+                        setApartments={setApartments}
+                    />
+                ))}
             </div>
         </section>
     );

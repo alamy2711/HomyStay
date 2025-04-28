@@ -2,9 +2,9 @@ import axios from "@/lib/axiosClient";
 import Button from "@components/common/Button";
 import DatePickerInput from "@components/common/DatePickerInput";
 import { useAuth } from "@contexts/AuthContext";
-import { addDays, set, subDays } from "date-fns";
+import { addDays, subDays } from "date-fns";
 import React, { useState } from "react";
-import { data, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { formatDate } from "../../utils/dateFormatter";
 
@@ -63,7 +63,10 @@ export default function ReservationForm({ apartment }) {
 
             try {
                 // Send to backend
-                const response = await axios.post("/reservations", formData.data);
+                const response = await axios.post(
+                    "/reservations",
+                    formData.data,
+                );
                 toast.success("Reservation successful!");
                 console.log("Server response:", response.data);
             } catch (error) {
@@ -72,7 +75,10 @@ export default function ReservationForm({ apartment }) {
                     toast.error(error.response.data.error);
                 } else {
                     toast.error("Reservation failed!");
-                    console.error("Error:", error.response?.data || error.message);
+                    console.error(
+                        "Error:",
+                        error.response?.data || error.message,
+                    );
                 }
             } finally {
                 setFormData({
@@ -155,17 +161,25 @@ export default function ReservationForm({ apartment }) {
             {/* Reserve Button */}
             <div className="flex items-center justify-between">
                 <Button
-                    disabled={apartment.status !== "available" || formData.loading}
+                    disabled={
+                        apartment.status !== "available" || formData.loading
+                    }
                     className="bg-primary-700 hover:bg-primary-800 zlg:w-auto w-full text-white"
                     type="submit"
                 >
                     {/* Spinner in button */}
                     {formData.loading ? (
                         <div className="flex items-center justify-center">
-                            <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-white"></div>
+                            <div className="h-4 w-4 animate-spin rounded-full border-t-2 border-white"></div>
                             <span className="ml-2">Reserving...</span>
                         </div>
-                    ): apartment.status === "reserved" ? "Already Reserved" : "Reserve"}
+                    ) : apartment.status === "reserved" ? (
+                        "Already Reserved"
+                    ) : apartment.status === "expired" ? (
+                        "Expired"
+                    ) : (
+                        "Reserve"
+                    )}
                 </Button>
             </div>
             {/* Total Price */}

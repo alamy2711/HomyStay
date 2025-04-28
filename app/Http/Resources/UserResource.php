@@ -40,7 +40,8 @@ class UserResource extends JsonResource
             // $data['reservations'] = ReservationResource::collection($this->whenLoaded('reservations'));
         } elseif ($this->role === 'host') {
             // For Hosts, include apartments and reservations.
-            $data['apartments']   = ApartmentResource::collection($this->whenLoaded('apartments'));
+            // $data['apartments']   = ApartmentResource::collection($this->whenLoaded('apartments'));
+            $data['apartments'] = $this->apartments;
             $data['reports'] = ReportResource::collection($this->whenLoaded('reports'));
             // $data['reservations'] = ReservationResource::collection($this->whenLoaded('reservations'));
         }

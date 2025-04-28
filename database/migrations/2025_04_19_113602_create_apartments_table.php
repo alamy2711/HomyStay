@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->decimal('price', 8, 2);
-            $table->decimal('rating', 1, 1)->default(0);
+            $table->decimal('rating', 2, 1)->default(0);
             $table->enum('status', ['available', 'reserved', 'expired'])->default('available');
 
             // Apartment Structure

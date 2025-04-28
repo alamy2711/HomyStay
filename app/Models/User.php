@@ -93,7 +93,8 @@ class User extends Authenticatable
      */
     public function apartments()
     {
-        return $this->hasMany(Apartment::class, 'host_id');
+        return $this->hasMany(Apartment::class, 'host_id')
+            ->select(['id', 'host_id', 'title', ]);
     }
 
     /**
@@ -123,5 +124,3 @@ class User extends Authenticatable
         return $this->hasMany(Report::class, 'user_id');
     }
 }
-
-

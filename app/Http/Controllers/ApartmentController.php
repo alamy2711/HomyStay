@@ -14,11 +14,16 @@ use Illuminate\Support\Str;
 
 class ApartmentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $apartments = Apartment::with(['pictures', 'amenities', 'favorites'])->get();
-
-        return ApartmentResource::collection($apartments);
+        $apartments = Apartment::with(['pictures', 'amenities', 'favorites'])
+            ->latest()
+            ->paginate(3); // 9 apartments per page
+        return response()->json([
+            'data' => $apartments->items(), // just the apartments array
+            'current_page' => $apartments->currentPage(),
+            'last_page' => $apartments->lastPage(),
+        ]);
     }
 
     // Fetch listings for a specific host
@@ -26,6 +31,17 @@ class ApartmentController extends Controller
     {
         $user = $request->user();
         $apartments = Apartment::where('host_id', $user->id)
+            ->with(['pictures', 'amenities', 'favorites'])
+            ->get();
+
+        return ApartmentResource::collection($apartments);
+    }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+        $apartments = Apartment::where('title', 'like', '%' . $query . '%')
+            ->orWhere('description', 'like', '%' . $query . '%')
             ->with(['pictures', 'amenities', 'favorites'])
             ->get();
 

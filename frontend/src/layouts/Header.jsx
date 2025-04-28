@@ -145,28 +145,28 @@ export default function Header() {
                                 </Link>
                             </li>
                             <li>
-                                <a
-                                    href="/explore"
+                                <Link
+                                    to="/explore"
                                     className={`lg:hover:text-primary-700 hover:bg-primary-700 block border-b border-gray-100 py-2 pr-4 pl-3 hover:text-white lg:border-0 lg:p-0 lg:hover:bg-transparent ${isActive("/explore")}`}
                                 >
                                     Explore
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a
-                                    href="/about"
+                                <Link
+                                    to="/about"
                                     className={`lg:hover:text-primary-700 hover:bg-primary-700 block border-b border-gray-100 py-2 pr-4 pl-3 hover:text-white lg:border-0 lg:p-0 lg:hover:bg-transparent ${isActive("/about")}`}
                                 >
                                     About
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a
-                                    href="contact"
+                                <Link
+                                    to="contact"
                                     className={`lg:hover:text-primary-700 hover:bg-primary-700 block border-b border-gray-100 py-2 pr-4 pl-3 hover:text-white lg:border-0 lg:p-0 lg:hover:bg-transparent ${isActive("/contact")}`}
                                 >
                                     Contact
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                     </div>

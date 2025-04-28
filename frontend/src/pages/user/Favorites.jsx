@@ -36,7 +36,9 @@ export default function Favorites() {
                         Favorites
                     </h1>
                     <p className="text-sm text-gray-500 lg:text-base">
-                        Discover your favorite apartments.
+                        {apartments.length === 0
+                            ? "You have no favorite apartments."
+                            : "Discover your favorite apartments."}
                     </p>
                 </div>
                 {/* <!-- Card --> */}

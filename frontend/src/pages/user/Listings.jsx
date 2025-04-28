@@ -174,7 +174,7 @@ const ListingsPage = () => {
                                 <input
                                     type="text"
                                     className="focus:ring-primary-500 focus:border-primary-500 block w-full rounded-md border-gray-300 pl-10 sm:text-sm"
-                                    placeholder="Search by name or email..."
+                                    placeholder="Search by property title, country, or city..."
                                     value={searchTerm}
                                     onChange={(e) =>
                                         setSearchTerm(e.target.value)

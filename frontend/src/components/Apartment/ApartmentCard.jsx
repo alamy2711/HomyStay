@@ -6,7 +6,12 @@ import { Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import axiosClient from "../../lib/axiosClient";
 
-export default function ApartmentCard({ apartment, setApartments }) {
+export default function ApartmentCard({
+    className = "",
+    style = {},
+    apartment,
+    setApartments = () => {},
+}) {
     const { user, token } = useAuth();
     const navigate = useNavigate();
     const [isHovered, setIsHovered] = useState(false); // Add-to-Favorites Button
@@ -49,7 +54,7 @@ export default function ApartmentCard({ apartment, setApartments }) {
                     toast.success("Apartment removed from favorites!");
                     setApartments((prevApartments) => {
                         return prevApartments.filter(
-                            (apartment) => apartment.id !== apartment.id,
+                            (apartItem) => apartItem.id !== apartment.id,
                         );
                     });
                 })
@@ -88,7 +93,10 @@ export default function ApartmentCard({ apartment, setApartments }) {
     };
 
     return (
-        <div className="hover:bg-primary-50 relative grid w-full max-w-sm grid-cols-2 gap-2 rounded-lg border border-gray-200 bg-white p-3 shadow-sm shadow-gray-400 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-md">
+        <div
+            className={`${className} hover:bg-primary-50 relative grid w-full max-w-sm grid-cols-2 gap-2 rounded-lg border border-gray-200 bg-white p-3 shadow-sm shadow-gray-400 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-md`}
+            style={style}
+        >
             {/* Invisible Link Layer */}
             <Link
                 to={`/apartments/${apartment.id}`}
@@ -137,8 +145,7 @@ export default function ApartmentCard({ apartment, setApartments }) {
             {/* <!-- Price --> */}
             <div className="flex flex-row items-center justify-end gap-1">
                 <h3 className="text-primary-700 text-right text-[1.65rem]">
-                    {/* {apartment.price} USD */}
-                    ${apartment.price}
+                    {/* {apartment.price} USD */}${apartment.price}
                 </h3>
             </div>
             {/* Add-to-Favorites Buttons : Shown for Visitors and Clients only */}

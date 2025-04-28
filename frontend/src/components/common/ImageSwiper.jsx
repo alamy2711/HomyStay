@@ -35,7 +35,8 @@ export default function ImageSwiper({ images, isGallery }) {
                                 className="h-full w-full object-cover object-center"
                                 src={image}
                                 alt={`Apartment view ${index + 1}`}
-                                loading="lazy"
+                                // loading="lazy"
+                                loading={index === 0 ? "eager" : "lazy"}
                                 decoding="async"
                             />
                         </SwiperSlide>

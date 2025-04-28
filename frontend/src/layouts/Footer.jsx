@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -9,7 +10,7 @@ export default function Footer() {
                     <div className="mb-6 md:mb-0">
                         <a href="#" className="flex items-center">
                             <img
-                                src="images/HomyStay.png"
+                                src="/images/HomyStay.png"
                                 className="mr-3 h-8"
                                 alt="HomyStay Logo"
                             />
@@ -78,7 +79,7 @@ export default function Footer() {
                 <hr className="my-6 border-gray-500 sm:mx-auto lg:my-8" />
                 <div className="sm:flex sm:items-center sm:justify-between">
                     <span className="sm:text-center">
-                        © 2025{" "}
+                        © {new Date().getFullYear()}{" "}
                         <a href="#" className="hover:underline">
                             HomyStay™
                         </a>

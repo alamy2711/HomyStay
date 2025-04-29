@@ -1,38 +1,35 @@
-import { useState, useEffect } from "react";
-import ReactModal from "react-modal";
-import {
-    FaSearch,
-    FaCalendarAlt,
-    FaFilter,
-    FaChevronDown,
-    FaChevronUp,
-    FaHome,
-    FaBuilding,
-    FaHotel,
-    FaCity,
-    FaWifi,
-    FaParking,
-    FaSwimmingPool,
-    FaTv,
-    FaSnowflake,
-    FaHotTub,
-    FaPaw,
-    FaSmokingBan,
-    FaWheelchair,
-    FaTimes,
-    FaPlus,
-    FaMinus,
-    FaBed
-} from "react-icons/fa";
+import AMENITIES from "@/constants/Amenities";
+import PropertyStructure from "@/constants/PropertyStructure";
+import { useEffect, useState } from "react";
 
-import {
-    MdOutlineApartment,
-    MdOutlineKitchen,
-    MdOutlineLocalLaundryService,
-} from "react-icons/md";
+// Components
+import Accordian, {
+    AccordianItem,
+} from "@/components/common/Accordion/MyAccordion";
+import Button from "@components/common/Button";
+import ReactModal from "react-modal";
+import RangeSlider from "react-range-slider-input";
+import "react-range-slider-input/dist/style.css";
+import Select from "react-select";
+
+// Icons
 import { BiArea } from "react-icons/bi";
-import { RiMoneyDollarCircleLine } from "react-icons/ri";
 import { BsPeople, BsSortDown } from "react-icons/bs";
+import {
+    FaBed,
+    FaBuilding,
+    FaCalendarAlt,
+    FaHome,
+    FaHotel,
+    FaSearch,
+} from "react-icons/fa";
+import { HiOutlineFilter } from "react-icons/hi";
+import { MdOutlineApartment } from "react-icons/md";
+import { RiMoneyDollarCircleLine } from "react-icons/ri";
+//
+import { GiGate } from "react-icons/gi";
+import { HiOutlineBuildingOffice, HiOutlineHome } from "react-icons/hi2";
+import { LiaHotelSolid } from "react-icons/lia";
 
 // Dummy property data
 const PROPERTIES = [
@@ -136,18 +133,6 @@ const PROPERTIES = [
     },
 ];
 
-// Amenities data
-const AMENITIES = [
-    { id: "wifi", name: "WiFi", icon: <FaWifi /> },
-    { id: "parking", name: "Parking", icon: <FaParking /> },
-    { id: "pool", name: "Pool", icon: <FaSwimmingPool /> },
-    { id: "tv", name: "TV", icon: <FaTv /> },
-    { id: "ac", name: "Air Conditioning", icon: <FaSnowflake /> },
-    { id: "hot_tub", name: "Hot Tub", icon: <FaHotTub /> },
-    { id: "kitchen", name: "Kitchen", icon: <MdOutlineKitchen /> },
-    { id: "laundry", name: "Laundry", icon: <MdOutlineLocalLaundryService /> },
-];
-
 // Sort options
 const SORT_OPTIONS = [
     {
@@ -163,6 +148,31 @@ const SORT_OPTIONS = [
     { id: "rating_desc", label: "Highest Rated", icon: <BsSortDown /> },
     { id: "area_desc", label: "Largest Space", icon: <BiArea /> },
 ];
+
+// Modal styling
+const customStyles = {
+    content: {
+        top: "50%",
+        left: "50%",
+        right: "auto",
+        bottom: "auto",
+        marginRight: "-50%",
+        transform: "translate(-50%, -50%)",
+        // width: "45%",
+        maxWidth: "900px",
+        height: "90%",
+        maxHeight: "90vh",
+        borderRadius: "12px",
+        border: "none",
+        boxShadow: "0 10px 25px rgba(0, 0, 0, 0.1)",
+        padding: "0",
+        overflow: "hidden",
+    },
+    overlay: {
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        zIndex: 1000,
+    },
+};
 
 const AdvancedSearchPage = () => {
     // Search state
@@ -183,20 +193,11 @@ const AdvancedSearchPage = () => {
         guests: 0,
         area: 0,
         amenities: [],
+        sortOption: {
+            value: "rating_desc",
+            label: "Highest Rated",
+        },
     });
-
-    // Accordion state
-    const [openAccordions, setOpenAccordions] = useState({
-        type: true,
-        price: true,
-        structure: true,
-        amenities: true,
-    });
-
-    // Toggle accordion
-    const toggleAccordion = (key) => {
-        setOpenAccordions((prev) => ({ ...prev, [key]: !prev[key] }));
-    };
 
     // Handle filter changes
     const handleFilterChange = (name, value) => {
@@ -317,15 +318,13 @@ const AdvancedSearchPage = () => {
 
         // Apply sorting
         results.sort((a, b) => {
-            switch (sortOption) {
+            switch (filters.sortOption.value) {
                 case "price_asc":
                     return a.price - b.price;
                 case "price_desc":
                     return b.price - a.price;
                 case "rating_desc":
                     return b.rating - a.rating;
-                case "area_desc":
-                    return b.area - a.area;
                 default:
                     return 0;
             }
@@ -389,29 +388,91 @@ const AdvancedSearchPage = () => {
                     {/* Filter Button */}
                     <button
                         onClick={() => setFilterModalOpen(true)}
-                        className="flex items-center rounded-lg border border-gray-300 bg-white px-4 py-2 hover:bg-gray-50"
+                        className="flex items-center rounded-full border border-gray-300 bg-white px-4 py-2 hover:bg-gray-50"
                     >
-                        <FaFilter className="mr-2 h-5 w-5 text-gray-500" />
+                        <HiOutlineFilter className="mr-2 h-5 w-5 text-gray-500" />
                         Filters
                     </button>
 
                     {/* Sort Dropdown */}
-                    <div className="relative">
-                        <select
-                            className="focus:ring-primary-500 focus:border-primary-500 appearance-none rounded-lg border border-gray-300 py-2 pr-10 pl-3"
-                            value={sortOption}
-                            onChange={(e) => setSortOption(e.target.value)}
-                        >
-                            {SORT_OPTIONS.map((option) => (
-                                <option key={option.id} value={option.id}>
-                                    {option.label}
-                                </option>
-                            ))}
-                        </select>
-                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                            <BsSortDown className="h-5 w-5 text-gray-400" />
+                    <Select
+                        options={[
+                            {
+                                value: "rating_desc",
+                                label: "Highest Rated",
+                            },
+                            {
+                                value: "price_asc",
+                                label: "Price: Low to High",
+                            },
+                            {
+                                value: "price_desc",
+                                label: "Price: High to Low",
+                            },
+                        ]}
+                        components={{}}
+                        value={filters.sortOption}
+                        onChange={(selectedOption) => {
+                            setFilters({
+                                ...filters,
+                                sortOption: selectedOption,
+                            });
+                        }}
+                        isSearchable={false}
+                        menuPortalTarget={document.body}
+                        menuPosition="fixed"
+                        styles={{
+                            control: (base, state) => ({
+                                ...base,
+                                borderRadius: "100px",
+                                borderColor: state.isFocused
+                                    ? "var(--color-primary-700)"
+                                    : base.borderColor,
+                                boxShadow: state.isFocused
+                                    ? "0 0 0 1px var(--color-primary-700)"
+                                    : base.boxShadow,
+                                "&:hover": {
+                                    borderColor: "var(--color-primary-700)",
+                                },
+                            }),
+                            option: (base, state) => ({
+                                ...base,
+                                backgroundColor: state.isSelected
+                                    ? "var(--color-primary-700)" // selected
+                                    : state.isFocused
+                                      ? "var(--color-primary-100)" // hover
+                                      : "white",
+                                color: state.isSelected ? "white" : "#000",
+                                ":active": {
+                                    backgroundColor: "var(--color-primary-700)",
+                                    color: "white",
+                                },
+                            }),
+                            menuPortal: (base) => ({
+                                ...base,
+                                zIndex: 150,
+                            }),
+                        }}
+                    />
+                    {/*  */}
+                    {false && (
+                        <div className="relative">
+                            <select
+                                className="focus:ring-primary-500 focus:border-primary-500 appearance-none rounded-lg border border-gray-300 py-2 pr-10 pl-3"
+                                value={sortOption}
+                                onChange={(e) => setSortOption(e.target.value)}
+                            >
+                                {SORT_OPTIONS.map((option) => (
+                                    <option key={option.id} value={option.id}>
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </select>
+                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                                <BsSortDown className="h-5 w-5 text-gray-400" />
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </div>
             </div>
 
@@ -497,479 +558,413 @@ const AdvancedSearchPage = () => {
             <ReactModal
                 isOpen={filterModalOpen}
                 onRequestClose={() => setFilterModalOpen(false)}
-                className="fixed inset-0 flex items-center justify-center p-4"
-                overlayClassName="fixed inset-0 bg-black bg-opacity-50"
-                contentLabel="Filter properties"
+                style={customStyles}
+                ariaHideApp={false}
             >
-                <div className="flex max-h-[90vh] w-full max-w-2xl flex-col rounded-xl bg-white shadow-xl">
-                    {/* Fixed Header */}
-                    <div className="sticky top-0 z-10 flex items-center justify-between border-b border-gray-200 bg-white p-4">
-                        <h2 className="text-xl font-bold text-gray-900">
-                            Filters
-                        </h2>
-                        <button
-                            onClick={() => setFilterModalOpen(false)}
-                            className="text-gray-500 hover:text-gray-700"
-                        >
-                            <FaTimes className="h-6 w-6" />
-                        </button>
-                    </div>
+                {/* Fixed Header */}
+                <div className="sticky top-0 z-10 flex items-center justify-between border-b border-gray-200 bg-white px-6 py-4">
+                    <h2 className="text-xl font-bold text-gray-800">Filters</h2>
+                    <button
+                        onClick={() => setFilterModalOpen(false)}
+                        className="text-3xl text-gray-500 hover:text-gray-700"
+                    >
+                        &times;
+                    </button>
+                </div>
 
-                    {/* Scrollable Content */}
-                    <div className="overflow-y-auto p-4">
+                {/* Scrollable Content */}
+                <div
+                    className="h-full overflow-y-scroll p-1"
+                    style={{ maxHeight: "calc(90vh - 120px)" }}
+                >
+                    {/* Accommodation Filter */}
+                    <Accordian
+                        multiple
+                        value={["1", "2", "3", "4"]}
+                        className="mb-4"
+                    >
                         {/* Type Filter */}
-                        <div className="mb-6">
-                            <button
-                                onClick={() => toggleAccordion("type")}
-                                className="mb-2 flex w-full items-center justify-between"
-                            >
-                                <h3 className="text-lg font-medium text-gray-900">
-                                    Property Type
-                                </h3>
-                                {openAccordions.type ? (
-                                    <FaChevronUp />
-                                ) : (
-                                    <FaChevronDown />
-                                )}
-                            </button>
-                            {openAccordions.type && (
-                                <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
-                                    <button
-                                        type="button"
-                                        onClick={() => toggleType("apartment")}
-                                        className={`flex flex-col items-center rounded-lg border p-3 ${filters.types.includes("apartment") ? "border-primary-500 bg-primary-50 text-primary-700" : "border-gray-300 hover:border-gray-400"}`}
-                                    >
-                                        <MdOutlineApartment className="mb-1 h-6 w-6" />
-                                        <span>Apartment</span>
-                                    </button>
-                                    <button
-                                        type="button"
-                                        onClick={() => toggleType("house")}
-                                        className={`flex flex-col items-center rounded-lg border p-3 ${filters.types.includes("house") ? "border-primary-500 bg-primary-50 text-primary-700" : "border-gray-300 hover:border-gray-400"}`}
-                                    >
-                                        <FaHome className="mb-1 h-6 w-6" />
-                                        <span>House</span>
-                                    </button>
-                                    <button
-                                        type="button"
-                                        onClick={() => toggleType("mansion")}
-                                        className={`flex flex-col items-center rounded-lg border p-3 ${filters.types.includes("mansion") ? "border-primary-500 bg-primary-50 text-primary-700" : "border-gray-300 hover:border-gray-400"}`}
-                                    >
-                                        <FaBuilding className="mb-1 h-6 w-6" />
-                                        <span>Mansion</span>
-                                    </button>
-                                    <button
-                                        type="button"
-                                        onClick={() => toggleType("hotel")}
-                                        className={`flex flex-col items-center rounded-lg border p-3 ${filters.types.includes("hotel") ? "border-primary-500 bg-primary-50 text-primary-700" : "border-gray-300 hover:border-gray-400"}`}
-                                    >
-                                        <FaHotel className="mb-1 h-6 w-6" />
-                                        <span>Hotel</span>
-                                    </button>
-                                </div>
-                            )}
-                        </div>
+                        <AccordianItem value="1" trigger="Property Type">
+                            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+                                <button
+                                    type="button"
+                                    onClick={() => toggleType("apartment")}
+                                    className={`flex items-center justify-center gap-2 rounded-full border p-3 ${filters.types.includes("apartment") ? "border-primary-500 bg-primary-50 text-primary-700" : "border-gray-300 hover:border-gray-400"}`}
+                                >
+                                    <HiOutlineBuildingOffice className="mb-1 h-6 w-6" />
+                                    <span>Apartment</span>
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => toggleType("house")}
+                                    className={`flex items-center justify-center gap-2 rounded-full border p-3 ${filters.types.includes("house") ? "border-primary-500 bg-primary-50 text-primary-700" : "border-gray-300 hover:border-gray-400"}`}
+                                >
+                                    <HiOutlineHome className="mb-1 h-6 w-6" />
+                                    <span>House</span>
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => toggleType("mansion")}
+                                    className={`flex items-center justify-center gap-2 rounded-full border p-3 ${filters.types.includes("mansion") ? "border-primary-500 bg-primary-50 text-primary-700" : "border-gray-300 hover:border-gray-400"}`}
+                                >
+                                    <GiGate className="mb-1 h-6 w-6" />
+                                    <span>Mansion</span>
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => toggleType("hotel")}
+                                    className={`flex items-center justify-center gap-2 rounded-full border p-3 ${filters.types.includes("hotel") ? "border-primary-500 bg-primary-50 text-primary-700" : "border-gray-300 hover:border-gray-400"}`}
+                                >
+                                    <LiaHotelSolid className="mb-1 h-6 w-6" />
+                                    <span>Hotel</span>
+                                </button>
+                            </div>
+                        </AccordianItem>
 
                         {/* Price Filter */}
-                        <div className="mb-6">
-                            <button
-                                onClick={() => toggleAccordion("price")}
-                                className="mb-2 flex w-full items-center justify-between"
-                            >
-                                <h3 className="text-lg font-medium text-gray-900">
-                                    Price Range
-                                </h3>
-                                {openAccordions.price ? (
-                                    <FaChevronUp />
-                                ) : (
-                                    <FaChevronDown />
-                                )}
-                            </button>
-                            {openAccordions.price && (
-                                <div>
-                                    <div className="mb-2 flex justify-between">
-                                        <div className="relative">
-                                            <span className="absolute top-2 left-3 text-gray-500">
-                                                $
-                                            </span>
-                                            <input
-                                                type="number"
-                                                value={filters.priceRange[0]}
-                                                onChange={(e) =>
-                                                    handleFilterChange(
-                                                        "priceRange",
-                                                        [
-                                                            parseInt(
-                                                                e.target.value,
-                                                            ) || 0,
-                                                            filters
-                                                                .priceRange[1],
-                                                        ],
-                                                    )
-                                                }
-                                                className="w-24 rounded-lg border border-gray-300 py-2 pr-3 pl-8"
-                                            />
-                                        </div>
-                                        <div className="relative">
-                                            <span className="absolute top-2 left-3 text-gray-500">
-                                                $
-                                            </span>
-                                            <input
-                                                type="number"
-                                                value={filters.priceRange[1]}
-                                                onChange={(e) =>
-                                                    handleFilterChange(
-                                                        "priceRange",
-                                                        [
-                                                            filters
-                                                                .priceRange[0],
-                                                            parseInt(
-                                                                e.target.value,
-                                                            ) || 1000,
-                                                        ],
-                                                    )
-                                                }
-                                                className="w-24 rounded-lg border border-gray-300 py-2 pr-3 pl-8"
-                                            />
-                                        </div>
-                                    </div>
+                        <AccordianItem value="2" trigger="Price Range">
+                            <div className="mb-2 flex items-center justify-between gap-5">
+                                <div className="relative">
+                                    <span className="absolute top-2 left-3 text-gray-500">
+                                        $
+                                    </span>
                                     <input
-                                        type="range"
-                                        min="0"
-                                        max="1000"
+                                        type="number"
                                         value={filters.priceRange[0]}
                                         onChange={(e) =>
                                             handleFilterChange("priceRange", [
-                                                parseInt(e.target.value),
+                                                parseInt(e.target.value) || 0,
                                                 filters.priceRange[1],
                                             ])
                                         }
-                                        className="mb-2 w-full"
+                                        className="focus:ring-primary-700 focus:border-primary-700 w-24 rounded-full border border-gray-300 py-2 pr-3 pl-8"
                                     />
+                                </div>
+                                <div className="relative">
+                                    <span className="absolute top-2 left-3 text-gray-500">
+                                        $
+                                    </span>
                                     <input
-                                        type="range"
-                                        min="0"
-                                        max="1000"
+                                        type="number"
                                         value={filters.priceRange[1]}
                                         onChange={(e) =>
                                             handleFilterChange("priceRange", [
                                                 filters.priceRange[0],
-                                                parseInt(e.target.value),
+                                                parseInt(e.target.value) ||
+                                                    1000,
                                             ])
                                         }
-                                        className="w-full"
+                                        className="focus:ring-primary-700 focus:border-primary-700 w-24 rounded-full border border-gray-300 py-2 pr-3 pl-8"
                                     />
                                 </div>
-                            )}
-                        </div>
+                            </div>
+                            <RangeSlider
+                                id="price-range-silder"
+                                className="my-5"
+                                min={0}
+                                max={1000}
+                                step={1}
+                                value={filters.priceRange}
+                                onInput={(e) =>
+                                    handleFilterChange("priceRange", e)
+                                }
+                            />
+                        </AccordianItem>
 
-                        {/* Structure Filter */}
-                        <div className="mb-6">
-                            <button
-                                onClick={() => toggleAccordion("structure")}
-                                className="mb-2 flex w-full items-center justify-between"
-                            >
-                                <h3 className="text-lg font-medium text-gray-900">
-                                    Property Structure
-                                </h3>
-                                {openAccordions.structure ? (
-                                    <FaChevronUp />
-                                ) : (
-                                    <FaChevronDown />
-                                )}
-                            </button>
-                            {openAccordions.structure && (
-                                <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-                                    <div>
-                                        <label className="mb-1 block text-sm font-medium text-gray-700">
-                                            Rooms
-                                        </label>
-                                        <div className="flex items-center">
-                                            <button
-                                                onClick={() =>
-                                                    handleFilterChange(
-                                                        "rooms",
-                                                        Math.max(
-                                                            0,
-                                                            filters.rooms - 1,
-                                                        ),
-                                                    )
-                                                }
-                                                className="rounded-l-md border border-gray-300 bg-gray-100 p-2 hover:bg-gray-200"
-                                            >
-                                                <FaMinus className="h-3 w-3" />
-                                            </button>
-                                            <input
-                                                type="number"
-                                                value={filters.rooms}
-                                                onChange={(e) =>
-                                                    handleFilterChange(
-                                                        "rooms",
-                                                        parseInt(
-                                                            e.target.value,
-                                                        ) || 0,
-                                                    )
-                                                }
-                                                className="w-full border-t border-b border-gray-300 px-3 py-2 text-center"
-                                            />
-                                            <button
-                                                onClick={() =>
-                                                    handleFilterChange(
-                                                        "rooms",
-                                                        filters.rooms + 1,
-                                                    )
-                                                }
-                                                className="rounded-r-md border border-gray-300 bg-gray-100 p-2 hover:bg-gray-200"
-                                            >
-                                                <FaPlus className="h-3 w-3" />
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label className="mb-1 block text-sm font-medium text-gray-700">
-                                            Beds
-                                        </label>
-                                        <div className="flex items-center">
-                                            <button
-                                                onClick={() =>
-                                                    handleFilterChange(
-                                                        "beds",
-                                                        Math.max(
-                                                            0,
-                                                            filters.beds - 1,
-                                                        ),
-                                                    )
-                                                }
-                                                className="rounded-l-md border border-gray-300 bg-gray-100 p-2 hover:bg-gray-200"
-                                            >
-                                                <FaMinus className="h-3 w-3" />
-                                            </button>
-                                            <input
-                                                type="number"
-                                                value={filters.beds}
-                                                onChange={(e) =>
-                                                    handleFilterChange(
-                                                        "beds",
-                                                        parseInt(
-                                                            e.target.value,
-                                                        ) || 0,
-                                                    )
-                                                }
-                                                className="w-full border-t border-b border-gray-300 px-3 py-2 text-center"
-                                            />
-                                            <button
-                                                onClick={() =>
-                                                    handleFilterChange(
-                                                        "beds",
-                                                        filters.beds + 1,
-                                                    )
-                                                }
-                                                className="rounded-r-md border border-gray-300 bg-gray-100 p-2 hover:bg-gray-200"
-                                            >
-                                                <FaPlus className="h-3 w-3" />
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label className="mb-1 block text-sm font-medium text-gray-700">
-                                            Bathrooms
-                                        </label>
-                                        <div className="flex items-center">
-                                            <button
-                                                onClick={() =>
-                                                    handleFilterChange(
-                                                        "bathrooms",
-                                                        Math.max(
-                                                            0,
-                                                            filters.bathrooms -
-                                                                1,
-                                                        ),
-                                                    )
-                                                }
-                                                className="rounded-l-md border border-gray-300 bg-gray-100 p-2 hover:bg-gray-200"
-                                            >
-                                                <FaMinus className="h-3 w-3" />
-                                            </button>
-                                            <input
-                                                type="number"
-                                                value={filters.bathrooms}
-                                                onChange={(e) =>
-                                                    handleFilterChange(
-                                                        "bathrooms",
-                                                        parseInt(
-                                                            e.target.value,
-                                                        ) || 0,
-                                                    )
-                                                }
-                                                className="w-full border-t border-b border-gray-300 px-3 py-2 text-center"
-                                            />
-                                            <button
-                                                onClick={() =>
-                                                    handleFilterChange(
-                                                        "bathrooms",
-                                                        filters.bathrooms + 1,
-                                                    )
-                                                }
-                                                className="rounded-r-md border border-gray-300 bg-gray-100 p-2 hover:bg-gray-200"
-                                            >
-                                                <FaPlus className="h-3 w-3" />
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label className="mb-1 block text-sm font-medium text-gray-700">
-                                            Guests
-                                        </label>
-                                        <div className="flex items-center">
-                                            <button
-                                                onClick={() =>
-                                                    handleFilterChange(
-                                                        "guests",
-                                                        Math.max(
-                                                            0,
-                                                            filters.guests - 1,
-                                                        ),
-                                                    )
-                                                }
-                                                className="rounded-l-md border border-gray-300 bg-gray-100 p-2 hover:bg-gray-200"
-                                            >
-                                                <FaMinus className="h-3 w-3" />
-                                            </button>
-                                            <input
-                                                type="number"
-                                                value={filters.guests}
-                                                onChange={(e) =>
-                                                    handleFilterChange(
-                                                        "guests",
-                                                        parseInt(
-                                                            e.target.value,
-                                                        ) || 0,
-                                                    )
-                                                }
-                                                className="w-full border-t border-b border-gray-300 px-3 py-2 text-center"
-                                            />
-                                            <button
-                                                onClick={() =>
-                                                    handleFilterChange(
-                                                        "guests",
-                                                        filters.guests + 1,
-                                                    )
-                                                }
-                                                className="rounded-r-md border border-gray-300 bg-gray-100 p-2 hover:bg-gray-200"
-                                            >
-                                                <FaPlus className="h-3 w-3" />
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div className="col-span-2">
-                                        <label className="mb-1 block text-sm font-medium text-gray-700">
-                                            Minimum Area (sq ft)
-                                        </label>
-                                        <div className="flex items-center">
-                                            <button
-                                                onClick={() =>
-                                                    handleFilterChange(
-                                                        "area",
-                                                        Math.max(
-                                                            0,
-                                                            filters.area - 100,
-                                                        ),
-                                                    )
-                                                }
-                                                className="rounded-l-md border border-gray-300 bg-gray-100 p-2 hover:bg-gray-200"
-                                            >
-                                                <FaMinus className="h-3 w-3" />
-                                            </button>
-                                            <input
-                                                type="number"
-                                                value={filters.area}
-                                                onChange={(e) =>
-                                                    handleFilterChange(
-                                                        "area",
-                                                        parseInt(
-                                                            e.target.value,
-                                                        ) || 0,
-                                                    )
-                                                }
-                                                className="w-full border-t border-b border-gray-300 px-3 py-2 text-center"
-                                            />
-                                            <button
-                                                onClick={() =>
-                                                    handleFilterChange(
-                                                        "area",
-                                                        filters.area + 100,
-                                                    )
-                                                }
-                                                className="rounded-r-md border border-gray-300 bg-gray-100 p-2 hover:bg-gray-200"
-                                            >
-                                                <FaPlus className="h-3 w-3" />
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-
-                        {/* Amenities Filter */}
-                        <div>
-                            <button
-                                onClick={() => toggleAccordion("amenities")}
-                                className="mb-2 flex w-full items-center justify-between"
-                            >
-                                <h3 className="text-lg font-medium text-gray-900">
-                                    Amenities
-                                </h3>
-                                {openAccordions.amenities ? (
-                                    <FaChevronUp />
-                                ) : (
-                                    <FaChevronDown />
-                                )}
-                            </button>
-                            {openAccordions.amenities && (
-                                <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
-                                    {AMENITIES.map((amenity) => (
+                        {/* Structure */}
+                        <AccordianItem value="3" trigger="Structure">
+                            <div className="flex flex-col gap-5">
+                                {/* Rooms */}
+                                <div className="flex items-center justify-between">
+                                    <label className="flex items-center gap-2 font-semibold text-gray-700">
+                                        <span className="text-primary-700 text-xl">
+                                            {PropertyStructure["rooms"].icon}
+                                        </span>
+                                        Rooms
+                                    </label>
+                                    <div className="flex h-10 items-center rounded-full border border-gray-200">
                                         <button
-                                            key={amenity.id}
-                                            type="button"
                                             onClick={() =>
-                                                toggleAmenity(amenity.id)
-                                            }
-                                            className={`flex items-center rounded-lg border p-3 ${
-                                                filters.amenities.includes(
-                                                    amenity.id,
+                                                handleFilterChange(
+                                                    "rooms",
+                                                    Math.max(
+                                                        0,
+                                                        filters.rooms - 1,
+                                                    ),
                                                 )
-                                                    ? "border-primary-500 bg-primary-50 text-primary-700"
-                                                    : "border-gray-300 hover:border-gray-400"
-                                            }`}
+                                            }
+                                            className="flex h-full items-center rounded-l-full bg-white p-2 text-xl font-medium text-gray-600 hover:bg-gray-50"
                                         >
-                                            <span className="mr-2">
-                                                {amenity.icon}
-                                            </span>
-                                            <span className="text-sm">
-                                                {amenity.name}
-                                            </span>
+                                            -
                                         </button>
-                                    ))}
+                                        <input
+                                            type="number"
+                                            value={filters.rooms}
+                                            onChange={(e) =>
+                                                handleFilterChange(
+                                                    "rooms",
+                                                    parseInt(e.target.value) ||
+                                                        0,
+                                                )
+                                            }
+                                            className="h-full w-20 border-none px-3 py-2 text-center focus:ring-0"
+                                        />
+                                        <button
+                                            onClick={() =>
+                                                handleFilterChange(
+                                                    "rooms",
+                                                    filters.rooms + 1,
+                                                )
+                                            }
+                                            className="flex h-full items-center rounded-r-full bg-white p-2 text-xl font-medium text-gray-600 hover:bg-gray-50"
+                                        >
+                                            +
+                                        </button>
+                                    </div>
                                 </div>
-                            )}
-                        </div>
-                    </div>
+                                {/* Beds */}
+                                <div className="flex items-center justify-between">
+                                    <label className="flex items-center gap-2 font-semibold text-gray-700">
+                                        <span className="text-primary-700 text-xl">
+                                            {PropertyStructure["beds"].icon}
+                                        </span>
+                                        Beds
+                                    </label>
+                                    <div className="flex h-10 items-center rounded-full border border-gray-200">
+                                        <button
+                                            onClick={() =>
+                                                handleFilterChange(
+                                                    "beds",
+                                                    Math.max(
+                                                        0,
+                                                        filters.beds - 1,
+                                                    ),
+                                                )
+                                            }
+                                            className="flex h-full items-center rounded-l-full bg-white p-2 text-xl font-medium text-gray-600 hover:bg-gray-50"
+                                        >
+                                            -
+                                        </button>
+                                        <input
+                                            type="number"
+                                            value={filters.beds}
+                                            onChange={(e) =>
+                                                handleFilterChange(
+                                                    "beds",
+                                                    parseInt(e.target.value) ||
+                                                        0,
+                                                )
+                                            }
+                                            className="h-full w-20 border-none px-3 py-2 text-center focus:ring-0"
+                                        />
+                                        <button
+                                            onClick={() =>
+                                                handleFilterChange(
+                                                    "beds",
+                                                    filters.beds + 1,
+                                                )
+                                            }
+                                            className="flex h-full items-center rounded-r-full bg-white p-2 text-xl font-medium text-gray-600 hover:bg-gray-50"
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+                                </div>
+                                {/* Bathrooms */}
+                                <div className="flex items-center justify-between">
+                                    <label className="flex items-center gap-2 font-semibold text-gray-700">
+                                        <span className="text-primary-700 text-xl">
+                                            {
+                                                PropertyStructure["bathrooms"]
+                                                    .icon
+                                            }
+                                        </span>
+                                        Bathrooms
+                                    </label>
+                                    <div className="flex h-10 items-center rounded-full border border-gray-200">
+                                        <button
+                                            onClick={() =>
+                                                handleFilterChange(
+                                                    "bathrooms",
+                                                    Math.max(
+                                                        0,
+                                                        filters.bathrooms - 1,
+                                                    ),
+                                                )
+                                            }
+                                            className="flex h-full items-center rounded-l-full bg-white p-2 text-xl font-medium text-gray-600 hover:bg-gray-50"
+                                        >
+                                            -
+                                        </button>
+                                        <input
+                                            type="number"
+                                            value={filters.bathrooms}
+                                            onChange={(e) =>
+                                                handleFilterChange(
+                                                    "bathrooms",
+                                                    parseInt(e.target.value) ||
+                                                        0,
+                                                )
+                                            }
+                                            className="h-full w-20 border-none px-3 py-2 text-center focus:ring-0"
+                                        />
+                                        <button
+                                            onClick={() =>
+                                                handleFilterChange(
+                                                    "bathrooms",
+                                                    filters.bathrooms + 1,
+                                                )
+                                            }
+                                            className="flex h-full items-center rounded-r-full bg-white p-2 text-xl font-medium text-gray-600 hover:bg-gray-50"
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+                                </div>
+                                {/* Guests */}
+                                <div className="flex items-center justify-between">
+                                    <label className="flex items-center gap-2 font-semibold text-gray-700">
+                                        <span className="text-primary-700 text-xl">
+                                            {PropertyStructure["guests"].icon}
+                                        </span>
+                                        Guests
+                                    </label>
+                                    <div className="flex h-10 items-center rounded-full border border-gray-200">
+                                        <button
+                                            onClick={() =>
+                                                handleFilterChange(
+                                                    "guests",
+                                                    Math.max(
+                                                        0,
+                                                        filters.guests - 1,
+                                                    ),
+                                                )
+                                            }
+                                            className="flex h-full items-center rounded-l-full bg-white p-2 text-xl font-medium text-gray-600 hover:bg-gray-50"
+                                        >
+                                            -
+                                        </button>
+                                        <input
+                                            type="number"
+                                            value={filters.guests}
+                                            onChange={(e) =>
+                                                handleFilterChange(
+                                                    "guests",
+                                                    parseInt(e.target.value) ||
+                                                        0,
+                                                )
+                                            }
+                                            className="h-full w-20 border-none px-3 py-2 text-center focus:ring-0"
+                                        />
+                                        <button
+                                            onClick={() =>
+                                                handleFilterChange(
+                                                    "guests",
+                                                    filters.guests + 1,
+                                                )
+                                            }
+                                            className="flex h-full items-center rounded-r-full bg-white p-2 text-xl font-medium text-gray-600 hover:bg-gray-50"
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+                                </div>
+                                {/* Area */}
+                                <div className="flex items-center justify-between">
+                                    <label className="flex items-center gap-2 font-semibold text-gray-700">
+                                        <span className="text-primary-700 text-xl">
+                                            {PropertyStructure["area"].icon}
+                                        </span>
+                                        Area
+                                    </label>
+                                    <div className="flex h-10 items-center rounded-full border border-gray-200">
+                                        <button
+                                            onClick={() =>
+                                                handleFilterChange(
+                                                    "area",
+                                                    Math.max(
+                                                        0,
+                                                        filters.area - 100,
+                                                    ),
+                                                )
+                                            }
+                                            className="flex h-full items-center rounded-l-full bg-white p-2 text-xl font-medium text-gray-600 hover:bg-gray-50"
+                                        >
+                                            -
+                                        </button>
+                                        <input
+                                            type="number"
+                                            value={filters.area}
+                                            onChange={(e) =>
+                                                handleFilterChange(
+                                                    "area",
+                                                    parseInt(e.target.value) ||
+                                                        0,
+                                                )
+                                            }
+                                            className="h-full w-20 border-none px-3 py-2 text-center focus:ring-0"
+                                        />
+                                        <button
+                                            onClick={() =>
+                                                handleFilterChange(
+                                                    "area",
+                                                    filters.area + 100,
+                                                )
+                                            }
+                                            className="flex h-full items-center rounded-r-full bg-white p-2 text-xl font-medium text-gray-600 hover:bg-gray-50"
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </AccordianItem>
 
-                    {/* Fixed Footer */}
-                    <div className="sticky bottom-0 flex justify-between border-t border-gray-200 bg-white p-4">
-                        <button
-                            onClick={clearFilters}
-                            className="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-                        >
-                            Clear All
-                        </button>
-                        <button
-                            onClick={applyFilters}
-                            className="bg-primary-600 hover:bg-primary-700 rounded-md border border-transparent px-4 py-2 text-sm font-medium text-white shadow-sm"
-                        >
-                            Apply Filters
-                        </button>
-                    </div>
+                        {/* Amenities */}
+                        <AccordianItem value="4" trigger="Amenities">
+                            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
+                                {AMENITIES.map((amenity) => (
+                                    <button
+                                        key={amenity.id}
+                                        type="button"
+                                        onClick={() =>
+                                            toggleAmenity(amenity.id)
+                                        }
+                                        className={`flex items-center justify-center rounded-full border p-3 ${
+                                            filters.amenities.includes(
+                                                amenity.id,
+                                            )
+                                                ? "border-primary-500 bg-primary-50 text-primary-700"
+                                                : "border-gray-300 hover:border-gray-400"
+                                        }`}
+                                    >
+                                        <span className="mr-2">
+                                            {amenity.icon}
+                                        </span>
+                                        <span className="text-sm">
+                                            {amenity.name}
+                                        </span>
+                                    </button>
+                                ))}
+                            </div>
+                        </AccordianItem>
+                    </Accordian>
+                </div>
+
+                {/* Fixed Footer */}
+                <div className="sticky bottom-0 flex justify-end space-x-3 border-t border-gray-200 bg-white px-6 py-4">
+                    <Button
+                        onClick={clearFilters}
+                        className="border border-gray-300 text-gray-700 hover:bg-gray-100"
+                    >
+                        Clear All
+                    </Button>
+                    <Button
+                        onClick={applyFilters}
+                        className="bg-primary-700 hover:bg-primary-800 border border-transparent text-white"
+                    >
+                        Apply Filters
+                    </Button>
                 </div>
             </ReactModal>
         </div>

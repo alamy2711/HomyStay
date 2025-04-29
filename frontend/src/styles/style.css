@@ -200,3 +200,25 @@
     justify-content: center;
     align-items: center;
 }
+
+/* react-range-slider */
+#price-range-silder .range-slider__range {
+    background: var(--color-primary-600);
+    transition: height 0.3s;
+}
+
+#price-range-silder .range-slider__thumb {
+    background: var(--color-primary-600);
+    transition: transform 0.3s;
+    width: 1.5rem;
+    height: 1.5rem
+    
+}
+
+#price-range-silder.range-slider__thumb[data-active] {
+    transform: translate(-50%, -50%) scale(1.25);
+}
+
+#price-range-silder .range-slider__range[data-active] {
+    height: 12px;
+}

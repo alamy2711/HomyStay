@@ -4,7 +4,7 @@ This is a full-stack web application for apartment booking.
 
 ---
 
-## Requirements
+## ✅ Requirements
 
 Before you begin, ensure you have the following installed:
 
@@ -17,26 +17,14 @@ Before you begin, ensure you have the following installed:
 
 ---
 
-## Installation Steps
+## ⚙️ Installation Steps
 
-### Clone the Repository
-
-Navigate to your projects directory (optional):
-
-```
-cd ~/projects
-```
+### I. Clone the Repository
 
 Clone the repository:
 
 ```
 git clone https://github.com/alamy2711/HomyStay.git
-```
-
-Move into the project directory:
-
-```
-cd HomyStay
 ```
 
 ### Install Backend Dependencies
@@ -53,8 +41,25 @@ Copy and configure the environment file:
 cp .env.example .env
 ```
 
+Generate App Key:
 
-### Install Frontend Dependencies
+```
+php artisan key:generate
+```
+
+Link Storage:
+
+```
+php artisan storage:link
+```
+Run Fresh Migrations and Seed the Database:
+
+```
+php artisan migrate:fresh --seed
+```
+
+
+### II. Install Frontend Dependencies
 
 Navigate to the frontend directory:
 
@@ -68,11 +73,17 @@ Install JavaScript dependencies:
 npm install
 ```
 
+Copy and configure the environment file:
+
+```
+cp .env.example .env
+```
+
 ---
 
-## Running the Project
+## 🚀 Running the Project
 
-### Start the Backend Server
+### I. Start the Backend Server
 
 Navigate to the project root:
 
@@ -86,7 +97,7 @@ Start the Laravel server:
 php artisan serve
 ```
 
-### Start the Frontend
+### II. Start the Frontend
 
 Navigate to the frontend folder:
 
@@ -100,15 +111,7 @@ Start the React development server:
 npm run dev
 ```
 
-### Start Tailwind Watcher
-
-Run TailwindCSS CLI to generate styles:
-
-```
-npm run twdev
-```
-
-The site will be available at:
+The website will be available at:
 
 ```
 http://localhost:3000

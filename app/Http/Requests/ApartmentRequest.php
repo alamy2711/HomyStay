@@ -26,16 +26,19 @@ class ApartmentRequest extends FormRequest
             'price' => 'required|numeric|min:1',
             'description' => 'required|string|min:10',
             'type' => 'required|in:apartment,house,mansion,hotel',
-            'rooms' => 'required|integer|min:0',
+            
+            'rooms' => 'required|integer|min:1',
             'bathrooms' => 'required|integer|min:0',
             'beds' => 'required|integer|min:0',
             'guests' => 'required|integer|min:1',
             'area' => 'required|integer|min:1',
+
             'country' => 'required|string',
             'city' => 'required|string',
             'address' => 'required|string',
-            'check_in' => 'required|date',
-            'check_out' => 'required|date|after_or_equal:check_in',
+
+            'check_in' => 'required|date|after_or_equal:today',
+            'check_out' => 'required|date|after:check_in',
 
             'amenities' => 'nullable|array',
             'amenities.*' => 'string|distinct',

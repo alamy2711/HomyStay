@@ -23,6 +23,7 @@ Route::post('/signup', [AuthController::class, 'signup']);
 Route::middleware('auth.optional:sanctum')->group(function () {
     // Publicly accessible endpoints with optional authentication
     Route::get('/apartments', [ApartmentController::class, 'index']);
+    Route::get('/apartments/search', [ApartmentController::class, 'search']);
     Route::get('/apartments/{apartment}', [ApartmentController::class, 'show']);
 });
 

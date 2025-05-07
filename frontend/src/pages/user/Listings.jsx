@@ -403,7 +403,7 @@ const ListingsPage = () => {
                                                     <div className="flex justify-end space-x-2">
                                                         <a
                                                             target="_blank"
-                                                            href="apartment-details"
+                                                            href={`/apartments/${apartment.id}`}
                                                             className="text-primary-600 hover:text-primary-900"
                                                             title="View"
                                                         >

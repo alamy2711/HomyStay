@@ -1,12 +1,17 @@
 import AMENITIES from "@/constants/Amenities";
 import PropertyStructure from "@/constants/PropertyStructure";
+import axiosClient from "@/lib/axiosClient";
+import { addDays, set, subDays } from "date-fns";
 import { useEffect, useState } from "react";
 
 // Components
 import Accordian, {
     AccordianItem,
 } from "@/components/common/Accordion/MyAccordion";
+import ApartmentCard from "@components/Apartment/ApartmentCard";
 import Button from "@components/common/Button";
+import DatePickerInput from "@components/common/DatePickerInput";
+import LoadingSpinner from "@components/common/LoadingSpinner";
 import ReactModal from "react-modal";
 import RangeSlider from "react-range-slider-input";
 import "react-range-slider-input/dist/style.css";
@@ -15,14 +20,7 @@ import Select from "react-select";
 // Icons
 import { BiArea } from "react-icons/bi";
 import { BsPeople, BsSortDown } from "react-icons/bs";
-import {
-    FaBed,
-    FaBuilding,
-    FaCalendarAlt,
-    FaHome,
-    FaHotel,
-    FaSearch,
-} from "react-icons/fa";
+import { FaBed, FaBuilding, FaHome, FaHotel, FaSearch } from "react-icons/fa";
 import { HiOutlineFilter } from "react-icons/hi";
 import { MdOutlineApartment } from "react-icons/md";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
@@ -47,6 +45,9 @@ const PROPERTIES = [
         area: 850,
         amenities: ["wifi", "ac", "tv"],
         description: "Stylish apartment in the heart of downtown",
+        country: "United States",
+        city: "New York",
+        address: "123 Main St, New York, NY 10001",
     },
     {
         id: 2,
@@ -62,6 +63,9 @@ const PROPERTIES = [
         area: 1800,
         amenities: ["wifi", "parking", "pool", "ac", "hot_tub"],
         description: "Luxury villa with private beach access",
+        country: "United States",
+        city: "Miami",
+        address: "456 Beach Rd, Miami, FL 33101",
     },
     {
         id: 3,
@@ -77,6 +81,9 @@ const PROPERTIES = [
         area: 1200,
         amenities: ["wifi", "kitchen", "hot_tub"],
         description: "Rustic cabin with stunning mountain views",
+        country: "United States",
+        city: "Aspen",
+        address: "789 Mountain Rd, Aspen, CO 81611",
     },
     {
         id: 4,
@@ -92,6 +99,9 @@ const PROPERTIES = [
         area: 1500,
         amenities: ["wifi", "ac", "tv", "parking", "concierge"],
         description: "Ultra-luxurious penthouse with panoramic views",
+        country: "United States",
+        city: "New York",
+        address: "321 Park Ave, New York, NY 10001",
     },
     {
         id: 5,
@@ -115,6 +125,9 @@ const PROPERTIES = [
             "laundry",
         ],
         description: "Stunning mansion on the lake with all amenities",
+        country: "United States",
+        city: "Napa Valley",
+        address: "987 Lake Rd, Napa Valley, CA 94559",
     },
     {
         id: 6,
@@ -130,24 +143,12 @@ const PROPERTIES = [
         area: 600,
         amenities: ["wifi", "ac", "tv", "breakfast", "concierge"],
         description: "Elegant hotel suite with premium services",
+        country: "United States",
+        city: "New York",
+        address: "555 Fifth Ave, New York, NY 10001",
     },
 ];
 
-// Sort options
-const SORT_OPTIONS = [
-    {
-        id: "price_asc",
-        label: "Price: Low to High",
-        icon: <RiMoneyDollarCircleLine />,
-    },
-    {
-        id: "price_desc",
-        label: "Price: High to Low",
-        icon: <RiMoneyDollarCircleLine />,
-    },
-    { id: "rating_desc", label: "Highest Rated", icon: <BsSortDown /> },
-    { id: "area_desc", label: "Largest Space", icon: <BiArea /> },
-];
 
 // Modal styling
 const customStyles = {
@@ -176,15 +177,15 @@ const customStyles = {
 
 const AdvancedSearchPage = () => {
     // Search state
-    const [searchTerm, setSearchTerm] = useState("");
-    const [checkIn, setCheckIn] = useState("");
-    const [checkOut, setCheckOut] = useState("");
-    const [sortOption, setSortOption] = useState("rating_desc");
     const [filterModalOpen, setFilterModalOpen] = useState(false);
-    const [filteredProperties, setFilteredProperties] = useState(PROPERTIES);
+    const [filteredProperties, setFilteredProperties] = useState([]);
+
 
     // Filter state
     const [filters, setFilters] = useState({
+        searchTerm: "",
+        checkIn: "",
+        checkOut: "",
         types: [],
         priceRange: [0, 1000],
         rooms: 0,
@@ -198,6 +199,24 @@ const AdvancedSearchPage = () => {
             label: "Highest Rated",
         },
     });
+
+    const [apartments, setApartments] = useState([]);
+    const [apartmentsLoading, setApartmentsLoading] = useState(true);
+
+    useEffect(() => {
+        axiosClient
+            .get("/apartments/search")
+            .then((response) => {
+                setApartments(response.data.data);
+                setFilteredProperties(response.data.data);
+                setApartmentsLoading(false);
+                filterProperties();
+            })
+            .catch((error) => {
+                console.error("Error fetching apartments:", error);
+                setApartmentsLoading(false);
+            });
+    }, []);
 
     // Handle filter changes
     const handleFilterChange = (name, value) => {
@@ -240,6 +259,10 @@ const AdvancedSearchPage = () => {
             guests: 0,
             area: 0,
             amenities: [],
+            sortOption: {
+                value: "rating_desc",
+                label: "Highest Rated",
+            },
         });
     };
 
@@ -250,20 +273,20 @@ const AdvancedSearchPage = () => {
     };
 
     // Filter properties based on search and filters
-    const filterProperties = () => {
-        let results = [...PROPERTIES];
 
-        // Apply search term filter
-        if (searchTerm) {
-            results = results.filter(
-                (property) =>
-                    property.title
+    const filterProperties = () => {
+        if (apartmentsLoading) return;
+        let results = [...apartments];
+        console.log(results)
+
+        if (filters.searchTerm) {
+            results = results.filter((property) => {
+                const matchesSearch =
+                    `${property.title} ${property.country} ${property.city}`
                         .toLowerCase()
-                        .includes(searchTerm.toLowerCase()) ||
-                    property.description
-                        .toLowerCase()
-                        .includes(searchTerm.toLowerCase()),
-            );
+                        .includes(filters.searchTerm.toLowerCase());
+                return matchesSearch;
+            });
         }
 
         // Apply type filter
@@ -336,7 +359,11 @@ const AdvancedSearchPage = () => {
     // Re-filter when any search criteria changes
     useEffect(() => {
         filterProperties();
-    }, [searchTerm, checkIn, checkOut, sortOption, filters]);
+    }, [filters]);
+
+    if (!apartmentsLoading) {
+        filterProperties();
+    }
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -351,38 +378,75 @@ const AdvancedSearchPage = () => {
                         <input
                             type="text"
                             placeholder="Search properties..."
-                            className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-lg border border-gray-300 py-2 pr-4 pl-10"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="focus:ring-primary-700 focus:border-primary-700 w-full rounded-full border border-gray-300 py-2 pr-4 pl-10"
+                            value={filters.searchTerm}
+                            onChange={(e) =>
+                                setFilters({
+                                    ...filters,
+                                    searchTerm: e.target.value,
+                                })
+                            }
                         />
                     </div>
 
                     {/* Date Inputs */}
-                    <div className="flex gap-2">
-                        <div className="relative">
-                            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                <FaCalendarAlt className="h-5 w-5 text-gray-400" />
-                            </div>
-                            <input
-                                type="date"
-                                placeholder="Check-in"
-                                className="focus:ring-primary-500 focus:border-primary-500 rounded-lg border border-gray-300 py-2 pr-4 pl-10"
-                                value={checkIn}
-                                onChange={(e) => setCheckIn(e.target.value)}
-                            />
-                        </div>
-                        <div className="relative">
-                            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                <FaCalendarAlt className="h-5 w-5 text-gray-400" />
-                            </div>
-                            <input
-                                type="date"
-                                placeholder="Check-out"
-                                className="focus:ring-primary-500 focus:border-primary-500 rounded-lg border border-gray-300 py-2 pr-4 pl-10"
-                                value={checkOut}
-                                onChange={(e) => setCheckOut(e.target.value)}
-                            />
-                        </div>
+                    <div className="flex items-center gap-4">
+                        <DatePickerInput
+                            selected={filters.checkIn}
+                            onChange={(date) => {
+                                setFilters({
+                                    ...filters,
+                                    checkIn: date,
+                                });
+                            }}
+                            selectsStart
+                            startDate={filters.checkIn}
+                            endDate={filters.checkOut}
+                            maxDate={
+                                filters.checkOut && subDays(filters.checkOut, 1)
+                            }
+                            openToDate={
+                                filters.checkIn
+                                    ? new Date(filters.checkIn)
+                                    : filters.checkOut
+                                      ? new Date(filters.checkOut)
+                                      : new Date()
+                            }
+                            // Structure
+                            popperPlacement="bottom-start"
+                            // Input
+                            id="startDate"
+                            label="Check in"
+                            name="startDate"
+                        />
+                        <DatePickerInput
+                            selected={filters.checkOut}
+                            onChange={(date) => {
+                                setFilters({
+                                    ...filters,
+                                    checkOut: date,
+                                });
+                            }}
+                            selectsEnd
+                            startDate={filters.checkIn}
+                            endDate={filters.checkOut}
+                            minDate={
+                                filters.checkIn && addDays(filters.checkIn, 1)
+                            }
+                            openToDate={
+                                filters.checkOut
+                                    ? new Date(filters.checkOut)
+                                    : filters.checkIn
+                                      ? new Date(filters.checkIn)
+                                      : new Date()
+                            }
+                            // Structure
+                            popperPlacement="bottom-end"
+                            // Input
+                            id="endDate"
+                            label="Check out"
+                            name="endDate"
+                        />
                     </div>
 
                     {/* Filter Button */}
@@ -424,6 +488,8 @@ const AdvancedSearchPage = () => {
                         styles={{
                             control: (base, state) => ({
                                 ...base,
+                                height: "100%",
+                                width: "200px",
                                 borderRadius: "100px",
                                 borderColor: state.isFocused
                                     ? "var(--color-primary-700)"
@@ -454,105 +520,119 @@ const AdvancedSearchPage = () => {
                             }),
                         }}
                     />
-                    {/*  */}
-                    {false && (
-                        <div className="relative">
-                            <select
-                                className="focus:ring-primary-500 focus:border-primary-500 appearance-none rounded-lg border border-gray-300 py-2 pr-10 pl-3"
-                                value={sortOption}
-                                onChange={(e) => setSortOption(e.target.value)}
-                            >
-                                {SORT_OPTIONS.map((option) => (
-                                    <option key={option.id} value={option.id}>
-                                        {option.label}
-                                    </option>
-                                ))}
-                            </select>
-                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                                <BsSortDown className="h-5 w-5 text-gray-400" />
-                            </div>
-                        </div>
-                    )}
                 </div>
             </div>
 
             {/* Property Results */}
-            <div className="mx-auto max-w-7xl p-4">
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    {filteredProperties.map((property) => (
-                        <div
-                            key={property.id}
-                            className="overflow-hidden rounded-xl bg-white shadow-sm transition-shadow hover:shadow-md"
-                        >
-                            <img
-                                src={property.image}
-                                alt={property.title}
-                                className="h-48 w-full object-cover"
+            {apartmentsLoading ? (
+                <LoadingSpinner className="h-[80vh]" />
+            ) : (
+                <section className="my-15 px-4 lg:my-30 lg:px-6">
+                    <div className="mx-auto grid max-w-screen-xl grid-cols-1 place-items-center gap-2 gap-y-5 rounded-lg bg-white px-4 py-10 shadow-sm md:grid-cols-2 lg:grid-cols-3">
+                        {/* Heading */}
+                        <div className="mb-4 text-center font-bold md:col-span-2 lg:col-span-3">
+                            <h1 className="text-2xl text-nowrap text-(--secondary) lg:text-3xl">
+                                Find Your Perfect
+                                <span className="text-primary-700">
+                                    {" "}
+                                    Apartment
+                                </span>
+                            </h1>
+                            <p className="text-sm text-gray-500 lg:text-base">
+                                {filteredProperties.length === 0
+                                    ? "You have no favorite apartments."
+                                    : " Discover the best apartments available for your next stay."}
+                            </p>
+                        </div>
+                        {/* <!-- Card --> */}
+                        {filteredProperties.map((apartment) => (
+                            <ApartmentCard
+                                key={apartment.id}
+                                apartment={apartment}
+                                setApartments={setApartments}
                             />
-                            <div className="p-4">
-                                <div className="flex items-start justify-between">
-                                    <h3 className="text-lg font-semibold text-gray-900">
-                                        {property.title}
-                                    </h3>
-                                    <div className="flex items-center">
-                                        <span className="text-yellow-500">
-                                            ★
-                                        </span>
-                                        <span className="ml-1 text-gray-700">
-                                            {property.rating}
-                                        </span>
+                        ))}
+                    </div>
+                </section>
+            )}
+            {false && (
+                <div className="mx-auto max-w-7xl p-4">
+                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                        {filteredProperties.map((property) => (
+                            <div
+                                key={property.id}
+                                className="overflow-hidden rounded-xl bg-white shadow-sm transition-shadow hover:shadow-md"
+                            >
+                                <img
+                                    src={property.image}
+                                    alt={property.title}
+                                    className="h-48 w-full object-cover"
+                                />
+                                <div className="p-4">
+                                    <div className="flex items-start justify-between">
+                                        <h3 className="text-lg font-semibold text-gray-900">
+                                            {property.title}
+                                        </h3>
+                                        <div className="flex items-center">
+                                            <span className="text-yellow-500">
+                                                ★
+                                            </span>
+                                            <span className="ml-1 text-gray-700">
+                                                {property.rating}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <p className="mt-1 flex items-center text-sm text-gray-500">
+                                        {property.type === "apartment" && (
+                                            <MdOutlineApartment className="mr-1" />
+                                        )}
+                                        {property.type === "house" && (
+                                            <FaHome className="mr-1" />
+                                        )}
+                                        {property.type === "mansion" && (
+                                            <FaBuilding className="mr-1" />
+                                        )}
+                                        {property.type === "hotel" && (
+                                            <FaHotel className="mr-1" />
+                                        )}
+                                        {property.type.charAt(0).toUpperCase() +
+                                            property.type.slice(1)}
+                                    </p>
+                                    <div className="mt-2 grid grid-cols-2 gap-2 text-sm">
+                                        <p className="flex items-center">
+                                            <FaBed className="mr-1 text-gray-400" />{" "}
+                                            {property.beds} beds
+                                        </p>
+                                        <p className="flex items-center">
+                                            <FaHome className="mr-1 text-gray-400" />{" "}
+                                            {property.rooms} rooms
+                                        </p>
+                                        <p className="flex items-center">
+                                            <FaBuilding className="mr-1 text-gray-400" />{" "}
+                                            {property.bathrooms} baths
+                                        </p>
+                                        <p className="flex items-center">
+                                            <BsPeople className="mr-1 text-gray-400" />{" "}
+                                            {property.guests} guests
+                                        </p>
+                                    </div>
+                                    <div className="mt-4 flex items-center justify-between">
+                                        <p className="text-lg font-semibold text-gray-900">
+                                            ${property.price}{" "}
+                                            <span className="text-sm font-normal text-gray-500">
+                                                / night
+                                            </span>
+                                        </p>
+                                        <button className="bg-primary-600 hover:bg-primary-700 rounded-lg px-3 py-1 text-sm text-white">
+                                            View
+                                        </button>
                                     </div>
                                 </div>
-                                <p className="mt-1 flex items-center text-sm text-gray-500">
-                                    {property.type === "apartment" && (
-                                        <MdOutlineApartment className="mr-1" />
-                                    )}
-                                    {property.type === "house" && (
-                                        <FaHome className="mr-1" />
-                                    )}
-                                    {property.type === "mansion" && (
-                                        <FaBuilding className="mr-1" />
-                                    )}
-                                    {property.type === "hotel" && (
-                                        <FaHotel className="mr-1" />
-                                    )}
-                                    {property.type.charAt(0).toUpperCase() +
-                                        property.type.slice(1)}
-                                </p>
-                                <div className="mt-2 grid grid-cols-2 gap-2 text-sm">
-                                    <p className="flex items-center">
-                                        <FaBed className="mr-1 text-gray-400" />{" "}
-                                        {property.beds} beds
-                                    </p>
-                                    <p className="flex items-center">
-                                        <FaHome className="mr-1 text-gray-400" />{" "}
-                                        {property.rooms} rooms
-                                    </p>
-                                    <p className="flex items-center">
-                                        <FaBuilding className="mr-1 text-gray-400" />{" "}
-                                        {property.bathrooms} baths
-                                    </p>
-                                    <p className="flex items-center">
-                                        <BsPeople className="mr-1 text-gray-400" />{" "}
-                                        {property.guests} guests
-                                    </p>
-                                </div>
-                                <div className="mt-4 flex items-center justify-between">
-                                    <p className="text-lg font-semibold text-gray-900">
-                                        ${property.price}{" "}
-                                        <span className="text-sm font-normal text-gray-500">
-                                            / night
-                                        </span>
-                                    </p>
-                                    <button className="bg-primary-600 hover:bg-primary-700 rounded-lg px-3 py-1 text-sm text-white">
-                                        View
-                                    </button>
-                                </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
-            </div>
+            )}
 
             {/* Filter Modal */}
             <ReactModal

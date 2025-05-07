@@ -4,7 +4,7 @@ This is a full-stack web application for apartment booking.
 
 ---
 
-## Requirements
+## ✅ Requirements
 
 Before you begin, ensure you have the following installed:
 
@@ -17,15 +17,9 @@ Before you begin, ensure you have the following installed:
 
 ---
 
-## Installation Steps
+## ⚙️ Installation Steps
 
-### Clone the Repository
-
-Navigate to your projects directory (optional):
-
-```
-cd ~/projects
-```
+### I. Clone the Repository
 
 Clone the repository:
 
@@ -33,82 +27,91 @@ Clone the repository:
 git clone https://github.com/alamy2711/HomyStay.git
 ```
 
-Move into the project directory:
+### II. Install Backend Dependencies
 
-```
-cd HomyStay
-```
-
-### Install Backend Dependencies
-
-Install PHP dependencies:
+1. Install PHP dependencies:
 
 ```
 composer install
 ```
 
-Copy and configure the environment file:
+2. Copy and configure the environment file:
 
 ```
 cp .env.example .env
 ```
 
+3. Generate App Key:
 
-### Install Frontend Dependencies
+```
+php artisan key:generate
+```
 
-Navigate to the frontend directory:
+4. Link Storage:
+
+```
+php artisan storage:link
+```
+Run Fresh Migrations and Seed the Database:
+
+```
+php artisan migrate:fresh --seed
+```
+
+
+### III. Install Frontend Dependencies
+
+1. Navigate to the frontend directory:
 
 ```
 cd frontend
 ```
 
-Install JavaScript dependencies:
+2. Install JavaScript dependencies:
 
 ```
 npm install
 ```
 
+3. Copy and configure the environment file:
+
+```
+cp .env.example .env
+```
+
 ---
 
-## Running the Project
+## 🚀 Running the Project
 
-### Start the Backend Server
+### I. Start the Backend Server
 
-Navigate to the project root:
+1. Navigate to the project root:
 
 ```
 cd ..
 ```
 
-Start the Laravel server:
+2. Start the Laravel server:
 
 ```
 php artisan serve
 ```
 
-### Start the Frontend
+### II. Start the Frontend
 
-Navigate to the frontend folder:
+1. Navigate to the frontend folder:
 
 ```
 cd frontend
 ```
 
-Start the React development server:
+2. Start the React development server:
 
 ```
 npm run dev
 ```
 
-### Start Tailwind Watcher
-
-Run TailwindCSS CLI to generate styles:
-
-```
-npm run twdev
-```
-
-The site will be available at:
+3. The website will be available at:
 
 ```
 http://localhost:3000

@@ -4,9 +4,6 @@ import LoadingSpinner from "@components/common/LoadingSpinner";
 import React, { useEffect, useState } from "react";
 
 export default function Favorites() {
-    // const { apartments, loading: apartmentsLoading } = useApartments();
-    // apartments.splice(3);
-
     const [apartments, setApartments] = useState([]);
     const [apartmentsLoading, setApartmentsLoading] = useState(true);
 

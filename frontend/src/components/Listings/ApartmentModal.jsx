@@ -37,7 +37,7 @@ const schema = z.object({
     rooms: z.coerce
         .number({ invalid_type_error: "Rooms must be a number" })
         .int("Rooms must be an integer")
-        .min(0, "Bathrooms can't be negative"),
+        .min(1, "At least 1 room required"),
     bathrooms: z.coerce
         .number({ invalid_type_error: "Bathrooms must be a number" })
         .int("Bathrooms must be an integer")
@@ -45,7 +45,7 @@ const schema = z.object({
     beds: z.coerce
         .number({ invalid_type_error: "Beds must be a number" })
         .int("Beds must be an integer")
-        .min(0, "Bathrooms can't be negative"),
+        .min(0, "Beds can't be negative"),
     guests: z.coerce
         .number({ invalid_type_error: "Guests must be a number" })
         .int("Guests must be an integer")
@@ -68,7 +68,7 @@ const schema = z.object({
             "You must upload at least 3 images",
         )
         .refine(
-            (files) => files?.length <= 5,
+            (files) => files?.length <= 10,
             "You can upload up to 10 images",
         ),
 });
@@ -126,6 +126,7 @@ const ApartmentModal = ({
     const {
         register,
         handleSubmit,
+        setError,
         setValue,
         getValues,
         watch,
@@ -164,40 +165,16 @@ const ApartmentModal = ({
         }
     }, [apartment, reset, isOpen]);
 
-    // Form state
-    const [formData, setFormData] = useState({
-        title: "",
-        description: "",
-        price: "",
-        type: "apartment",
-        rooms: 1,
-        bathrooms: 1,
-        beds: 1,
-        guests: 1,
-        area: "",
-        country: "",
-        city: "",
-        address: "",
-        check_in: "",
-        check_out: "",
-        amenities: [],
-        images: [],
-    });
-
-    const handleNumberChange = (name, value) => {
-        const numValue = parseInt(value) || 0;
-        if (numValue >= 1) {
-            setFormData((prev) => ({ ...prev, [name]: numValue }));
-        }
-    };
-
     const incrementNumber = (name) => {
-        setFormData((prev) => ({ ...prev, [name]: (prev[name] || 0) + 1 }));
+        setValue(name, getValues(name) + 1, { shouldValidate: true });
     };
 
     const decrementNumber = (name) => {
-        if (formData[name] > 1) {
-            setFormData((prev) => ({ ...prev, [name]: prev[name] - 1 }));
+        if ((name === "rooms" || name === "guests") && getValues(name) === 1) {
+            return;
+        }
+        if (getValues(name) > 0) {
+            setValue(name, getValues(name) - 1, { shouldValidate: true });
         }
     };
 
@@ -294,6 +271,20 @@ const ApartmentModal = ({
             console.error(error);
             if (error.response.status === 403) {
                 toast.error(error.response.data.message);
+            } else if (error.response.status === 422) {
+                const validationErrors = error.response.data.errors;
+                Object.keys(validationErrors).forEach((field) => {
+                    if ((field.includes("images"))) {
+                        setError("images", {
+                            message: validationErrors[field],
+                        });
+                    } else {
+                        setError(field, {
+                            message: validationErrors[field],
+                        });
+                    }
+                });
+                setError();
             } else {
                 toast.error("Something went wrong. Please try again.");
             }
@@ -369,12 +360,6 @@ const ApartmentModal = ({
                                         <input
                                             type="number"
                                             name="price"
-                                            onChange={(e) =>
-                                                handleNumberChange(
-                                                    "price",
-                                                    e.target.value,
-                                                )
-                                            }
                                             className="focus:ring-primary-500 focus:border-primary-500 w-full rounded-md border border-gray-300 py-2 pr-3 pl-8"
                                             {...register("price")}
                                         />
@@ -442,9 +427,9 @@ const ApartmentModal = ({
                                     <div className="flex items-center">
                                         <button
                                             type="button"
-                                            onClick={() =>
-                                                decrementNumber("rooms")
-                                            }
+                                            onClick={() => {
+                                                decrementNumber("rooms");
+                                            }}
                                             className="rounded-l-md border border-gray-300 bg-gray-100 p-2 hover:bg-gray-200"
                                         >
                                             <FaMinus className="h-3 w-3" />
@@ -452,12 +437,6 @@ const ApartmentModal = ({
                                         <input
                                             type="number"
                                             name="rooms"
-                                            onChange={(e) =>
-                                                handleNumberChange(
-                                                    "rooms",
-                                                    e.target.value,
-                                                )
-                                            }
                                             className="w-full border-t border-b border-gray-300 px-3 py-2 text-center"
                                             {...register("rooms")}
                                         />
@@ -496,12 +475,6 @@ const ApartmentModal = ({
                                         <input
                                             type="number"
                                             name="bathrooms"
-                                            onChange={(e) =>
-                                                handleNumberChange(
-                                                    "bathrooms",
-                                                    e.target.value,
-                                                )
-                                            }
                                             className="w-full border-t border-b border-gray-300 px-3 py-2 text-center"
                                             {...register("bathrooms")}
                                         />
@@ -540,12 +513,6 @@ const ApartmentModal = ({
                                         <input
                                             type="number"
                                             name="beds"
-                                            onChange={(e) =>
-                                                handleNumberChange(
-                                                    "beds",
-                                                    e.target.value,
-                                                )
-                                            }
                                             className="w-full border-t border-b border-gray-300 px-3 py-2 text-center"
                                             {...register("beds")}
                                         />
@@ -584,13 +551,6 @@ const ApartmentModal = ({
                                         <input
                                             type="number"
                                             name="guests"
-                                            onChange={(e) =>
-                                                handleNumberChange(
-                                                    "guests",
-                                                    e.target.value,
-                                                )
-                                            }
-                                            min="1"
                                             className="w-full border-t border-b border-gray-300 px-3 py-2 text-center"
                                             {...register("guests")}
                                         />

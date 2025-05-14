@@ -17,7 +17,7 @@ export default function DatePickerInput({ id, name, label, ...attributes }) {
             name={name}
             placeholderText=" "
             customInput={
-                <FloatingLabel label={label} icon="fa-solid fa-calendar" />
+                <FloatingLabel label={label} icon="fa-regular fa-calendar" />
             }
         />
     );

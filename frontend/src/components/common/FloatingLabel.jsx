@@ -16,7 +16,7 @@ export default function FloatingLabel({
                 type={type}
                 placeholder=" "
                 {...attributes}
-                className="peer focus:border-primary-700 block w-full appearance-none rounded-full border-2 bg-white border-gray-300 px-5 pt-3 pb-2 text-sm text-gray-900 focus:ring-0 focus:outline-none"
+                className="peer focus:border-primary-700 focus:ring-primary-700 block w-full appearance-none rounded-full border border-gray-300 bg-white px-5 pt-3 pb-2 text-sm text-gray-900 focus:outline-none"
             />
             <label
                 htmlFor={id}

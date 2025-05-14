@@ -22,7 +22,8 @@ export default function ImageSwiper({ images, isGallery }) {
                 spaceBetween={0}
                 slidesPerView={1}
                 navigation
-                loop={true}
+                // loop={true}
+                loop={images.length > 4.74}
                 pagination={{
                     clickable: true,
                 }}

@@ -18,7 +18,7 @@ class ApartmentController extends Controller
     {
         $apartments = Apartment::with(['pictures', 'amenities', 'favorites'])
             ->latest()
-            ->paginate(3); // 9 apartments per page
+            ->paginate(9); // 9 apartments per page
         return response()->json([
             'data' => $apartments->items(), // just the apartments array
             'current_page' => $apartments->currentPage(),

@@ -361,9 +361,9 @@ const AdvancedSearchPage = () => {
         filterProperties();
     }, [filters]);
 
-    if (!apartmentsLoading) {
-        filterProperties();
-    }
+    // if (!apartmentsLoading) {
+    //     filterProperties();
+    // }
 
     return (
         <div className="min-h-screen bg-gray-50">

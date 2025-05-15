@@ -66,7 +66,7 @@ export default function ApartmentDescription({ apartment }) {
                     </div>
                     <hr className="mt-6 mb-6 h-0.5 w-full rounded-sm border-0 bg-transparent"></hr>
                     {/* Amenities */}
-                    <div>
+                    {apartment.amenities.length > 0 && <div>
                         <h3 className="mb-5 text-2xl text-(--secondary)">
                             Amenities
                         </h3>
@@ -87,7 +87,7 @@ export default function ApartmentDescription({ apartment }) {
                                 ) : null;
                             })}
                         </div>
-                    </div>
+                    </div>}
                 </div>
                 {/* Reservation Form */}
                 <ReservationForm apartment={apartment} />

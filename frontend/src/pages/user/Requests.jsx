@@ -116,10 +116,10 @@ export default function Requests() {
                     <div className="flex flex-col items-center justify-between gap-5 text-center md:flex-row md:gap-0 md:text-left">
                         <div>
                             <h1 className="text-2xl font-bold text-white">
-                                Your Reservations
+                                Your Requests
                             </h1>
                             <p className="text-primary-100 mt-1">
-                                Manage booking reservations
+                                Manage booking requests
                             </p>
                         </div>
                     </div>

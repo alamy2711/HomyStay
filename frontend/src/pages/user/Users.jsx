@@ -144,16 +144,39 @@ export default function Users() {
     const handleDeleteApartment = (apartmentId) => {
         // API call to delete apartment
         console.log("Apartment deleted:", apartmentId);
-        setModalState((prev) => ({
-            ...prev,
-            viewApartments: {
-                ...prev.viewApartments,
-                apartments: prev.viewApartments.apartments.filter(
-                    (a) => a.id !== apartmentId,
-                ),
-            },
-        }));
-        closeModal("deleteApartment");
+        axiosClient
+            .delete(`/apartments/${apartmentId}`)
+            .then((response) => {
+                setLoading(true);
+                toast.success("Apartment deleted successfully!");
+                setModalState((prev) => ({
+                    ...prev,
+                    viewApartments: {
+                        ...prev.viewApartments,
+                        apartments: prev.viewApartments.apartments.filter(
+                            (a) => a.id !== apartmentId,
+                        ),
+                    },
+                }));
+                closeModal("deleteApartment");
+            })
+            .catch((error) => {
+                console.error("Error deleting apartment:", error);
+            });
+        
+    };
+
+    const handleDelete = (id) => {
+        console.log("id: ", id);
+        axiosClient
+            .delete(`/apartments/${id}`)
+            .then((response) => {
+                setListingsLoading(true);
+                toast.success("Apartment deleted successfully!");
+            })
+            .catch((error) => {
+                console.error("Error deleting apartment:", error);
+            });
     };
 
     return (
@@ -161,7 +184,7 @@ export default function Users() {
             <div className="mx-auto max-w-screen-xl overflow-hidden rounded-lg bg-white shadow-sm">
                 {/* Header */}
                 <div className="from-primary-600 to-primary-700 bg-gradient-to-br px-6 py-4">
-                    <div className="flex flex-col text-center md:text-left items-center justify-between gap-5 md:flex-row md:gap-0">
+                    <div className="flex flex-col items-center justify-between gap-5 text-center md:flex-row md:gap-0 md:text-left">
                         <div>
                             <h1 className="text-2xl font-bold text-white">
                                 Users Management

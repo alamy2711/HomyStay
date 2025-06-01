@@ -43,7 +43,7 @@ const ApartmentsModal = ({
                         </button>
                     </div>
                     {apartments.length > 0 ? (
-                        <ul className="divide-y divide-gray-200">
+                        <ul className="divide-y divide-gray-200 max-h-100 overflow-y-scroll">
                             {apartments.map((apartment) => (
                                 <li
                                     key={apartment.id}

@@ -1,4 +1,4 @@
-// import { reviews } from "@/dummy-data/reviews-data";
+// import { reviews as reviewsData } from "@/dummy-data/reviews-data";
 import axiosClient from "@/lib/axiosClient";
 import { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";

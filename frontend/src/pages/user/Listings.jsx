@@ -302,7 +302,7 @@ const ListingsPage = () => {
                                             }
                                         >
                                             <div className="flex items-center">
-                                                Last Updated
+                                                Check In/Out
                                                 <HiOutlineArrowsUpDown className="ml-1 h-4 w-4" />
                                             </div>
                                         </th>
@@ -388,14 +388,16 @@ const ListingsPage = () => {
                                                             new Date(
                                                                 apartment.check_in,
                                                             ),
-                                                            "dd MMM",
+                                                            // "dd MMM yyyy",
+                                                            "d/M/yy",
                                                         )}{" "}
                                                         -{" "}
                                                         {formatDate(
                                                             new Date(
                                                                 apartment.check_out,
                                                             ),
-                                                            "dd MMM",
+                                                            // "dd MMM yyyy",
+                                                            "d/M/yy",
                                                         )}
                                                     </div>
                                                 </td>

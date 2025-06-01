@@ -81,6 +81,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/admin/users/{user}', [AdminController::class, 'deleteUser']);
         Route::delete('/admin/apartments/{apartment}', [AdminController::class, 'deleteApartment']);
         Route::post('/admin/notify', [AdminController::class, 'notifyUsers']);
+
+        Route::delete('/apartments/{apartment}', [ApartmentController::class, 'destroy']);
     });
 
     // Super Admin endpoints for managing admins.

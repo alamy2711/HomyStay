@@ -11,11 +11,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Stringable;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class ApartmentController extends Controller
 {
     public function index(Request $request)
     {
+        $today = Carbon::today();
+
+        // Automatically mark expired apartments
+        Apartment::where('check_out', '<=', $today)
+            ->where('status', '!=', 'expired')
+            ->update(['status' => 'expired']);
+
+        
         $apartments = Apartment::with(['pictures', 'amenities', 'favorites'])
             ->latest()
             ->paginate(9); // 9 apartments per page
@@ -29,6 +38,13 @@ class ApartmentController extends Controller
     // Fetch listings for a specific host
     public function hostIndex(Request $request)
     {
+        $today = Carbon::today();
+
+        // Automatically mark expired apartments
+        Apartment::where('check_out', '<=', $today)
+            ->where('status', '!=', 'expired')
+            ->update(['status' => 'expired']);
+        
         $user = $request->user();
         $apartments = Apartment::where('host_id', $user->id)
             ->with(['pictures', 'amenities', 'favorites'])
@@ -50,7 +66,7 @@ class ApartmentController extends Controller
 
     public function show(Apartment $apartment)
     {
-        $apartment->load(['pictures', 'amenities', 'host', 'favorites']);
+        $apartment->load(['pictures', 'amenities', 'host', 'favorites', 'reviews']);
 
         return new ApartmentResource($apartment);
     }

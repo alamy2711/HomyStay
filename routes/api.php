@@ -5,6 +5,7 @@ use App\Http\Controllers\ApartmentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserController;
 use App\Http\Resources\UserResource;
 use App\Models\User;
@@ -25,6 +26,7 @@ Route::middleware('auth.optional:sanctum')->group(function () {
     Route::get('/apartments', [ApartmentController::class, 'index']);
     Route::get('/apartments/search', [ApartmentController::class, 'search']);
     Route::get('/apartments/{apartment}', [ApartmentController::class, 'show']);
+    Route::get('/reviews/{apartment}', [ReviewController::class, 'index']);
 });
 
 
@@ -62,11 +64,15 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::middleware('role:host')->delete('/requests/{reservation}', [ReservationController::class, 'destroy']);
     });
 
-    // Favorite endpoints.
+    // Client endpoints.
     Route::middleware('role:client')->group(function () {
+        // Favorite endpoints.
         Route::get('/favorites', [FavoriteController::class, 'index']);
         Route::post('/favorites', [FavoriteController::class, 'store']);
         Route::delete('/favorites/{favorite}', [FavoriteController::class, 'destroy']);
+        // Review endpoints.
+        Route::post('/reviews', [ReviewController::class, 'store']);
+
     });
 
     // Admin endpoints.

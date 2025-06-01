@@ -17,7 +17,8 @@ return new class extends Migration
             $table->unsignedBigInteger('host_id'); // Foreign key referencing the host (user)
             $table->string('title');
             $table->text('description');
-            $table->decimal('price', 8, 2);
+            // $table->decimal('price', 8, 2);
+            $table->integer('price');
             $table->decimal('rating', 2, 1)->default(0);
             $table->enum('status', ['available', 'reserved', 'expired'])->default('available');
 

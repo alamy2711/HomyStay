@@ -72,6 +72,11 @@ class Apartment extends Model
             ->select(['id', 'apartment_id', 'path']);
     }
 
+    public function reviews() {
+        return $this->hasMany(Review::class)
+            ->select(['id', 'apartment_id', 'client_id', 'rating', 'comment']);
+    }
+
     /**
      * Delete the apartment's images when the apartment is deleted.
      */

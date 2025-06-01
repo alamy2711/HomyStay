@@ -1,14 +1,31 @@
-import { reviews } from "@/dummy-data/reviews-data";
-import { users } from "@/dummy-data/users-data";
-import React, { useState } from "react";
+// import { reviews } from "@/dummy-data/reviews-data";
+import axiosClient from "@/lib/axiosClient";
+import { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
+import { formatTimeAgo } from "../../utils/dateFormatter";
 import ReviewForm from "./ReviewForm";
 
 const REVIEWS_PER_PAGE = 10;
+// const reviews = []
 
-export default function ReviewsSection() {
+export default function ReviewsSection({ apartmentId }) {
+    const [reviews, setReviews] = useState([]);
+    const [reviewLoading, setReviewLoading] = useState(true);
+
+    useEffect(() => {
+        axiosClient
+            .get(`/reviews/${apartmentId}`)
+            .then(({ data }) => {
+                setReviews(data);
+                setReviewLoading(false);
+            })
+            .catch((err) => {
+                console.log(err);
+                setReviewLoading(false);
+            });
+    }, [apartmentId, reviewLoading]);
+
     const [currentPage, setCurrentPage] = useState(0);
-
     const offset = currentPage * REVIEWS_PER_PAGE;
     const currentReviews = reviews.slice(offset, offset + REVIEWS_PER_PAGE);
     const pageCount = Math.ceil(reviews.length / REVIEWS_PER_PAGE);
@@ -19,11 +36,15 @@ export default function ReviewsSection() {
         }
     };
 
+    if (reviewLoading) {
+        return <div></div>;
+    }
+
     return (
         <section className="relative my-10 mb-10 px-4 lg:px-6" id="reviews">
             <div className="mx-auto grid max-w-screen-xl grid-cols-1 gap-5 gap-y-15 rounded-lg bg-white px-4 py-10 shadow-sm lg:grid-cols-10">
                 {/* Form Side */}
-                <ReviewForm />
+                <ReviewForm apartmentId={apartmentId} setReviewLoading={setReviewLoading} />
 
                 {/* Reviews Side */}
                 <div className="rounded-lg bg-white lg:col-span-6 lg:px-5">
@@ -37,18 +58,16 @@ export default function ReviewsSection() {
                         </p>
                     </div>
 
+                    {currentReviews.length === 0 && (
+                        <p className="text-center text-gray-600">
+                            No reviews yet
+                        </p>
+                    )}
                     <div className="relative h-100 divide-y divide-gray-200 overflow-y-auto">
                         {currentReviews.map((review) => {
-                            const user = users.find(
-                                (u) => u.id === review.userId,
+                            return (
+                                <ReviewCard key={review.id} review={review} />
                             );
-                            return user ? (
-                                <ReviewCard
-                                    key={review.id}
-                                    review={review}
-                                    user={user}
-                                />
-                            ) : null;
                         })}
                         {/* Fog overlay */}
                         {/* <div className="pointer-events-none sticky bottom-0 h-20 w-full bg-gradient-to-t from-white to-transparent" /> */}
@@ -76,14 +95,14 @@ export default function ReviewsSection() {
 
 // Single review component
 
-const ReviewCard = ({ review, user }) => {
+const ReviewCard = ({ review }) => {
     return (
         <div className="border-b border-gray-200 py-4 last:border-b-0">
             <div className="flex items-start gap-3">
                 {/* User avatar */}
                 <img
-                    src={user.avatar}
-                    alt={user.name}
+                    src={review.client.profile_picture}
+                    alt={review.client.first_name}
                     className="h-10 w-10 rounded-full object-cover"
                 />
 
@@ -92,43 +111,21 @@ const ReviewCard = ({ review, user }) => {
                     <div className="flex items-center justify-between">
                         <div>
                             <h4 className="font-medium text-gray-900">
-                                {user.name}
+                                {review.client.first_name}{" "}
+                                {review.client.last_name}
                             </h4>
                             <StarRating rating={review.rating} />
                         </div>
                         <span className="text-sm text-gray-500">
-                            {formatTimeAgo(review.createdAt)}
+                            {formatTimeAgo(new Date(review.created_at))}
                         </span>
                     </div>
 
-                    <p className="mt-2 text-gray-700">{review.text}</p>
+                    <p className="mt-2 text-gray-700">{review.comment}</p>
                 </div>
             </div>
         </div>
     );
-};
-
-// Time formatting function
-const formatTimeAgo = (date) => {
-    const seconds = Math.floor((new Date() - date) / 1000);
-
-    const intervals = {
-        year: 31536000,
-        month: 2592000,
-        week: 604800,
-        day: 86400,
-        hour: 3600,
-        minute: 60,
-    };
-
-    for (const [unit, secondsInUnit] of Object.entries(intervals)) {
-        const interval = Math.floor(seconds / secondsInUnit);
-        if (interval >= 1) {
-            return `${interval} ${unit}${interval === 1 ? "" : "s"} ago`;
-        }
-    }
-
-    return "Just now";
 };
 
 const StarRating = ({ rating = 0 }) => {

@@ -23,7 +23,8 @@ class ApartmentFactory extends Factory
             'host_id' => null, // We'll set it manually in seeder
             'title' => $this->faker->sentence(5),
             'description' => $this->faker->paragraph(8),
-            'price' => $this->faker->randomFloat(2, 50, 500),
+            // 'price' => $this->faker->randomFloat(2, 50, 500),
+            'price' => $this->faker->numberBetween(50, 500),
             'rating' => $this->faker->randomFloat(1, 0, 5),
             'status' => $this->faker->randomElement(['available']),
             // 'status' => $this->faker->randomElement(['available', 'reserved', 'expired']),

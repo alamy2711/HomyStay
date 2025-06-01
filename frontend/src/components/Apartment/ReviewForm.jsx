@@ -1,11 +1,14 @@
 import Button from "@components/common/Button";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
+import axiosClient from "../../lib/axiosClient";
+import { useNavigate } from "react-router-dom";
 
-export default function ReviewForm() {
+export default function ReviewForm({ apartmentId, setReviewLoading }) {
     const [rating, setRating] = useState(0);
     const [reviewText, setReviewText] = useState("");
     const [hoveredRating, setHoveredRating] = useState(0);
+    const navigate = useNavigate();
 
     const maxCharacters = 500;
 
@@ -29,11 +32,33 @@ export default function ReviewForm() {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        toast.success("Review submitted successfully!");
-        // Sending data to the server or any other action can be done here
-        alert(`rating: ${rating}\nreviewText: ${reviewText}`);
-        setRating(0);
-        setReviewText("");
+        axiosClient
+            .post("/reviews", {
+                apartmentId: apartmentId,
+                rating: rating,
+                comment: reviewText,
+            })
+            .then((res) => {
+                setReviewLoading(true);
+                toast.success("Review submitted successfully!");
+                setRating(0);
+                setReviewText("");
+            })
+            .catch((err) => {
+                console.log(err);
+                // check error code 401
+                if (err.response.status === 401) {
+                    toast.warning("Please log in to submit a review.");
+                    navigate("/login");
+                    return;
+                } else if (err.response.status === 403) {
+                    toast.error(
+                        "Only clients can submit a review for this apartment.",
+                    );
+                    return;
+                }
+                toast.error("Something went wrong!");
+            });
     };
 
     return (

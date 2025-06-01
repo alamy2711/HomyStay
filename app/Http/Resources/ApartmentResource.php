@@ -45,6 +45,7 @@ class ApartmentResource extends JsonResource
 
             'pictures' => PictureResource::collection($this->whenLoaded('pictures')),
             'amenities' => AmenityResource::collection($this->whenLoaded('amenities')),
+            'reviews' => ReviewResource::collection($this->whenLoaded('reviews')),
             'host' => $this->host,
             // 'host' => new UserResource($this->whenLoaded('host')),
 

@@ -142,7 +142,7 @@ export default function ApartmentDetails() {
                                     href="#reviews"
                                     className="leading-none underline"
                                 >
-                                    ({apartment?.reviews || "0"} Reviews)
+                                    ({apartment?.reviews.length || "0"} Reviews)
                                 </a>
                             </span>
                         </div>
@@ -253,7 +253,7 @@ export default function ApartmentDetails() {
             <ApartmentDescription apartment={apartment} />
 
             {/* Reviews */}
-            <ReviewsSection />
+            <ReviewsSection apartmentId={apartment.id} />
         </>
     );
 }

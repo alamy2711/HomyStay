@@ -235,6 +235,8 @@ export default function Users() {
                                 value={selectedRole}
                                 onChange={setSelectedRole}
                                 isSearchable={false}
+                                menuPortalTarget={document.body}
+                                menuPosition="fixed"
                                 styles={{
                                     control: (base, state) => ({
                                         ...base,

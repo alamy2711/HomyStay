@@ -7,6 +7,7 @@ use App\Http\Resources\ReservationResource;
 use App\Models\Apartment;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
+use App\Http\Controllers\NotificationController;
 
 class ReservationController extends Controller
 {
@@ -55,6 +56,10 @@ class ReservationController extends Controller
             'check_out'    => $data['check_out'],
             'total_price'  => $data['total_price'],
         ]);
+
+        $notificationController = new NotificationController();
+        $content = "You have a new reservation request from \"" . $request->user()->first_name . " " . $request->user()->last_name . "\" for your apartment: \"" . $apartment->title . "\" from " . $data['check_in'] . " to " . $data['check_out'];
+        $notificationController->sendNotification('request', 'New request', $content, $apartment->host_id, $request->user()->id);
 
         return response()->json([
             'message'     => 'Reservation created successfully.',
@@ -141,10 +146,15 @@ class ReservationController extends Controller
 
         // Update the reservation status
         $reservation->update(['status' => $request->status]);
+        $notificationController = new NotificationController();
 
         if ($request->status === 'accepted') {
             // Update the apartment's status to "reserved"
             $reservation->apartment->update(['status' => 'reserved']);
+
+            // Send notification to client
+            $content = "Your reservation for \"" . $reservation->apartment->title . "\" from " . $reservation->check_in . " to " . $reservation->check_out . " has been accepted.";
+            $notificationController->sendNotification('reservation', 'Reservation accepted', $content, $reservation->client_id, $reservation->apartment->host_id);
 
             // Reject all other reservations for the same apartment
             Reservation::where('apartment_id', $reservation->apartment->id)

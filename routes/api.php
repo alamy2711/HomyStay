@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ApartmentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserController;
@@ -11,10 +12,7 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
-
-
-
+use Mockery\Matcher\Not;
 
 // Public endpoints: Login and registration.
 Route::post('/login', [AuthController::class, 'login']);
@@ -39,6 +37,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // User endpoints.
     Route::post('/profile/update', [UserController::class, 'update']);
     Route::delete('/profile/delete', [UserController::class, 'destroy']);
+    Route::get('/notifications', [NotificationController::class, 'index']);
+    Route::delete('/notifications/{notification}', [NotificationController::class, 'destroy']);
 
     // Routes for "host" role: managing apartment listings.
     Route::middleware('role:host')->group(function () {

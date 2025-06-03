@@ -1,20 +1,28 @@
+import { GiGate } from "react-icons/gi";
+import { HiOutlineBuildingOffice, HiOutlineHome } from "react-icons/hi2";
+import { LiaHotelSolid } from "react-icons/lia";
+
 export const iconMap = {
     // Apartment Types
     apartment: {
         label: "Apartment",
-        icon: <i className="fa-solid fa-building"></i>,
+        // icon: <i className="fa-solid fa-building"></i>,
+        icon: <HiOutlineBuildingOffice className="h-5 w-5" />,
     },
     house: {
         label: "House",
-        icon: <i className="fa-solid fa-house"></i>,
+        // icon: <i className="fa-solid fa-house"></i>,
+        icon: <HiOutlineHome className="h-5 w-5" />,
     },
     mansion: {
         label: "Mansion",
-        icon: <i className="fa-solid fa-dungeon"></i>,
+        // icon: <i className="fa-solid fa-dungeon"></i>,
+        icon: <GiGate className="h-5 w-5" />,
     },
     hotel: {
         label: "Hotel",
-        icon: <i className="fa-solid fa-hotel"></i>,
+        // icon: <i className="fa-solid fa-hotel"></i>,
+        icon: <LiaHotelSolid className="h-5 w-5" />,
     },
     // Amenities
     wifi: {

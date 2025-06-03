@@ -5,6 +5,17 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import axiosClient from "../../lib/axiosClient";
+import PropertyStructure from "@/constants/PropertyStructure";
+
+// Icons
+import { TbBed } from "react-icons/tb";
+import { LuBath } from "react-icons/lu";
+import { HiOutlineUsers } from "react-icons/hi2";
+import { RxRulerSquare } from "react-icons/rx";
+import { BsDoorClosed } from "react-icons/bs";
+import { FaHeart } from "react-icons/fa";
+import { MdOutlineLocationOn } from "react-icons/md";
+import { FaStar } from "react-icons/fa";
 
 export default function ApartmentCard({
     className = "",
@@ -111,7 +122,8 @@ export default function ApartmentCard({
             </div>
             {/* <!-- Locatin --> */}
             <div className="text-primary-700 col-span-2 flex flex-row items-center gap-2">
-                <i className="fa-solid fa-location-dot text-xl"></i>
+                {/* <i className="fa-solid fa-location-dot text-xl"></i> */}
+                <MdOutlineLocationOn className="h-6 w-6" />
                 <h3
                     className="truncate text-xl text-nowrap italic"
                     title={"sad"}
@@ -126,20 +138,27 @@ export default function ApartmentCard({
             </p>
             {/* <!-- Rate --> */}
             <div className="flex items-center justify-end gap-1 font-[500] text-gray-600">
-                <i className="fa-solid fa-star text-yellow-400"></i>
+                {/* <i className="fa-solid fa-star text-yellow-400"></i> */}
+                <FaStar className="h-5 w-5 text-yellow-400"></FaStar>
+
                 <span className="leading-none">{apartment.rating}</span>
             </div>
             {/* <!-- Amenities --> */}
             <div className="flex flex-row items-center gap-5 font-bold text-gray-500">
                 <div className="flex flex-row items-center gap-1">
-                    {apartment.beds} <i className="fa-solid fa-bed"></i>
+                    {apartment.beds}
+                    {/* <i className="fa-solid fa-bed"></i> */}
+                    <TbBed className="h-6 w-6 " ></TbBed>
                 </div>
                 <div className="flex flex-row items-center gap-1">
-                    {apartment.bathrooms} <i className="fa-solid fa-bath"></i>
+                    {apartment.bathrooms}
+                    {/* <i className="fa-solid fa-bath"></i> */}
+                    <LuBath className="h-5 w-5"></LuBath>
                 </div>
                 <div className="flex flex-row items-center gap-1">
                     {apartment.guests}{" "}
-                    <i className="fa-solid fa-user-group"></i>
+                    {/* <i className="fa-solid fa-user-group"></i> */}
+                    <HiOutlineUsers className="h-5 w-5"></HiOutlineUsers>
                 </div>
             </div>
             {/* <!-- Price --> */}

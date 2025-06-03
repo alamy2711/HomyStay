@@ -83,6 +83,10 @@ class ReservationController extends Controller
         }
 
         $reservation->update(['status' => 'canceled']);
+        // Send notification to host
+        $notificationController = new NotificationController();
+        $content = "Your reservation request for \"" . $reservation->apartment->title . "\" from " . $reservation->check_in . " to " . $reservation->check_out . " has been canceled.";
+        $notificationController->sendNotification('request', 'Reservation canceled', $content, $reservation->apartment->host_id, $reservation->client_id);
         return response()->json(['message' => 'Reservation canceled successfully.']);
     }
 
@@ -162,9 +166,17 @@ class ReservationController extends Controller
                 ->where('status', 'pending')
                 ->update(['status' => 'rejected']);
         } elseif ($request->status === 'canceled') {
+            // Send notification to client
+            $content = "Your reservation for \"" . $reservation->apartment->title . "\" from " . $reservation->check_in . " to " . $reservation->check_out . " has been canceled.";
+            $notificationController->sendNotification('reservation', 'Reservation canceled', $content, $reservation->client_id, $reservation->apartment->host_id);
             // Update the apartment's status to "available"
             $reservation->apartment->update(['status' => 'available']);
+        } elseif ($request->status === 'rejected') {
+            // Send notification to client
+            $content = "Your reservation for \"" . $reservation->apartment->title . "\" from " . $reservation->check_in . " to " . $reservation->check_out . " has been rejected.";
+            $notificationController->sendNotification('reservation', 'Reservation rejected', $content, $reservation->client_id, $reservation->apartment->host_id);
         }
+
 
         return response()->json([
             'message'     => 'Reservation status updated successfully.',

@@ -4,6 +4,7 @@ import { ToastContainer } from "react-toastify";
 import { ApartmentsProvider } from "./contexts/ApartmentsContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import { router } from "./router/index";
+import { NotificationsProvider } from "./contexts/NotificationsContext";
 
 function App() {
     const [count, setCount] = useState(0);
@@ -12,7 +13,9 @@ function App() {
         <>
             <AuthProvider>
                 <ApartmentsProvider>
-                    <RouterProvider router={router} />
+                    <NotificationsProvider>
+                        <RouterProvider router={router} />
+                    </NotificationsProvider>
                 </ApartmentsProvider>
             </AuthProvider>
             <ToastContainer

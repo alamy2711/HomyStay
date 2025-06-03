@@ -5,6 +5,9 @@ import React, { useEffect } from "react";
 import { toast } from "react-toastify";
 import ReservationForm from "./ReservationForm";
 
+// icons
+import { HiOutlineMail } from "react-icons/hi";
+
 export default function ApartmentDescription({ apartment }) {
     const { user, token, loading: userLoading } = useAuth();
 
@@ -18,7 +21,10 @@ export default function ApartmentDescription({ apartment }) {
             navigate("/login");
         } else if (user.role != "client") {
             toast.error("Only clients can contact the host.");
+        } else {
+            window.alert("Call: +1 (123) 456-7890");
         }
+
     };
 
     return (
@@ -50,7 +56,8 @@ export default function ApartmentDescription({ apartment }) {
                             className="border-primary-700 text-primary-700 hover:bg-primary-200 flex items-center border-2"
                             onClick={handleContactClick}
                         >
-                            <i className="fa-solid fa-envelope mr-2 text-xl"></i>
+                            {/* <i className="fa-solid fa-envelope mr-2 text-xl"></i> */}
+                            <HiOutlineMail className="mr-2 h-5 w-5"></HiOutlineMail>
                             Contact
                         </Button>
                     </div>
@@ -66,28 +73,33 @@ export default function ApartmentDescription({ apartment }) {
                     </div>
                     <hr className="mt-6 mb-6 h-0.5 w-full rounded-sm border-0 bg-transparent"></hr>
                     {/* Amenities */}
-                    {apartment.amenities.length > 0 && <div>
-                        <h3 className="mb-5 text-2xl text-(--secondary)">
-                            Amenities
-                        </h3>
-                        <div className="grid grid-cols-1 gap-5 text-lg font-[500] text-gray-500 md:grid-cols-2">
-                            {apartment.amenities.map((amenity, i) => {
-                                const amenityInfo = AMENITIES.find(
-                                    (item) => item.id === amenity.name,
-                                );
-                                return amenityInfo ? (
-                                    <div key={i} className="flex items-center">
-                                        <div className="text-primary-700 inline-block w-10 text-2xl">
-                                            {amenityInfo.icon}
+                    {apartment.amenities.length > 0 && (
+                        <div>
+                            <h3 className="mb-5 text-2xl text-(--secondary)">
+                                Amenities
+                            </h3>
+                            <div className="grid grid-cols-1 gap-5 text-lg font-[500] text-gray-500 md:grid-cols-2">
+                                {apartment.amenities.map((amenity, i) => {
+                                    const amenityInfo = AMENITIES.find(
+                                        (item) => item.id === amenity.name,
+                                    );
+                                    return amenityInfo ? (
+                                        <div
+                                            key={i}
+                                            className="flex items-center"
+                                        >
+                                            <div className="text-primary-700 inline-block w-10 text-2xl">
+                                                {amenityInfo.icon}
+                                            </div>
+                                            <span className="text-(--secondary)">
+                                                {amenityInfo.name}
+                                            </span>
                                         </div>
-                                        <span className="text-(--secondary)">
-                                            {amenityInfo.name}
-                                        </span>
-                                    </div>
-                                ) : null;
-                            })}
+                                    ) : null;
+                                })}
+                            </div>
                         </div>
-                    </div>}
+                    )}
                 </div>
                 {/* Reservation Form */}
                 <ReservationForm apartment={apartment} />

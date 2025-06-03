@@ -1,12 +1,15 @@
+import axiosClient from "@/lib/axiosClient";
 import { useEffect, useRef, useState } from "react";
-import {
-    FaBell,
-    FaRegBell,
-    FaRegCheckCircle,
-    FaRegClock,
-    FaRegTimesCircle,
-} from "react-icons/fa";
+import { FaRegCheckCircle, FaRegClock, FaRegTimesCircle } from "react-icons/fa";
 import { HiOutlineBell } from "react-icons/hi2";
+import { useNavigate } from "react-router-dom";
+import { useNotifications } from "../../contexts/NotificationsContext";
+import { formatTimeAgo } from "../../utils/dateFormatter";
+
+// Icons
+import { CalendarIcon, ClipboardIcon } from "@heroicons/react/24/outline";
+import { FiAlertCircle, FiBell, FiMail } from "react-icons/fi";
+import { Link } from "react-router-dom";
 
 const notificationsData = [
     {
@@ -68,10 +71,17 @@ const notificationsData = [
 ];
 
 const NotificationsDropdownMenu = () => {
+    const {
+        notifications,
+        setNotifications,
+        loading: notificationsLoading,
+        setLoading: setNotificationsLoading,
+    } = useNotifications();
     const [isOpen, setIsOpen] = useState(false);
-    const [notifications, setNotifications] = useState(notificationsData);
+    // const [notifications, setNotifications] = useState(notificationsData);
 
     const ref = useRef(null);
+    const navigate = useNavigate();
 
     // Handle click outside
     useEffect(() => {
@@ -86,8 +96,59 @@ const NotificationsDropdownMenu = () => {
             document.removeEventListener("mousedown", handleClickOutside);
     }, [ref]);
 
+    useEffect(() => {
+        setNotificationsLoading(true);
+    }, []);
+    const getNotificationIcon = (type) => {
+        switch (type) {
+            case "reservation":
+                // return <FiCalendar className="text-blue-500" size={20} />;
+                return <CalendarIcon className="h-6 w-6 text-blue-500" />;
+            case "request":
+                return <ClipboardIcon className="h-6 w-6 text-green-500" />;
+            case "message":
+                return <FiMail className="text-purple-500" size={20} />;
+            case "system":
+                return <FiAlertCircle className="text-yellow-500" size={20} />;
+            default:
+                return <FiBell className="text-gray-500" size={20} />;
+        }
+    };
+
     const markAllAsRead = () => {
-        setNotifications(notifications.map((n) => ({ ...n, read: true })));
+        axiosClient.post("/notifications/mark-all-as-read").then((response) => {
+            setNotificationsLoading(true);
+        });
+    };
+
+    // Mark as read
+    const markAsRead = (notificationId) => {
+        axiosClient
+            .post(`/notifications/${notificationId}/mark-as-read`)
+            .then((response) => {
+                setNotificationsLoading(true);
+            })
+            .catch((error) => {
+                console.error("Error marking notification as read:", error);
+                setNotificationsLoading(true);
+            });
+    };
+
+    const handleNotificationClick = (type, id) => {
+        markAsRead(id);
+        switch (type) {
+            case "reservation":
+                navigate("/reservations");
+                break;
+            case "request":
+                navigate("/requests");
+                break;
+            case "message":
+                navigate("/messages");
+                break;
+            default:
+                break;
+        }
     };
 
     return (
@@ -99,7 +160,7 @@ const NotificationsDropdownMenu = () => {
                 className="hover:text-primary-700 bg-primary-100 text-primary-500 relative flex h-8 w-8 cursor-pointer items-center justify-center rounded-full text-xl ring-0 duration-400 hover:ring-[1.5px] lg:h-10 lg:w-10"
             >
                 <HiOutlineBell className="h-7 w-7" />
-                {notifications.some((n) => !n.read) && (
+                {notifications.some((n) => !n.is_seen) && (
                     <span className="absolute top-1.75 right-2.5 h-2.25 w-2.25 rounded-full bg-red-500"></span>
                 )}
             </button>
@@ -108,9 +169,11 @@ const NotificationsDropdownMenu = () => {
             {isOpen && (
                 <div className="absolute top-10 right-0 z-50 mt-2 w-80 overflow-hidden rounded-lg bg-white shadow-md shadow-gray-300">
                     <div className="flex items-center justify-between border-b border-gray-100 p-4">
-                        <h3 className="font-semibold text-gray-800">
-                            Notifications
-                        </h3>
+                        <Link to="/notifications">
+                            <h3 className="hover:text-primary-800 font-semibold text-gray-800">
+                                Notifications
+                            </h3>
+                        </Link>
                         <button
                             onClick={markAllAsRead}
                             className="text-primary-700 hover:text-primary-800 text-sm"
@@ -128,33 +191,45 @@ const NotificationsDropdownMenu = () => {
                         ) : (
                             notifications.map((notification) => (
                                 <div
+                                    onClick={() =>
+                                        handleNotificationClick(
+                                            notification.type,
+                                            notification.id,
+                                        )
+                                    }
                                     key={notification.id}
-                                    className={`border-b border-gray-100 p-4 last:border-0 ${
-                                        !notification.read
+                                    className={`cursor-pointer border-b border-gray-100 p-4 last:border-0 ${
+                                        !notification.is_seen
                                             ? "bg-primary-50"
                                             : "bg-white"
                                     } hover:bg-primary-100 transition-colors`}
                                 >
                                     <div className="flex items-start">
                                         <span className="text-primary-700 mt-1 mr-3">
-                                            {notification.icon}
+                                            {getNotificationIcon(
+                                                notification.type,
+                                            )}
                                         </span>
                                         <div className="flex-1">
                                             <div className="flex items-start justify-between">
                                                 <h4
-                                                    className={`text-sm ${!notification.read ? "font-semibold" : ""}`}
+                                                    className={`text-sm ${!notification.is_seen ? "font-semibold" : ""}`}
                                                 >
-                                                    {notification.title}
+                                                    {notification.subject}
                                                 </h4>
-                                                {!notification.read && (
+                                                {!notification.is_seen && (
                                                     <span className="bg-primary-700 ml-2 h-2 w-2 rounded-full"></span>
                                                 )}
                                             </div>
                                             <p className="mt-1 text-sm text-gray-600">
-                                                {notification.message}
+                                                {notification.content}
                                             </p>
                                             <p className="mt-2 text-xs text-gray-400">
-                                                {notification.time}
+                                                {formatTimeAgo(
+                                                    new Date(
+                                                        notification.created_at,
+                                                    ),
+                                                )}
                                             </p>
                                         </div>
                                     </div>

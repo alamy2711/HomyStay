@@ -39,6 +39,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/profile/delete', [UserController::class, 'destroy']);
     Route::get('/notifications', [NotificationController::class, 'index']);
     Route::delete('/notifications/{notification}', [NotificationController::class, 'destroy']);
+    Route::post('/notifications/{notification}/mark-as-read', [NotificationController::class, 'markAsRead']);
+    Route::post('/notifications/mark-all-as-read', [NotificationController::class, 'markAllAsRead']);
 
     // Routes for "host" role: managing apartment listings.
     Route::middleware('role:host')->group(function () {

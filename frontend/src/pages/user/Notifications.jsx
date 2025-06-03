@@ -1,18 +1,20 @@
 import axiosClient from "@/lib/axiosClient";
 import { useAuth } from "@contexts/AuthContext";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Select from "react-select";
+import { toast } from "react-toastify";
+import { useNotifications } from "../../contexts/NotificationsContext";
 import { formatTimeAgo } from "../../utils/dateFormatter";
 
 // Components
 
 // Icons
+import { CalendarIcon, ClipboardIcon } from "@heroicons/react/24/outline";
 import {
     FiAlertCircle,
     FiBell,
-    FiCalendar,
     FiCheck,
-    FiCheckCircle,
     FiMail,
     FiTrash2,
 } from "react-icons/fi";
@@ -20,51 +22,60 @@ import { MdOutlineMarkEmailRead } from "react-icons/md";
 
 export default function Users() {
     const { user: currentUser } = useAuth();
-    const [notifications, setNotifications] = useState([]);
-    const [notificationsLoading, setNotificationsLoading] = useState(true);
+    const {
+        notifications,
+        setNotifications,
+        loading: notificationsLoading,
+        setLoading: setNotificationsLoading,
+    } = useNotifications();
+    // const [notifications, setNotifications] = useState([]);
+    // const [notificationsLoading, setNotificationsLoading] = useState(true);
     const [selectedNotification, setSelectedNotification] = useState({
         value: "all",
         label: "All Notifications",
     });
+    const navigate = useNavigate();
 
     useEffect(() => {
-        axiosClient
-            .get("/notifications")
-            .then((response) => {
-                setNotifications(response.data);
-                setNotificationsLoading(false);
-            })
-            .catch((error) => {
-                console.error("Error fetching users:", error);
-            });
-    }, [notificationsLoading]);
+        setNotificationsLoading(true);
+    }, []);
+
+    // useEffect(() => {
+    //     axiosClient
+    //         .get("/notifications")
+    //         .then((response) => {
+    //             setNotifications(response.data);
+    //             setNotificationsLoading(false);
+    //         })
+    //         .catch((error) => {
+    //             console.error("Error fetching users:", error);
+    //         });
+    // }, [notificationsLoading]);
 
     // Role options for react-select
     const notificationOptions = [
         { value: "all", label: "All Notifications" },
-        { value: "reservations", label: "Reservations" },
-        { value: "requests", label: "Requests" },
-        { value: "messages", label: "Messages" },
-        { value: "system", label: "System" },
         ...(currentUser?.role === "client"
             ? [
-                  { value: "reservations", label: "Reservations" },
-                  { value: "messages", label: "Messages" },
+                  { value: "reservation", label: "Reservations" },
+                  { value: "message", label: "Messages" },
               ]
             : currentUser?.role === "host"
               ? [
-                    { value: "requests", label: "Requests" },
-                    { value: "messages", label: "Messages" },
+                    { value: "request", label: "Requests" },
+                    { value: "message", label: "Messages" },
                 ]
               : []),
+        { value: "system", label: "System" },
     ];
     // Get icon for notification type
     const getNotificationIcon = (type) => {
         switch (type) {
             case "reservation":
-                return <FiCalendar className="text-blue-500" size={20} />;
+                // return <FiCalendar className="text-blue-500" size={20} />;
+                return <CalendarIcon className="h-6 w-6 text-blue-500" />;
             case "request":
-                return <FiCheckCircle className="text-green-500" size={20} />;
+                return <ClipboardIcon className="h-6 w-6 text-green-500" />;
             case "message":
                 return <FiMail className="text-purple-500" size={20} />;
             case "system":
@@ -84,10 +95,21 @@ export default function Users() {
 
     // Mark all as read
     const markAllAsRead = () => {
+        axiosClient.post("/notifications/mark-all-as-read").then((response) => {
+            setNotificationsLoading(true);
+        });
+    };
+
+    // Mark as read
+    const markAsRead = (notificationId) => {
         axiosClient
-            .post("/admin/mark-all-notifications-as-read")
+            .post(`/notifications/${notificationId}/mark-as-read`)
             .then((response) => {
-                toast.success("Notifications marked as read successfully!");
+                setNotificationsLoading(true);
+            })
+            .catch((error) => {
+                console.error("Error marking notification as read:", error);
+                setNotificationsLoading(true);
             });
     };
 
@@ -100,8 +122,28 @@ export default function Users() {
             })
             .catch((error) => {
                 console.error("Error deleting notification:", error);
+                setNotificationsLoading(true);
             });
     };
+
+    const handleNotificationClick = (type, id) => {
+        markAsRead(id);
+        switch (type) {
+            case "reservation":
+                navigate("/reservations");
+                break;
+            case "request":
+                navigate("/requests");
+                break;
+            case "message":
+                navigate("/messages");
+                break;
+            default:
+                break;
+        }
+    };
+
+   
 
     return (
         <section className="my-15 px-4 lg:px-6">
@@ -190,7 +232,7 @@ export default function Users() {
                             {filteredNotifications.map((notification) => (
                                 <li
                                     key={notification.id}
-                                    className={`hover:bg-gray-50 ${!notification.is_seen ? "bg-blue-50" : ""}`}
+                                    className={`zhover:bg-gray-50 duration-300 ${!notification.is_seen ? "bg-primary-50" : ""}`}
                                 >
                                     <div className="px-4 py-4 sm:px-6">
                                         <div className="flex items-start justify-between">
@@ -198,7 +240,8 @@ export default function Users() {
                                                 className="min-w-0 flex-1 cursor-pointer"
                                                 onClick={() =>
                                                     handleNotificationClick(
-                                                        notification,
+                                                        notification.type,
+                                                        notification.id,
                                                     )
                                                 }
                                             >

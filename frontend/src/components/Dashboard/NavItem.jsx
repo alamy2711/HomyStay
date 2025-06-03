@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useSidebar } from "../../contexts/SidebarContext";
 
-export default function NavItem({ item, isActive, alert = 2 }) {
+export default function NavItem({ item, isActive, alert }) {
     const { toggleHidden, isCollapsed } = useSidebar();
 
     return (

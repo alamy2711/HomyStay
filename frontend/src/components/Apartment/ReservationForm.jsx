@@ -113,7 +113,7 @@ export default function ReservationForm({ apartment }) {
                     selected={startDate}
                     onChange={(date) => {
                         setStartDate(date);
-                        setValue("startDate", date, { shouldValidate: true });
+                        // setValue("startDate", date, { shouldValidate: true });
                     }}
                     selectsStart
                     startDate={startDate}
@@ -137,7 +137,7 @@ export default function ReservationForm({ apartment }) {
                     selected={endDate}
                     onChange={(date) => {
                         setEndDate(date);
-                        setValue("endDate", date, { shouldValidate: true });
+                        // setValue("endDate", date, { shouldValidate: true });
                     }}
                     selectsEnd
                     startDate={startDate}

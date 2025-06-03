@@ -1,5 +1,5 @@
 import { useAuth } from "@contexts/AuthContext";
-import React from "react";
+import React, { use, useEffect } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import { TbLogout } from "react-icons/tb";
 import { Link, useLocation } from "react-router-dom";
@@ -7,13 +7,22 @@ import { NAV_ITEMS } from "../../constants/navigationItems";
 import { useSidebar } from "../../contexts/SidebarContext";
 import { beautifyString } from "../../utils/stringUtils";
 import NavItem from "./NavItem";
+import { useNotifications } from "../../contexts/NotificationsContext";
 
 export default function Sidebar() {
     const location = useLocation();
     const { user, logout } = useAuth();
+    const {notifications, setLoading : setNotificationsLoading} = useNotifications();
     const navItems = NAV_ITEMS[user?.role] || [];
     const { isHidden, toggleHidden, isCollapsed, toggleCollapsed } =
         useSidebar();
+
+
+    useEffect(() => {
+        setNotificationsLoading(true);
+    }, []);
+
+    const notificationCount = notifications.filter((notification) => !notification.is_seen).length;
 
     return (
         <aside
@@ -52,6 +61,7 @@ export default function Sidebar() {
                                 key={item.path}
                                 item={item}
                                 isActive={location.pathname === item.path}
+                                alert={item.name == "Notifications" ? notificationCount : 0}
                             />
                         ))}
                     </ul>

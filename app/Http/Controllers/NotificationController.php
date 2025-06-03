@@ -26,7 +26,7 @@ class NotificationController extends Controller
     /**
      * Mark notification as seen.
      */
-    public function markAsSeen(Request $request, Notification $notification)
+    public function markAsRead(Request $request, Notification $notification)
     {
         if ($request->user()->id !== $notification->receiver_id) {
             return response()->json(['error' => 'Unauthorized.'], 403);
@@ -36,6 +36,17 @@ class NotificationController extends Controller
 
         return response()->json(['message' => 'Notification marked as seen.']);
     }
+
+    /**
+     * Mark all notifications as seen.
+     */
+    public function markAllAsRead(Request $request)
+    {
+        Notification::where('receiver_id', $request->user()->id)->update(['is_seen' => true]);
+        return response()->json(['message' => 'All notifications marked as seen.']);
+    }
+
+
 
     /**
      * Fetch notifications for authenticated user.

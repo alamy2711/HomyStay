@@ -12,6 +12,16 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ApartmentDescription from "./ApartmentDescription";
 
+// Icons
+import { TbBed } from "react-icons/tb";
+import { LuBath } from "react-icons/lu";
+import { HiOutlineUsers } from "react-icons/hi2";
+import { RxRulerSquare } from "react-icons/rx";
+import { BsDoorClosed } from "react-icons/bs";
+import { FaHeart } from "react-icons/fa";
+import { MdOutlineLocationOn } from "react-icons/md";
+import { FaStar } from "react-icons/fa";
+
 export default function ApartmentDetails() {
     const { user, token, loading: userLoading } = useAuth();
     const { id } = useParams();
@@ -130,11 +140,11 @@ export default function ApartmentDetails() {
                     <div className="flex flex-col justify-between text-gray-500 md:px-2 lg:col-span-4">
                         {/* Title */}
                         <h1 className="text-primary-700 mb-2 text-2xl lg:text-3xl">
-                            {apartment.title}
+                            {apartment?.title}
                         </h1>
                         {/* Rating */}
                         <div className="flex items-center gap-2 text-yellow-400">
-                            <StarRating rating={apartment.rating} />
+                            <StarRating rating={apartment?.rating} />
                             <span className="leading-none text-gray-500">
                                 {" "}
                                 {apartment?.rating}{" "}
@@ -149,7 +159,8 @@ export default function ApartmentDetails() {
                         <hr className="mt-4 mb-5 h-0.5 w-full rounded-sm border-0 bg-gray-200"></hr>
                         {/* Location & Add-to-Favorite */}
                         <div className="flex items-center gap-2 text-gray-600">
-                            <i className="fa-solid fa-location-dot text-2xl"></i>
+                            {/* <i className="fa-solid fa-location-dot text-2xl"></i> */}
+                            <MdOutlineLocationOn className="h-8 w-8" />
                             <h3 className="text-xl italic">
                                 {apartment.country} - {apartment.city}
                             </h3>
@@ -163,7 +174,7 @@ export default function ApartmentDetails() {
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         viewBox="1 1 22 22"
-                                        className={` h-8 w-8 stroke-gray-600 transition-all duration-300 hover:scale-115 lg:hover:stroke-red-500 ${isFavorite.value ? "fill-red-500 stroke-red-500" : "fill-white"} `}
+                                        className={`h-8 w-8 stroke-gray-600 transition-all duration-300 hover:scale-115 lg:hover:stroke-red-500 ${isFavorite.value ? "fill-red-500 stroke-red-500" : "fill-white"} `}
                                         strokeWidth="2"
                                     >
                                         <path
@@ -190,37 +201,42 @@ export default function ApartmentDetails() {
                         <hr className="bg-transpart mx-auto my-3 border-0"></hr>
                         {/* General Infos */}
                         <div className="grid grid-cols-2 flex-col gap-3 gap-x-12">
-                            <div>
+                            <div className="flex items-center gap-2">
                                 <div className="inline-block w-6">
-                                    <i className="fa-solid fa-door-closed"></i>
+                                    {/* <i className="fa-solid fa-door-closed"></i> */}
+                                    <TbBed className="h-6 w-6" />
                                 </div>
                                 <span>{apartment.rooms} Room(s)</span>
                             </div>
-                            <div>
+                            <div className="flex items-center gap-2">
                                 <div className="inline-block w-6">
-                                    <i className="fa-solid fa-bed"></i>
+                                    {/* <i className="fa-solid fa-bed"></i> */}
+                                    <BsDoorClosed className="h-5 w-5" />
                                 </div>
                                 <span>{apartment.beds} Bed(s)</span>
                             </div>
-                            <div>
+                            <div className="flex items-center gap-2">
                                 <div className="inline-block w-6">
-                                    <i className="fa-solid fa-bath"></i>
+                                    {/* <i className="fa-solid fa-bath"></i> */}
+                                    <LuBath className="h-6 w-6" />
                                 </div>
                                 <span>{apartment.bathrooms} Bathroom(s)</span>
                             </div>
-                            <div>
+                            <div className="flex items-center gap-2">
                                 <div className="inline-block w-6">
-                                    <i className="fa-solid fa-user-group"></i>
+                                    {/* <i className="fa-solid fa-user-group"></i> */}
+                                    <HiOutlineUsers className="h-5 w-5" />
                                 </div>
                                 <span>{apartment.guests} Guest(s)</span>
                             </div>
-                            <div>
+                            <div className="flex items-center gap-2">
                                 <div className="inline-block w-6">
-                                    <i className="fa-solid fa-object-group"></i>
+                                    {/* <i className="fa-solid fa-object-group"></i> */}
+                                    <RxRulerSquare className="h-5 w-5" />
                                 </div>
                                 {apartment.area} m<sup>2</sup>
                             </div>
-                            <div>
+                            <div className="flex items-center gap-2">
                                 <div className="inline-block w-6">
                                     {iconMap[apartment.type].icon}
                                 </div>
